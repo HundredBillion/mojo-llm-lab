@@ -1,0 +1,517 @@
+{
+  "status": "passed",
+  "rows": 9728,
+  "width": 2560,
+  "exact_outputs": true,
+  "canaries": "intact",
+  "repetitions_per_graph": 32,
+  "samples": [
+    {
+      "control": true,
+      "round": 0,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 677.6270270347595,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 0,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 668.7999963760376,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 0,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 625.9199976921082,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 0,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 645.0880169868469,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 1,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.6319770812988,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 1,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.6250033378601,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 1,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.6959924697876,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 1,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.8240232467651,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 2,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.5929956436157,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 2,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.753987789154,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 2,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.6639847755432,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 2,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.6580243110657,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 3,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.6639847755432,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 3,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.6959924697876,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 3,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.7920155525208,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 3,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.8879790306091,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 4,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.5980024337769,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 4,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.8240232467651,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 4,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.6639847755432,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 4,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.728000164032,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 5,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.7600078582764,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 5,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.9199867248535,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 5,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 649.8559713363647,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 5,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.7889757156372,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 6,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 657.6600074768066,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 6,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 656.7360162734985,
+      "gpu_clock_mhz": 1207
+    },
+    {
+      "control": true,
+      "round": 6,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 659.5839858055115,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": true,
+      "round": 6,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 656.5369963645935,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": true,
+      "round": 7,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 652.7680158615112,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": true,
+      "round": 7,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 653.5360217094421,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": true,
+      "round": 7,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 659.3890190124512,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": true,
+      "round": 7,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 656.0249924659729,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 0,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 656.0320258140564,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 0,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 384.99200344085693,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 0,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 385.2800130844116,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 0,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 654.1119813919067,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 1,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 657.696008682251,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 1,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 386.84800267219543,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 1,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 385.3369951248169,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 1,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 649.7920155525208,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 2,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 651.1039733886719,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 2,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 387.8079950809479,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 2,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 401.311993598938,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 2,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 718.1710004806519,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 3,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 733.8879704475403,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 3,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 430.71800470352173,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 3,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 437.50399351119995,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 3,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 727.8720140457153,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 4,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 711.0049724578857,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 4,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 411.6800129413605,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 4,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 407.9680144786835,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 4,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 687.5519752502441,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 5,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 688.319981098175,
+      "gpu_clock_mhz": 1252
+    },
+    {
+      "control": false,
+      "round": 5,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 404.7040045261383,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 5,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 401.4720022678375,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 5,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 674.2720007896423,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 6,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 670.3680157661438,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 6,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 392.38399267196655,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 6,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 390.5259966850281,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 6,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 660.5759859085083,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 7,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 667.8720116615295,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 7,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 392.63999462127686,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 7,
+      "arm": "candidate",
+      "gpu_us_per_matvec": 391.1040127277374,
+      "gpu_clock_mhz": 1185
+    },
+    {
+      "control": false,
+      "round": 7,
+      "arm": "scalar",
+      "gpu_us_per_matvec": 663.3599996566772,
+      "gpu_clock_mhz": 1185
+    }
+  ],
+  "medians_us": {
+    "True": {
+      "scalar": 649.7744917869568,
+      "candidate": 649.808019399643
+    },
+    "False": {
+      "scalar": 669.1200137138367,
+      "candidate": 392.5119936466217
+    }
+  },
+  "control_ratio": 0.9999484038182275,
+  "scalar_over_dp4a": 1.7047122751521449,
+  "scope": "Mojo scalar vs Mojo DP4A, not GGML CUDA timing or whole inference gain",
+  "peaks": {
+    "cpu_C": 75.0,
+    "gpu_C": 77,
+    "platform_C": 63.05
+  },
+  "clock_policy": "automatic/unlocked",
+  "observed_clocks_mhz": [
+    1185,
+    1207,
+    1252
+  ],
+  "source_sha256": {
+    "kernels/q4_k_q8_1_matvec_dp4a.mojo": "4ba73f2f88856220fd2eec94c25956d0b8ba8ec5cd7a5fa92461ecf9404c378d",
+    "kernels/q4_k_q8_1_matvec.mojo": "2665710bef1b329946b63d44b3a136f8fb304b0835ef97525abf57e4d18c8bea",
+    "tools/q4_comparison_worker.py": "8b8fef58f43a07c37a17b9b0c2775d5f51e7ae962d9fb953c6e8b52bafd9d877"
+  },
+  "fixtures": {
+    "rows": 64,
+    "input_width": 2560,
+    "seed": 42,
+    "files": {
+      "weights.bin": {
+        "bytes": 92160,
+        "sha256": "66201e24c50fceb171ec011470f4703ae88bd984ecb012d0a3d9dfafd9b9b065"
+      },
+      "activations.bin": {
+        "bytes": 2880,
+        "sha256": "dbff591fcb974ae950824639629c928f29ac3c2c859ceb038e741373d5328c4e"
+      }
+    }
+  },
+  "build": [
+    {
+      "stage": "q4-dp4a-build",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 40.49332309199963,
+      "peaks": {
+        "cpu_C": 83.0,
+        "gpu_C": 67,
+        "platform_C": 63.05
+      }
+    }
+  ],
+  "ptx_dp4a_instruction_sites": 2,
+  "ptx_sha256": "b9d628d912f7e38286a26040e9970edcdbbfc8478c3b08b50a08520e39481e16"
+}
