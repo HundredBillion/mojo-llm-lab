@@ -1,0 +1,81 @@
+{
+  "started_utc": "2026-11-06T16:12:51.791926+00:00",
+  "purpose": "64-row by 2560-input standalone Q4_K/Q8_1 matvec correctness; no timing or full-model claim",
+  "stages": [
+    {
+      "stage": "q4-matvec-check",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 2.610648105997825,
+      "peaks": {
+        "cpu_C": 68.0,
+        "gpu_C": 65,
+        "platform_C": 64.05
+      }
+    },
+    {
+      "stage": "q4-cuda-reference-execution",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 2.8589178310066927,
+      "peaks": {
+        "cpu_C": 78.0,
+        "gpu_C": 66,
+        "platform_C": 64.05
+      }
+    }
+  ],
+  "cuda_vs_math": {
+    "rows": 64,
+    "width": 2560,
+    "max_abs_error": 0.0,
+    "exact": true,
+    "tolerance": "1e-5 + 1e-5 * abs(reference)"
+  },
+  "status": "passed",
+  "mojo_vs_math": {
+    "status": "passed",
+    "rows": 64,
+    "input_width": 2560,
+    "max_abs_error": 0.0,
+    "values": 64,
+    "bit_exact_for_dyadic_factors": true,
+    "canaries": "intact",
+    "scope": "Standalone Q4_K/Q8_1 matvec vs mathematical oracle; no CUDA baseline or performance qualification"
+  },
+  "fixtures": {
+    "rows": 64,
+    "input_width": 2560,
+    "seed": 42,
+    "files": {
+      "weights.bin": {
+        "bytes": 92160,
+        "sha256": "66201e24c50fceb171ec011470f4703ae88bd984ecb012d0a3d9dfafd9b9b065"
+      },
+      "activations.bin": {
+        "bytes": 2880,
+        "sha256": "dbff591fcb974ae950824639629c928f29ac3c2c859ceb038e741373d5328c4e"
+      }
+    }
+  },
+  "engine_revision": "cd959bae99ff4bed22bef2604f45241c09bbb8c8",
+  "source_sha256": {
+    "kernels/q4_k_q8_1_matvec.mojo": "2665710bef1b329946b63d44b3a136f8fb304b0835ef97525abf57e4d18c8bea",
+    "benchmark/q4_reference.c": "224b5f57fe4ab21ef705c631eeea3f380225fdbd3d3d935547d082fbbc409edd"
+  },
+  "ptx_sha256": "04a49e27c8e8fc3fc1b6328f32f63a1529e744f4e899374cff60f1aed4a07b09",
+  "build": [
+    {
+      "stage": "q4-matvec-build",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 32.10202677597408,
+      "peaks": {
+        "cpu_C": 88.0,
+        "gpu_C": 67,
+        "platform_C": 63.05
+      }
+    }
+  ],
+  "previous_failure": "Reference context preflight failed before computation; fixed by initializing blocking primary-context flags in the isolated reference process."
+}
