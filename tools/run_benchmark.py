@@ -82,7 +82,10 @@ def remove_owned(name, token):
     S.run(['docker', 'rm', '-f', name], check=True, capture_output=True, timeout=15)
 
 
-def run_case(args, sensors, versions, ptx, entry, label, case, control):
+def run_case(args, sensors, versions, ptx, entry, label, case, control, *,
+             benchmark_dir=None, fixture_dir=None, executable="bench", input_path=None):
+    benchmark_dir = benchmark_dir or ROOT / "build/benchmark"
+    fixture_dir = fixture_dir or ROOT / "build/fixtures"
     cold_gate(sensors)
     token = uuid.uuid4().hex
     name = 'mojo-imrope-' + token
@@ -92,12 +95,12 @@ def run_case(args, sensors, versions, ptx, entry, label, case, control):
                '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges', '--user', f'{os.getuid()}:{os.getgid()}',
                '--cpu-period', '5000', '--cpu-quota', '1000', '--memory', '1g', '--memory-swap', '1g',
                '-e', 'LD_LIBRARY_PATH=/app:/usr/local/cuda/lib64',
-               '--mount', f'type=bind,src={ROOT / "build/benchmark"},dst=/benchmark,readonly',
-               '--mount', f'type=bind,src={ROOT / "build/fixtures"},dst=/fixtures,readonly',
+               '--mount', f'type=bind,src={benchmark_dir},dst=/benchmark,readonly',
+               '--mount', f'type=bind,src={fixture_dir},dst=/fixtures,readonly',
                '--mount', f'type=bind,src={ptx.parent},dst=/mojo,readonly',
                '--mount', f'type=bind,src={ROOT / "build/upstream" / ("llama-" + versions["engine_release"])},dst=/app,readonly',
-               '--entrypoint', '/benchmark/bench', versions['cuda_image'],
-               f'/fixtures/{case}.input.bin', '/mojo/' + ptx.name, entry]
+               '--entrypoint', '/benchmark/' + executable, versions['cuda_image'],
+               input_path or f'/fixtures/{case}.input.bin', '/mojo/' + ptx.name, entry]
     if control:
         command.append('--same-graph-control')
     samples = []

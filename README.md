@@ -60,6 +60,10 @@ The runner selects GPU index 0 by default; use `--gpu` to select another support
 
 Do not treat a successful CPU test run as GPU qualification. Rebuilding on another compiler, GPU or driver requires the correctness and control runs again.
 
+## Quantized matrix-vector investigation
+
+The newer [matched CUDA comparison](docs/q4-cuda-comparison.md) found the 128-thread Mojo Q4_K prototype still about **1.62× slower than GGML CUDA**. Packed instructions and improved work distribution helped the prototype, but no matrix-vector win over llama.cpp or whole-model speedup is established. Raw results include this negative finding.
+
 ## Research direction and attribution
 
 The first [whole-model kernel trace](docs/decode-profile.md) attributes 87.8% of summed GPU kernel time in a short synthetic decode to quantized matrix-vector operations. This identifies the next candidate; it is not a measured speedup. The [benchmark contract](docs/benchmark-contract.md) keeps generation throughput and complete PDF latency separate.

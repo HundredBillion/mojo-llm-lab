@@ -3,7 +3,7 @@ from pathlib import Path
 import re
 
 
-def validate_ptx(text):
+def validate_ptx(text, expected_parameters=5):
     entries = re.findall(r'\.visible\s+\.entry\s+(\w+)\s*\((.*?)\)', text, re.S)
     if len(entries) != 1 or '.extern' in text:
         raise ValueError('Require exactly one self-contained visible entry')
@@ -13,10 +13,10 @@ def validate_ptx(text):
     for declaration in declarations:
         match = re.fullmatch(r'\s*\.param\s+\.u64\s+\.ptr\s+\.align\s+1\s+(\w+)\s*', declaration)
         if match is None:
-            raise ValueError('Require five flat 64-bit pointer parameters')
+            raise ValueError('Require flat 64-bit pointer parameters')
         names.append(match.group(1))
-    if len(names) != 5 or len(set(names)) != 5:
-        raise ValueError('Require five distinct pointer parameters')
+    if len(names) != expected_parameters or len(set(names)) != expected_parameters:
+        raise ValueError(f'Require {expected_parameters} distinct pointer parameters')
     for directive, wanted in (('version', '8.1'), ('target', 'sm_86'), ('address_size', '64')):
         values = re.findall(r'^\.' + directive + r'\s+([^\n]+)$', text, re.M)
         if values != [wanted]:
