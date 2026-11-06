@@ -28,3 +28,7 @@ The first SIMD-pair reduction was rejected by the zero-gate GPU fixture before t
 ## Paired scalar reduction experiment
 
 Keep two independent scalar sums but share their synchronization. Each of four warps reduces its own up and gate partials. Its lane zero writes one value per sum into separate four-element regions of shared memory. All 128 threads meet one barrier; warp zero reads those eight initialized values and completes both reductions. Only thread zero writes the nonlinear result. No scratch reuse or later block work exists in this kernel, so no second block barrier is needed after those reads. Preserve the scalar reduction order and existing fixture/canary/tolerance checks. Compare against the same fused CUDA baseline, and confirm the emitted barrier count before execution. If this wins credibly, broader inputs and end-to-end integration remain required.
+
+## Distinct-row qualification
+
+Extend the fixture to all 9728 rows while preserving the first 64 rows and the exact activation bytes. Generate new quantized bytes and metadata for every additional row. The host accepts only exactly 64 or 9728 weight rows, rejects trailing or truncated data, and requires gate/up files to use the same count; record the actual source row count in the result. Compare the unchanged `gate-pair` PTX and tolerance against the same fused CUDA baseline. This isolates the repeated-row limitation; varied numerical factors and real-model qualification remain separate subsequent steps.

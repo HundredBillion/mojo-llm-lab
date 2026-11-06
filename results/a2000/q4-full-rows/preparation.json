@@ -1,0 +1,30 @@
+{
+  "scope": "Fixture preparation, not LLM timing",
+  "evidence": "Guard stdout; the first per-run private report was overwritten by the retry",
+  "attempts": [
+    {
+      "generator": "byte-by-byte",
+      "cpu_quota_percent": 20,
+      "guard_stopped": true,
+      "returncode": -15,
+      "seconds_including_initialization": 55.229744596988894,
+      "peaks": {
+        "cpu_C": 93.0,
+        "gpu_C": 68,
+        "platform_C": 60.05
+      }
+    },
+    {
+      "generator": "bulk bytes for rows after original 64",
+      "cpu_quota_percent": 10,
+      "guard_stopped": false,
+      "returncode": 0,
+      "seconds_including_initialization": 47.8209178079851,
+      "peaks": {
+        "cpu_C": 77.0,
+        "gpu_C": 68,
+        "platform_C": 59.05
+      }
+    }
+  ]
+}

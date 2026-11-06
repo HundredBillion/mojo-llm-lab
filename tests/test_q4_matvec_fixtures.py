@@ -50,3 +50,20 @@ class GateFixtureTests(unittest.TestCase):
         self.assertTrue(any(-1 < v < 0 for v in values))
         self.assertTrue(any(v > 10 for v in values))
         self.assertTrue(any(v < -10 for v in values))
+
+
+class FullRowFixtureTests(unittest.TestCase):
+    def test_extension_preserves_inputs_and_adds_distinct_rows(self):
+        small = fixtures(random_quants=True, gate_up=True)
+        extended = fixtures(random_quants=True, gate_up=True, rows=128)
+        self.assertEqual(small['activations.bin'], extended['activations.bin'])
+        for name in ('weights.bin', 'gate.bin'):
+            self.assertEqual(len(extended[name]), 128 * 1440)
+            self.assertEqual(extended[name][:64*1440], small[name])
+            rows = [extended[name][i*1440:(i+1)*1440] for i in range(128)]
+            self.assertEqual(len(set(rows)), 128)
+
+    def test_invalid_row_counts_are_rejected(self):
+        for rows in (0, 1, 63, 65, 9792):
+            with self.assertRaises(ValueError):
+                fixtures(rows=rows)

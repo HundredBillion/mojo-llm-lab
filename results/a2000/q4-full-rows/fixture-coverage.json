@@ -1,0 +1,12 @@
+{
+  "weights.bin": {
+    "bytes": 14008320,
+    "distinct_byte_rows": 9728,
+    "original_64_row_prefix_preserved": true
+  },
+  "gate.bin": {
+    "bytes": 14008320,
+    "distinct_byte_rows": 9728,
+    "original_64_row_prefix_preserved": true
+  }
+}

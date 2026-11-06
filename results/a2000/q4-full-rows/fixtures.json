@@ -1,0 +1,23 @@
+{
+  "rows": 9728,
+  "input_width": 2560,
+  "seed": 42,
+  "random_quants": true,
+  "gate_up": true,
+  "gate_seed": 54321,
+  "quant_seed": 12345,
+  "files": {
+    "weights.bin": {
+      "bytes": 14008320,
+      "sha256": "30b39993d7ca3358aef543435323da7aa1d68414c859b7bb252868787f8ebff8"
+    },
+    "activations.bin": {
+      "bytes": 2880,
+      "sha256": "dbff591fcb974ae950824639629c928f29ac3c2c859ceb038e741373d5328c4e"
+    },
+    "gate.bin": {
+      "bytes": 14008320,
+      "sha256": "3ecbf73cf5c7bf8546339fecded36190e77fcac637257fca3d054c9d5c3ba38d"
+    }
+  }
+}

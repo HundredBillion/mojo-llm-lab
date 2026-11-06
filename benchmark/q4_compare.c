@@ -137,6 +137,23 @@ static void compare(const float *actual, const float *expected,
   fprintf(stderr, "correct %s max_abs=%.9g bit_mismatches=%d\n", label, largest,
           bits);
 }
+static int read_weight_rows(const char *path, unsigned char *weights) {
+  FILE *in = fopen(path, "rb");
+  if (!in)
+    return 0;
+  size_t bytes = fread(weights, 1, ROWS * 1440, in);
+  int trailing = fgetc(in);
+  int valid = !ferror(in) && trailing == EOF &&
+              (bytes == 64 * 1440 || bytes == ROWS * 1440);
+  fclose(in);
+  if (!valid)
+    return 0;
+  if (bytes == 64 * 1440)
+    for (int tile = 1; tile < ROWS / 64; tile++)
+      memcpy(weights + tile * 64 * 1440, weights, 64 * 1440);
+  return (int)(bytes / 1440);
+}
+
 int main(int argc, char **argv) {
   int control = argc == 5 && strcmp(argv[4], "--same-graph-control") == 0;
   if (argc != 4 && !control) {
@@ -180,33 +197,20 @@ int main(int argc, char **argv) {
   float input[2560], reference[ROWS], output[ROWS];
   char path[4096];
   snprintf(path, sizeof(path), "%s/weights.bin", argv[1]);
-  FILE *in = fopen(path, "rb");
-  if (!in)
+  int source_rows = read_weight_rows(path, weights);
+  if (!source_rows)
     return 4;
-  int valid = fread(weights, 1, 64 * 1440, in) == 64 * 1440 && fgetc(in) == EOF;
-  fclose(in);
-  if (!valid)
-    return 4;
-  for (int tile = 1; tile < 152; tile++)
-    memcpy(weights + tile * 64 * 1440, weights, 64 * 1440);
 #ifdef GATE_UP
   static unsigned char gate_weights[ROWS * 1440];
   snprintf(path, sizeof(path), "%s/gate.bin", argv[1]);
-  in = fopen(path, "rb");
-  if (!in)
+  if (read_weight_rows(path, gate_weights) != source_rows)
     return 4;
-  valid = fread(gate_weights, 1, 64 * 1440, in) == 64 * 1440 && fgetc(in) == EOF;
-  fclose(in);
-  if (!valid)
-    return 4;
-  for (int tile = 1; tile < 152; tile++)
-    memcpy(gate_weights + tile * 64 * 1440, gate_weights, 64 * 1440);
 #endif
   snprintf(path, sizeof(path), "%s/activations.bin", argv[1]);
-  in = fopen(path, "rb");
+  FILE *in = fopen(path, "rb");
   if (!in)
     return 4;
-  valid = fread(activation, 1, sizeof(activation), in) == sizeof(activation) &&
+  int valid = fread(activation, 1, sizeof(activation), in) == sizeof(activation) &&
           fgetc(in) == EOF;
   fclose(in);
   if (!valid)
@@ -398,14 +402,14 @@ int main(int argc, char **argv) {
     }
   CK(cuMemcpyDtoH(output, op, sizeof(output)));
   compare(output, reference, "warmup");
-  printf("{\"mojo_registers\":%d,\"baseline_registers\":%d,\"mojo_local_"
+  printf("{\"source_rows\":%d,\"mojo_registers\":%d,\"baseline_registers\":%d,\"mojo_local_"
          "bytes\":%d,\"baseline_local_bytes\":%d,\"mojo_max_blocks_per_sm\":%d,"
          "\"baseline_max_blocks_per_sm\":%d,\"warmup_pairs\":%d,\"repetitions_"
          "per_graph\":%d,\"baseline_kernel_"
          "nodes\":%zu,\"mojo_"
          "kernel_nodes\":%zu,\"context_flags\":%u,\"same_graph_control\":%s,"
          "\"samples\":[",
-         mojo_registers, baseline_registers, mojo_local, baseline_local,
+         source_rows, mojo_registers, baseline_registers, mojo_local, baseline_local,
          mojo_blocks, baseline_blocks, WARMUP_PAIRS, REPS, baseline_kernels,
          fused_kernels, flags, control ? "true" : "false");
   int first = 1;
