@@ -1,0 +1,14 @@
+{
+  "gate": {
+    "ptx_sha256": "2ec277434c85c91366e04782718a8444eb396b2e2ff933171c795c39c51950f9",
+    "block_barriers": 4,
+    "shared_load_instructions": 2,
+    "shared_store_instructions": 2
+  },
+  "gate-pair": {
+    "ptx_sha256": "efeca802b844615102fd767354c719f92cfe1681bd744e2e13aab4a55be83d37",
+    "block_barriers": 1,
+    "shared_load_instructions": 2,
+    "shared_store_instructions": 2
+  }
+}
