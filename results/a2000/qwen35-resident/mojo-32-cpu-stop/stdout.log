@@ -1,0 +1,5 @@
+{"ready":true,"fixture_tokens":49}
+{"trial":0,"arm":0,"tokens":32,"decode_ns":499919069,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":99959,"nr_throttled":100,"throttled_usec":398818}
+{"trial":1,"arm":1,"tokens":32,"decode_ns":455581703,"top_token":11140,"replacement_calls":49,"captured_calls":24,"cpu_usage_usec":91935,"nr_throttled":91,"throttled_usec":362559}
+{"trial":2,"arm":0,"tokens":32,"decode_ns":450556243,"top_token":11140,"replacement_calls":49,"captured_calls":24,"cpu_usage_usec":90118,"nr_throttled":90,"throttled_usec":358678}
+{"trial":3,"arm":1,"tokens":32,"decode_ns":440589722,"top_token":11140,"replacement_calls":98,"captured_calls":48,"cpu_usage_usec":88161,"nr_throttled":88,"throttled_usec":350797}

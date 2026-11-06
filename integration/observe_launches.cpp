@@ -21,6 +21,8 @@ static const Layout &layout() {
 static std::atomic<unsigned long> matches{0}, eligible_calls{0}, validated{0};
 static std::mutex validation_mutex, replacement_mutex;
 static std::atomic<unsigned long> replaced{0}, captured_replacements{0};
+extern "C" unsigned long mojo_replacement_count() { return replaced.load(); }
+extern "C" unsigned long mojo_capture_count() { return captured_replacements.load(); }
 static const char *target = "_Z13mul_mat_vec_qIL9ggml_type12ELi1ELb1ELb0ELb0EEvPKvS2_PKi31ggml_cuda_mm_fusion_args_devicePfj5uint3jjjS7_jjjS7_jjjj";
 
 template<class T> static T symbol(const char *name) {
@@ -198,6 +200,6 @@ extern "C" cudaError_t cudaLaunchKernelExC(const cudaLaunchConfig_t *config, con
 }
 __attribute__((destructor)) static void report() {
     std::fprintf(stderr,"mojo_replacement calls=%lu captured_calls=%lu\n",replaced.load(),captured_replacements.load());
-    std::fprintf(stderr,"mojo_validation eligible_calls=%lu validated_calls=%lu outputs=%s\n",eligible_calls.load(),validated.load(),(std::getenv("MOJO_VALIDATE_FEEDBACK") || std::getenv("MOJO_REPLACE_PTX")) ? "Mojo" : "CUDA");
+    std::fprintf(stderr,"mojo_validation eligible_calls=%lu validated_calls=%lu outputs=%s\n",eligible_calls.load(),validated.load(),(std::getenv("MOJO_RESIDENT") && replaced.load()) ? "mixed" : (std::getenv("MOJO_VALIDATE_FEEDBACK") || std::getenv("MOJO_REPLACE_PTX")) ? "Mojo" : "CUDA");
     std::fprintf(stderr,"mojo_observer target_launch_calls=%lu mode=host_launches\n",matches.load());
 }

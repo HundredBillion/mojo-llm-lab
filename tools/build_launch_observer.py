@@ -3,11 +3,15 @@ import json
 from pathlib import Path
 import subprocess
 import os
+import argparse
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--resident',action='store_true')
+    args=parser.parse_args()
     versions = json.loads((ROOT / 'versions.json').read_text())
     output = ROOT / 'build/integration'
     output.mkdir(parents=True, exist_ok=True)
@@ -19,11 +23,15 @@ def main():
         '--mount', f'type=bind,src={ROOT},dst=/src,readonly',
         '--mount', f'type=bind,src={output},dst=/output', '--entrypoint', 'sh', versions['cuda_image'], '-c',
         'g++ -O2 -std=c++17 -Wall -Wextra -Werror /src/tests/fusion_eligibility.cpp -o /output/test-eligibility && /output/test-eligibility && exec g++ "$@"', 'build',
+        *(['-O2','-std=c++17','-Wall','-Wextra','-Werror',
+           '-I/src/build/upstream/headers','/src/integration/resident_decode.cpp',
+           '-L/src/build/upstream/llama-b12110','-Wl,-rpath,/app',
+           '-lllama','-lggml','-lggml-base','-ldl','-o','/output/resident-decode'] if args.resident else [
         '-O2', '-shared', '-fPIC', '-std=c++17', '-Wall', '-Wextra', '-Werror',
         '-I/usr/local/cuda/include', '/src/integration/observe_launches.cpp',
-        '-ldl', '-pthread', '-o', '/output/observe_launches.so',
+        '-ldl', '-pthread', '-o', '/output/observe_launches.so']),
     ], check=True)
-    print('Built build/integration/observe_launches.so; no GPU was used.')
+    print('Built resident worker' if args.resident else 'Built observer')
 
 
 if __name__ == '__main__':

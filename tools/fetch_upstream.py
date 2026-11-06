@@ -43,7 +43,8 @@ def main():
         source.extractall(target, filter='data')
     revision = versions['engine_revision']
     for name, checksum in versions['header_sha256'].items():
-        fetch(f'https://raw.githubusercontent.com/ggml-org/llama.cpp/{revision}/ggml/include/{name}',
+        folder = 'include' if name == 'llama.h' else 'ggml/include'
+        fetch(f'https://raw.githubusercontent.com/ggml-org/llama.cpp/{revision}/{folder}/{name}',
               target / 'headers' / name, checksum)
     print(f'Verified {release} binaries and headers in build/upstream/')
 

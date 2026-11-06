@@ -1,0 +1,41 @@
+import unittest
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"tools"))
+from run_resident_decode import validate_trial
+
+class ResidentEvidenceTests(unittest.TestCase):
+    def row(self):
+        return dict(arm=1,tokens=32,decode_ns=100,top_token=7,cpu_usage_usec=2,
+                    nr_throttled=1,throttled_usec=4,replacement_calls=10,captured_calls=5)
+
+    def test_cuda_cannot_claim_replacement(self):
+        row=self.row();row['arm']=0
+        with self.assertRaises(ValueError):validate_trial(row,0,0,'mojo')
+        self.assertEqual(validate_trial(row,0,10,'mojo'),10)
+        with self.assertRaises(ValueError):validate_trial(self.row(),1,0,'control')
+
+    def test_short_trial_requires_explicit_workload(self):
+        row={**self.row(),'tokens':16}
+        self.assertEqual(validate_trial(row,1,0,'mojo',tokens=16),10)
+        with self.assertRaises(ValueError):validate_trial(row,1,0,'mojo')
+
+    def test_candidate_requires_capture_and_consistent_counters(self):
+        self.assertEqual(validate_trial(self.row(),1,0,'mojo'),10)
+        for change in [dict(captured_calls=0),dict(captured_calls=11),dict(decode_ns=0),
+                       dict(tokens=16),dict(arm=0),dict(throttled_usec=-1)]:
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                validate_trial({**self.row(),**change},1,0,'mojo')
+
+
+class CleanupTests(unittest.TestCase):
+    def test_client_and_logger_are_reaped_when_removal_raises(self):
+        from unittest.mock import Mock,patch
+        from run_pdf_smoke import cleanup
+        client=Mock();client.poll.return_value=None
+        logger=Mock();logger.poll.return_value=None
+        with patch('run_pdf_smoke.remove_owned',side_effect=RuntimeError('daemon unavailable')):
+            errors=cleanup('owned','token',[client,logger])
+        self.assertEqual(errors,['daemon unavailable'])
+        client.terminate.assert_called_once();client.wait.assert_called_once()
+        logger.terminate.assert_called_once();logger.wait.assert_called_once()
