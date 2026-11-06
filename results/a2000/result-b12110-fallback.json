@@ -1,0 +1,267 @@
+{
+  "repetitions_per_graph": 128,
+  "baseline_kernel_nodes": 2,
+  "mojo_kernel_nodes": 1,
+  "context_flags": 12,
+  "same_graph_control": false,
+  "samples": [
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.97600007,
+      "host_wall_us_per_operation": 4.35239849,
+      "host_cpu_us_per_operation": 0.316898437
+    },
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07200003,
+      "host_wall_us_per_operation": 2.23285929,
+      "host_cpu_us_per_operation": 0.158929687
+    },
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07200003,
+      "host_wall_us_per_operation": 2.28841418,
+      "host_cpu_us_per_operation": 0.257984375
+    },
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.98399997,
+      "host_wall_us_per_operation": 4.48625769,
+      "host_cpu_us_per_operation": 0.434882812
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.9914999,
+      "host_wall_us_per_operation": 4.45592173,
+      "host_cpu_us_per_operation": 0.449609375
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07200003,
+      "host_wall_us_per_operation": 2.24865607,
+      "host_cpu_us_per_operation": 0.157078125
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07200003,
+      "host_wall_us_per_operation": 2.38022653,
+      "host_cpu_us_per_operation": 0.296742188
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.98399997,
+      "host_wall_us_per_operation": 4.53017196,
+      "host_cpu_us_per_operation": 0.3665
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.98399997,
+      "host_wall_us_per_operation": 4.38375014,
+      "host_cpu_us_per_operation": 0.385273437
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.27214855,
+      "host_cpu_us_per_operation": 0.239382812
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07200003,
+      "host_wall_us_per_operation": 2.23768734,
+      "host_cpu_us_per_operation": 0.275265625
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.96799994,
+      "host_wall_us_per_operation": 4.32932802,
+      "host_cpu_us_per_operation": 0.300703125
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.98399997,
+      "host_wall_us_per_operation": 4.24334371,
+      "host_cpu_us_per_operation": 0.1935625
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.2356171,
+      "host_cpu_us_per_operation": 0.096265625
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.34360164,
+      "host_cpu_us_per_operation": 0.302578125
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.97600007,
+      "host_wall_us_per_operation": 4.13589078,
+      "host_cpu_us_per_operation": 0.416664062
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.97549987,
+      "host_wall_us_per_operation": 4.46864055,
+      "host_cpu_us_per_operation": 0.402492187
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.0787499,
+      "host_wall_us_per_operation": 2.35881248,
+      "host_cpu_us_per_operation": 0.237804687
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.26316411,
+      "host_cpu_us_per_operation": 0.247375
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.97600007,
+      "host_wall_us_per_operation": 4.36892196,
+      "host_cpu_us_per_operation": 0.329984375
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.9920001,
+      "host_wall_us_per_operation": 4.41815632,
+      "host_cpu_us_per_operation": 0.419023437
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07124996,
+      "host_wall_us_per_operation": 2.31844524,
+      "host_cpu_us_per_operation": 0.210335938
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07200003,
+      "host_wall_us_per_operation": 2.27967962,
+      "host_cpu_us_per_operation": 0.145710937
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.98399997,
+      "host_wall_us_per_operation": 4.37608583,
+      "host_cpu_us_per_operation": 0.421132813
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.97600007,
+      "host_wall_us_per_operation": 4.20212518,
+      "host_cpu_us_per_operation": 0.225945312
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.43430463,
+      "host_cpu_us_per_operation": 0.321710938
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.0792501,
+      "host_wall_us_per_operation": 2.30004684,
+      "host_cpu_us_per_operation": 0.226476563
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.97600007,
+      "host_wall_us_per_operation": 4.35720312,
+      "host_cpu_us_per_operation": 0.498953125
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.9920001,
+      "host_wall_us_per_operation": 4.3194766,
+      "host_cpu_us_per_operation": 0.323242188
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.42426563,
+      "host_cpu_us_per_operation": 0.353015625
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "mojo",
+      "gpu_us_per_operation": 2.07999992,
+      "host_wall_us_per_operation": 2.28919544,
+      "host_cpu_us_per_operation": 0.259617187
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 3.9837501,
+      "host_wall_us_per_operation": 4.27841405,
+      "host_cpu_us_per_operation": 0.276132812
+    }
+  ],
+  "correct": true,
+  "red_zones": "intact"
+}

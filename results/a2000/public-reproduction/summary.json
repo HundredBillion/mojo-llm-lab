@@ -1,0 +1,115 @@
+{
+  "started_utc": "2026-11-06T15:58:12.102660+00:00",
+  "versions": {
+    "engine_revision": "cd959bae99ff4bed22bef2604f45241c09bbb8c8",
+    "engine_release": "b12110",
+    "archive": "llama-b12110-bin-ubuntu-cuda-12.8-x64.tar.gz",
+    "archive_sha256": "4af1e1da23661db4a5b84b29aae16ebc053df689c5b8b1427c4670f2c6406d8c",
+    "archive_bytes": 187314621,
+    "cuda_image": "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+    "header_sha256": {
+      "ggml.h": "1aef7a5f465b1c19de305dd6f9a0c303f88e485133a94b9a0ee1cce6345c9101",
+      "ggml-backend.h": "34464da4b46314c710cd634626578c6f2a6811431d41eddaf5e8aa77082fea2a",
+      "ggml-alloc.h": "d114067f9099c4a0e2bbc0625c676d4894d9cf0ea27168ee072c7de0e71bb51d",
+      "ggml-cuda.h": "9cbfcea49f6da4d07f41dc22fa8dbf870825faaa2a68e34e65fe30ea6c41e042"
+    },
+    "mojo": "1.2.0",
+    "max": "26.7.0"
+  },
+  "ptx_sha256": "21c11647ae21380e0bee50982c47bedc8411d22463eb50e49101bb0943ceeb70",
+  "benchmark_sha256": "f791eb6fe4643aceade2002436f634598424659e1af9c8e2cf148d7185616bb8",
+  "fixture_sha256": {
+    "distinct_axes.input.bin": "0d31be72f3191a3d3a09c0ae73c860771940dd02e5d58919a94cf62b763a0a4a",
+    "long_position.input.bin": "129c59e45d9d26bf15d88cbda9ed90a74bf1a6eaca28ce33a09e720340fa832c",
+    "fallback_only.input.bin": "592db0fc67720838ba054d71fc11455235a35a3181d0cbd0a8dfe8290d9836b4"
+  },
+  "environment": "NVIDIA RTX A2000 Laptop GPU, 615.78.08",
+  "comparisons": [
+    {
+      "case": "long_position",
+      "control": true,
+      "gpu_medians_us": {
+        "ggml_control": 3.97600007,
+        "ggml": 3.97600007
+      },
+      "baseline_over_candidate_ratio": 1.0,
+      "kernel_nodes": [
+        2,
+        1
+      ],
+      "observed_gpu_clocks_MHz": [
+        1207
+      ],
+      "peaks": {
+        "cpu_C": 78.0,
+        "gpu_C": 63,
+        "platform_C": 61.05
+      }
+    },
+    {
+      "case": "distinct_axes",
+      "control": false,
+      "gpu_medians_us": {
+        "mojo": 2.07200003,
+        "ggml": 3.97600007
+      },
+      "baseline_over_candidate_ratio": 1.9189189249191276,
+      "kernel_nodes": [
+        2,
+        1
+      ],
+      "observed_gpu_clocks_MHz": [
+        1207
+      ],
+      "peaks": {
+        "cpu_C": 73.0,
+        "gpu_C": 62,
+        "platform_C": 61.05
+      }
+    },
+    {
+      "case": "long_position",
+      "control": false,
+      "gpu_medians_us": {
+        "mojo": 2.07200003,
+        "ggml": 3.97600007
+      },
+      "baseline_over_candidate_ratio": 1.9189189249191276,
+      "kernel_nodes": [
+        2,
+        1
+      ],
+      "observed_gpu_clocks_MHz": [
+        1207
+      ],
+      "peaks": {
+        "cpu_C": 79.0,
+        "gpu_C": 63,
+        "platform_C": 62.05
+      }
+    },
+    {
+      "case": "fallback_only",
+      "control": false,
+      "gpu_medians_us": {
+        "mojo": 2.07200003,
+        "ggml": 3.97600007
+      },
+      "baseline_over_candidate_ratio": 1.9189189249191276,
+      "kernel_nodes": [
+        2,
+        1
+      ],
+      "observed_gpu_clocks_MHz": [
+        1207
+      ],
+      "peaks": {
+        "cpu_C": 68.0,
+        "gpu_C": 63,
+        "platform_C": 62.05
+      }
+    }
+  ],
+  "status": "passed",
+  "scope": "Cached single-token Q branch microbenchmark; not whole-LLM speed or energy."
+}
