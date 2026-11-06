@@ -32,3 +32,9 @@ Keep two independent scalar sums but share their synchronization. Each of four w
 ## Distinct-row qualification
 
 Extend the fixture to all 9728 rows while preserving the first 64 rows and the exact activation bytes. Generate new quantized bytes and metadata for every additional row. The host accepts only exactly 64 or 9728 weight rows, rejects trailing or truncated data, and requires gate/up files to use the same count; record the actual source row count in the result. Compare the unchanged `gate-pair` PTX and tolerance against the same fused CUDA baseline. This isolates the repeated-row limitation; varied numerical factors and real-model qualification remain separate subsequent steps.
+
+## General half-factor qualification
+
+Multiply each existing Q4_K block's two factors by independent seeded values in [0.75, 1.25], then round them to the actual FP16 storage format. Preserve signs and zero gates, all packed scale/min and value bytes, and the exact activations. Use full distinct rows. The GPU kernel, CUDA baseline and acceptance tolerance remain unchanged. A failure is a correctness finding and blocks integration, not grounds to increase tolerance. The fixture transform has CPU tests for byte preservation, sign/zero preservation, determinism and malformed inputs. Broader activation distributions remain a separate subsequent qualification.
+
+The factor-only case passed, but adding seven activation scales exposed a row exceeding the unchanged tolerance. An independent float64 oracle places the result between Mojo and CUDA. The paired kernel reduces within each warp before combining warps; CUDA combines corresponding lane values across warps first, then reduces the remaining warp. Add a separate `gate-order` variant matching that order while keeping one barrier. Test the exact failing fixture first, without discarding the rejected record or accepting its timing. This is a rounding-order hypothesis, not yet a confirmed fix.

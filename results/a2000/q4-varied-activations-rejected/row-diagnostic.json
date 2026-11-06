@@ -1,0 +1,13 @@
+{
+  "row": 2069,
+  "reference": "Independent float64 decoded dot products and SiLU; not the acceptance oracle",
+  "float64_up": 0.25155086535960436,
+  "float64_gate": 24.13351339334622,
+  "float64_output": 6.0708061780633065,
+  "mojo": 6.070847034454346,
+  "cuda": 6.070755481719971,
+  "mojo_minus_reference": 4.085639103923455e-05,
+  "cuda_minus_reference": -5.069634333576545e-05,
+  "comparison_absolute_difference": 9.1552734375e-05,
+  "allowed_absolute_difference": 7.070755481719971e-05
+}

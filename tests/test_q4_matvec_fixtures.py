@@ -4,7 +4,7 @@ import struct
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from generate_q4_matvec_fixtures import fixtures
+from generate_q4_matvec_fixtures import fixtures, vary_factors, vary_activation_scales
 from q4_reference import dot_q4_q8
 
 
@@ -67,3 +67,49 @@ class FullRowFixtureTests(unittest.TestCase):
         for rows in (0, 1, 63, 65, 9792):
             with self.assertRaises(ValueError):
                 fixtures(rows=rows)
+
+
+class VariedFactorTests(unittest.TestCase):
+    def test_only_factors_change_and_sign_zero_are_preserved(self):
+        base = fixtures(random_quants=True, gate_up=True)
+        varied = fixtures(random_quants=True, gate_up=True, factor_seed=739)
+        self.assertEqual(base['activations.bin'], varied['activations.bin'])
+        for name in ('weights.bin', 'gate.bin'):
+            self.assertNotEqual(base[name], varied[name])
+            for offset in range(0, len(base[name]), 144):
+                self.assertEqual(base[name][offset+4:offset+144], varied[name][offset+4:offset+144])
+                for before, after in zip(struct.unpack_from('<ee', base[name], offset), struct.unpack_from('<ee', varied[name], offset)):
+                    if before == 0:
+                        self.assertEqual(after, 0)
+                    else:
+                        self.assertGreaterEqual(after/before, 0.749)
+                        self.assertLessEqual(after/before, 1.251)
+
+    def test_seed_reproducibility_and_variation(self):
+        payload = fixtures()['weights.bin']
+        self.assertEqual(vary_factors(payload, 739), vary_factors(payload, 739))
+        self.assertNotEqual(vary_factors(payload, 739), vary_factors(payload, 740))
+
+    def test_bad_lengths_and_nonfinite_factors_rejected(self):
+        for payload in (b'', bytes(143), bytes(145), struct.pack('<ee',float('nan'),1)+bytes(140)):
+            with self.assertRaises(ValueError):
+                vary_factors(payload, 739)
+
+
+class ActivationScaleTests(unittest.TestCase):
+    def test_scales_vary_while_quantized_values_and_cached_sums_match(self):
+        base = fixtures()['activations.bin']
+        varied = vary_activation_scales(base, 971)
+        scales = set()
+        for offset in range(0, len(base), 36):
+            self.assertEqual(base[offset+4:offset+36], varied[offset+4:offset+36])
+            delta, total, *values = struct.unpack_from('<ee32b', varied, offset)
+            scales.add(delta)
+            self.assertEqual(total, sum(values)*delta)
+            self.assertEqual(max(abs(v*delta) for v in values)/127, delta)
+        self.assertEqual(len(scales), 7)
+        self.assertEqual(varied, vary_activation_scales(base, 971))
+
+    def test_invalid_activation_blocks_rejected(self):
+        for data in (b'', bytes(35), bytes(36), struct.pack('<ee32b',float('inf'),0,*([127]*32))):
+            with self.assertRaises(ValueError):vary_activation_scales(data, 971)

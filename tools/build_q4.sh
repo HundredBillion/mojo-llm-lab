@@ -9,13 +9,14 @@ case "${1:-}" in
   dp4a-128) variant=q4-dp4a-128; source=q4_k_q8_1_matvec_dp4a_128.mojo ;;
   unrolled) variant=q4-unrolled; source=q4_k_q8_1_matvec_unrolled.mojo ;;
   packed) variant=q4-packed; source=q4_k_q8_1_matvec_packed.mojo ;;
+  gate-order) variant=q4-gate-order; source=q4_k_q8_1_gate_order.mojo ;;
   gate-pair) variant=q4-gate-pair; source=q4_k_q8_1_gate_pair.mojo ;;
   gate) variant=q4-gate; source=q4_k_q8_1_gate_up.mojo ;;
   readonly) variant=q4-readonly; source=q4_k_q8_1_matvec_readonly.mojo ;;
   reduce) variant=q4-reduce; source=q4_k_q8_1_matvec_reduce.mojo ;;
   fixed) variant=q4-fixed; source=q4_k_q8_1_matvec_fixed.mojo ;;
   prepacked) variant=q4-prepacked; source=q4_k_q8_1_matvec_prepacked.mojo ;;
-  *) echo 'Usage: build_q4.sh scalar|dp4a|dp4a-128|unrolled|packed|fixed|prepacked|reduce|readonly|gate|gate-pair' >&2; exit 2 ;;
+  *) echo 'Usage: build_q4.sh scalar|dp4a|dp4a-128|unrolled|packed|fixed|prepacked|reduce|readonly|gate|gate-pair|gate-order' >&2; exit 2 ;;
 esac
 mkdir -p "$repo_root/build/$variant"
 cd "$repo_root/build/$variant"

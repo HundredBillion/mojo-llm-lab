@@ -178,6 +178,7 @@ int main(int argc, char **argv) {
     return 3;
   }
   LOAD(ggml_init);
+  LOAD(ggml_fp16_to_fp32);
   LOAD(ggml_free);
   LOAD(ggml_new_tensor_2d);
   LOAD(ggml_mul_mat);
@@ -218,12 +219,13 @@ int main(int argc, char **argv) {
   for (int group = 0; group < 80; group++) {
     uint16_t delta;
     memcpy(&delta, activation + group * 36, 2);
-    if (delta != 0x2000)
+    float scale = call_ggml_fp16_to_fp32(delta);
+    if (!isfinite(scale) || scale <= 0)
       return 4;
     for (int j = 0; j < 32; j++)
       input[group * 32 + j] =
-          (float)(int8_t)activation[group * 36 + 4 + j] / 128.0f;
-    if (input[group * 32] != 127.0f / 128.0f)
+          (float)(int8_t)activation[group * 36 + 4 + j] * scale;
+    if (input[group * 32] != 127.0f * scale)
       return 4;
   }
   struct ggml_init_params params = {8 * 1024 * 1024, NULL, true};

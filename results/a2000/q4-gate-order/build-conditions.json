@@ -1,0 +1,63 @@
+{
+  "q4-gate-order-build-aborted": {
+    "status": "stopped_or_failed",
+    "stages": [
+      {
+        "stage": "q4-gate-order-harness",
+        "returncode": 0,
+        "guard_stopped": false,
+        "seconds_including_initialization": 5.498072075017262,
+        "peaks": {
+          "cpu_C": 61.0,
+          "gpu_C": 66,
+          "platform_C": 60.05
+        }
+      },
+      {
+        "stage": "q4-gate-order-build",
+        "returncode": -15,
+        "guard_stopped": true,
+        "seconds_including_initialization": 1.349769706983352,
+        "peaks": {
+          "cpu_C": 95.0,
+          "gpu_C": 60,
+          "platform_C": 58.05
+        }
+      }
+    ]
+  },
+  "q4-gate-order-build-results": {
+    "status": "passed",
+    "stages": [
+      {
+        "stage": "q4-gate-order-harness",
+        "returncode": 0,
+        "guard_stopped": false,
+        "seconds_including_initialization": 6.575841818994377,
+        "peaks": {
+          "cpu_C": 60.0,
+          "gpu_C": 66,
+          "platform_C": 60.05
+        }
+      },
+      {
+        "stage": "q4-gate-order-build",
+        "returncode": 0,
+        "guard_stopped": false,
+        "seconds_including_initialization": 122.91895251799724,
+        "peaks": {
+          "cpu_C": 88.0,
+          "gpu_C": 70,
+          "platform_C": 63.05
+        }
+      }
+    ]
+  },
+  "retry_configuration": {
+    "cpu_quota_percent": 10,
+    "cpu_affinity": [
+      0
+    ],
+    "thermal_limits_unchanged": true
+  }
+}

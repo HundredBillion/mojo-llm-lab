@@ -1,0 +1,4 @@
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 3822 MiB):
+  Device 0: NVIDIA RTX A2000 Laptop GPU, compute capability 8.6, VMM: yes, VRAM: 3822 MiB
+baseline kernel: _Z13mul_mat_vec_qIL9ggml_type12ELi1ELb1ELb0ELb0EEvPKvS2_PKi31ggml_cuda_mm_fusion_args_devicePfj5uint3jjjS7_jjjS7_jjjj
+Incorrect warmup index2069 actual6.07084703 expected6.07075548
