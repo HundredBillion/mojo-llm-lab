@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "source": "https://huggingface.co/unsloth/Qwen3.5-2B-GGUF/resolve/f6d5376be1edb4d416d56da11e5397a961aca8ae/Qwen3.5-2B-Q4_K_M.gguf",
+  "expected_sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "expected_bytes": 1280835840,
+  "sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "bytes": 1280835840,
+  "peaks": {
+    "cpu_C": 77.0,
+    "gpu_C": 69,
+    "platform_C": 62.05
+  }
+}

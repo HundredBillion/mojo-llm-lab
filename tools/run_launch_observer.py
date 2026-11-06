@@ -1,5 +1,6 @@
 """Observe a short model decode under guards; this is not a speed comparison."""
 import argparse
+import ctypes as C
 import json
 import math
 import os
@@ -11,6 +12,31 @@ import time
 import uuid
 from validate_ptx import validate_ptx
 from run_benchmark import ROOT, Sensors, cold_gate, safe, remove_owned, digest
+
+
+class ModelSensors(Sensors):
+    class Memory(C.Structure):
+        _fields_=[('total',C.c_ulonglong),('free',C.c_ulonglong),('used',C.c_ulonglong)]
+
+    def __init__(self, gpu):
+        super().__init__(gpu)
+        self.nv.nvmlDeviceGetClockInfo.argtypes=[C.c_void_p,C.c_uint,C.POINTER(C.c_uint)]
+        self.nv.nvmlDeviceGetPowerUsage.argtypes=[C.c_void_p,C.POINTER(C.c_uint)]
+        self.nv.nvmlDeviceGetMemoryInfo.argtypes=[C.c_void_p,C.POINTER(self.Memory)]
+
+    def read(self):
+        sample=super().read()
+        for kind,key in [(1,'sm_clock_MHz'),(2,'memory_clock_MHz')]:
+            value=C.c_uint()
+            status=self.nv.nvmlDeviceGetClockInfo(self.device,kind,C.byref(value))
+            sample[key]=value.value if status==0 else None
+        power=C.c_uint()
+        status=self.nv.nvmlDeviceGetPowerUsage(self.device,C.byref(power))
+        sample['gpu_power_W']=power.value/1000 if status==0 else None
+        memory=self.Memory()
+        status=self.nv.nvmlDeviceGetMemoryInfo(self.device,C.byref(memory))
+        sample['gpu_memory_used_bytes']=memory.used if status==0 else None
+        return sample
 
 
 def validation_result(stderr, expected, feedback=False):
@@ -46,6 +72,7 @@ def replacement_result(stderr, graphs):
 
 def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--baseline-only', action='store_true', help='Allow models with no supported Mojo specialization')
     parser.add_argument('--disable-graphs', action='store_true')
     parser.add_argument('--prompt', help='Synthetic text for a greedy completion check instead of llama-bench')
     parser.add_argument('--tokens', type=int, default=16, choices=range(1,129), metavar='N')
@@ -64,6 +91,8 @@ def argument_parser():
 def parse_arguments(argv=None):
     parser=argument_parser()
     args=parser.parse_args(argv)
+    if args.baseline_only and (args.validate_ptx or args.replace_ptx or args.feedback):
+        parser.error('--baseline-only cannot enable Mojo validation or replacement')
     if args.validation_calls is None:
         args.validation_calls=0 if args.feedback else 36
     if args.feedback and not args.validate_ptx:
@@ -82,9 +111,11 @@ def main():
               'versions':versions, 'observer_sha256':digest(observer), 'model_name':model.name,
               'model_bytes':model.stat().st_size, 'model_sha256':None,
               'cpu_quota_percent':20, 'generation_tokens':args.tokens, 'wait_library_sha256':None}
+    if args.baseline_only:
+        result['scope']='Unmodified CUDA baseline; no supported Mojo specialization required. No cross-model speed claim from this run alone.'
     if S.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader'],text=True).strip():
         raise RuntimeError('GPU compute busy')
-    sensors = Sensors(0)
+    sensors = ModelSensors(0)
     name = 'mojo-observe-'+uuid.uuid4().hex
     token = uuid.uuid4().hex
     command = ['docker','create','--name',name,'--label','io.mojo-imrope.benchmark='+token,
@@ -160,7 +191,7 @@ def main():
             result['samples_ts']=rows[0]['samples_ts']
         stderr = (out/'stderr.log').read_text()
         counts = re.findall(r'mojo_observer target_launch_calls=(\d+) mode=host_launches',stderr)
-        if not counts or max(map(int,counts)) == 0:
+        if not counts or (max(map(int,counts)) == 0 and not args.baseline_only):
             raise RuntimeError('No target launch observed')
         result['target_launch_calls'] = max(map(int,counts))
         result['observations'] = [line for line in stderr.splitlines() if line.startswith('mojo_observer api=')]

@@ -1,0 +1,15 @@
+{
+  "model": "Qwen3-4B-Instruct-2507",
+  "quantization": "Q4_K_M",
+  "model_file": "Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+  "bytes": 2497281120,
+  "sha256": "3605803b982cb64aead44f6c1b2ae36e3acdb41d8e46c8a94c6533bc4c67e597",
+  "source": "https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF/resolve/a06e946bb6b655725eafa393f4a9745d460374c9/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+  "verification": "Full SHA-256 verified after download and before all listed runs; raw runner summaries leave their own hash field null.",
+  "config_source": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/raw/main/config.json",
+  "prompt_template_source": "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/raw/main/tokenizer_config.json",
+  "hidden_size": 2560,
+  "intermediate_size": 9728,
+  "layers": 36,
+  "limitation": "Synthetic extraction prompts and short decode bursts are not a complete PDF accuracy or latency evaluation."
+}

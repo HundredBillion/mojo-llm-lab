@@ -1,5 +1,7 @@
 # A2000 kernel speed evidence and the model-quality gate
 
+[Alternative-model follow-up](alternative-models.md): Qwen3.5-2B shows memory headroom; chat-format tests pass, but whole-model Mojo timing remains inconclusive.
+
 The pinned `gate-order` Mojo implementation runs the tested fused Q4_K gate/up + SiLU operation faster than llama.cpp b12110's fused CUDA implementation on this RTX A2000 Laptop GPU. Three runs using identical artifacts and the broader synthetic fixture measured **1.2219×, 1.2206×, and 1.2583×** median operation-speed ratios. This is a bounded, reproducible operation result, not a claim that Mojo is universally faster than CUDA.
 
 **The whole-model replacement is not qualified.** A deterministic invoice completion regresses even while all intermediate projection comparisons satisfy the existing tolerance. Do not enable this experimental replacement for production or PDF processing. No whole-model throughput gain, PDF latency gain, or cooling benefit is claimed.

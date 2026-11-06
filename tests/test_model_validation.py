@@ -61,3 +61,12 @@ class ValidationEvidenceTests(unittest.TestCase):
         self.assertEqual(parse_arguments(common).validation_calls,36)
         self.assertEqual(parse_arguments(common+['--feedback']).validation_calls,0)
         self.assertEqual(parse_arguments(common+['--feedback','--validation-calls','612']).validation_calls,612)
+
+    def test_general_baseline_cannot_enable_replacement(self):
+        from contextlib import redirect_stderr
+        import io
+        common=['--model','model.gguf','--output','results/local-test','--baseline-only']
+        self.assertTrue(parse_arguments(common).baseline_only)
+        for option in ['--replace-ptx','--validate-ptx']:
+            with self.assertRaises(SystemExit),redirect_stderr(io.StringIO()):
+                parse_arguments(common+[option,'candidate.ptx'])

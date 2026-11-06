@@ -1,0 +1,128 @@
+{
+  "status": "inconclusive",
+  "scope": "Exploratory whole-model synthetic decode: two ABBA cycles, one 16-token measurement per process. Not PDF latency or sustained throughput.",
+  "runs": [
+    {
+      "run": 0,
+      "mode": "cuda",
+      "decode_ns": 440009996,
+      "tokens_per_second": 36.3628102667013,
+      "peaks": {
+        "cpu_C": 62.0,
+        "gpu_C": 73,
+        "platform_C": 60.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 24.701
+    },
+    {
+      "run": 1,
+      "mode": "mojo",
+      "decode_ns": 389840538,
+      "tokens_per_second": 41.04242232499689,
+      "peaks": {
+        "cpu_C": 66.0,
+        "gpu_C": 74,
+        "platform_C": 60.05
+      },
+      "sampled_max_sm_clock_MHz": 1665,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 24.544
+    },
+    {
+      "run": 2,
+      "mode": "mojo",
+      "decode_ns": 434898647,
+      "tokens_per_second": 36.7901811384573,
+      "peaks": {
+        "cpu_C": 61.0,
+        "gpu_C": 74,
+        "platform_C": 59.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 24.789
+    },
+    {
+      "run": 3,
+      "mode": "cuda",
+      "decode_ns": 450016223,
+      "tokens_per_second": 35.55427378448088,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 75,
+        "platform_C": 59.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 25.602
+    },
+    {
+      "run": 4,
+      "mode": "cuda",
+      "decode_ns": 385085577,
+      "tokens_per_second": 41.5492060872485,
+      "peaks": {
+        "cpu_C": 67.0,
+        "gpu_C": 74,
+        "platform_C": 59.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 24.916
+    },
+    {
+      "run": 5,
+      "mode": "mojo",
+      "decode_ns": 415173470,
+      "tokens_per_second": 38.53810793835165,
+      "peaks": {
+        "cpu_C": 62.0,
+        "gpu_C": 74,
+        "platform_C": 59.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 24.811
+    },
+    {
+      "run": 6,
+      "mode": "mojo",
+      "decode_ns": 425907811,
+      "tokens_per_second": 37.56681513408544,
+      "peaks": {
+        "cpu_C": 69.0,
+        "gpu_C": 73,
+        "platform_C": 59.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 25.294
+    },
+    {
+      "run": 7,
+      "mode": "cuda",
+      "decode_ns": 429969715,
+      "tokens_per_second": 37.211923169984196,
+      "peaks": {
+        "cpu_C": 61.0,
+        "gpu_C": 73,
+        "platform_C": 59.05
+      },
+      "sampled_max_sm_clock_MHz": 1747,
+      "sampled_max_device_memory_bytes": 2917924864,
+      "sampled_max_gpu_power_W": 23.594
+    }
+  ],
+  "median_tokens_per_second": {
+    "cuda": 36.78736671834275,
+    "mojo": 38.052461536218544
+  },
+  "median_ratio": 1.0343893822996848,
+  "cycle_cuda_over_mojo_latency_ratios": [
+    1.0791608246430051,
+    0.9690565114360213
+  ],
+  "reason": "The two ABBA cycles disagree on the direction of improvement; CUDA run variation is larger than the pooled median difference. Dynamic clock sampling is not aligned to exact decode intervals."
+}

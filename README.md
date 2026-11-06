@@ -1,5 +1,7 @@
 # Mojo LLM Lab
 
+[Alternative-model follow-up](docs/alternative-models.md): Qwen3.5-2B shows memory headroom; chat-format tests pass, but whole-model Mojo timing remains inconclusive.
+
 Experiments in making local LLM inference faster with Mojo GPU kernels, reproducible comparisons and preserved numerical accuracy. The guiding target is **2× faster token generation and complete PDF parsing**, with preserved quality. Any reproducible speed improvement is a success; 2× is not a minimum threshold. Neither end-to-end target has been achieved.
 
 The first result is a fused RMSNorm, learned scale and IMROPE operation for one Q tensor. It runs about **1.92× faster than llama.cpp b12110 for this isolated operation** on an RTX A2000 Laptop GPU. There is no measured end-to-end LLM speedup or energy saving yet.
