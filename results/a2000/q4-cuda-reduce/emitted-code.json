@@ -1,0 +1,14 @@
+{
+  "fixed": {
+    "ptx_sha256": "532d611423e249f5c0c8529c4fd75f4785d2045b46045a7599f2a3ceca690e32",
+    "bar_sync": 3,
+    "st_shared": 2,
+    "ld_shared": 2
+  },
+  "reduce": {
+    "ptx_sha256": "301438e63ddb1cd084c1164166aad2f87c59ae45b73e0cbc0beadf7ef2e67224",
+    "bar_sync": 2,
+    "st_shared": 1,
+    "ld_shared": 1
+  }
+}

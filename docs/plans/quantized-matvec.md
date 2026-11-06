@@ -8,3 +8,7 @@
 6. Record gains or failures, integrate only justified candidates, and qualify both whole-workload metrics.
 
 Stages 1–3 are correctness scaffolding and must not be described as an inference speed improvement. Existing compilation and GPU temperature limits remain in force.
+
+## Reduction experiment
+
+The fixed-iteration specialization emits three `bar.sync` instructions around its general block sum, although only thread zero consumes the result. Compare a separate `reduce` variant with only `broadcast=False` changed. Keep native weight layout, 128 threads, the same arithmetic, matched activation quantization, and varied-byte fixtures. Compiler acceptance on the pinned SDK and emitted PTX establish that the option is supported; numerical validation and guarded timing establish whether it helps. Keep the older variant as a reproducible comparator. Read-only loads and a hand-written reduction remain alternatives if this change is insufficient.

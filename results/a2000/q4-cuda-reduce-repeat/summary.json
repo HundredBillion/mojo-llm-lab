@@ -1,0 +1,73 @@
+{
+  "status": "passed",
+  "variant": "reduce",
+  "rows": 9728,
+  "input_width": 2560,
+  "scope": "Standalone Q4_K matvec including matched Q8_1 quantization; not fused gate/up or whole inference",
+  "fixture_sha256": {
+    "weights.bin": "c1c49a0661ac0623a8b30bd0cca59295edf18883350aea5e9df90dcdccc0d12a",
+    "activations.bin": "dbff591fcb974ae950824639629c928f29ac3c2c859ceb038e741373d5328c4e"
+  },
+  "versions": {
+    "engine_revision": "cd959bae99ff4bed22bef2604f45241c09bbb8c8",
+    "engine_release": "b12110",
+    "archive": "llama-b12110-bin-ubuntu-cuda-12.8-x64.tar.gz",
+    "archive_sha256": "4af1e1da23661db4a5b84b29aae16ebc053df689c5b8b1427c4670f2c6406d8c",
+    "archive_bytes": 187314621,
+    "cuda_image": "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+    "header_sha256": {
+      "ggml.h": "1aef7a5f465b1c19de305dd6f9a0c303f88e485133a94b9a0ee1cce6345c9101",
+      "ggml-backend.h": "34464da4b46314c710cd634626578c6f2a6811431d41eddaf5e8aa77082fea2a",
+      "ggml-alloc.h": "d114067f9099c4a0e2bbc0625c676d4894d9cf0ea27168ee072c7de0e71bb51d",
+      "ggml-cuda.h": "9cbfcea49f6da4d07f41dc22fa8dbf870825faaa2a68e34e65fe30ea6c41e042"
+    },
+    "mojo": "1.2.0",
+    "max": "26.7.0"
+  },
+  "ptx_sha256": "301438e63ddb1cd084c1164166aad2f87c59ae45b73e0cbc0beadf7ef2e67224",
+  "benchmark_sha256": "4648289b4ad27f74b9a77a761791cab7d641aed021611811a62856fc053e1039",
+  "comparisons": [
+    {
+      "case": "q4_matvec",
+      "control": true,
+      "gpu_medians_us": {
+        "ggml": 119.536003,
+        "ggml_control": 119.424004
+      },
+      "baseline_over_candidate_ratio": 1.0009378265361124,
+      "kernel_nodes": [
+        2,
+        2
+      ],
+      "observed_gpu_clocks_MHz": [
+        1207
+      ],
+      "peaks": {
+        "cpu_C": 63.0,
+        "gpu_C": 66,
+        "platform_C": 57.05
+      }
+    },
+    {
+      "case": "q4_matvec",
+      "control": false,
+      "gpu_medians_us": {
+        "ggml": 120.335499,
+        "mojo": 129.600006
+      },
+      "baseline_over_candidate_ratio": 0.9285146097909902,
+      "kernel_nodes": [
+        2,
+        2
+      ],
+      "observed_gpu_clocks_MHz": [
+        1207
+      ],
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 67,
+        "platform_C": 57.05
+      }
+    }
+  ]
+}
