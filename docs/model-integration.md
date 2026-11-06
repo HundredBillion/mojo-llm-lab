@@ -1,6 +1,30 @@
-# Whole-model integration: launch observation
+# Whole-model integration: real-input validation
 
 A guarded 16-token Qwen3VL-4B decode completed with a preload observer that **forwarded every kernel unchanged to CUDA**. It observed 72 host calls to the exact fused Q4_K specialization used by the microbenchmark. No Mojo model-kernel replacement or end-to-end speedup has been demonstrated yet.
+
+## New: real-input differential validation
+
+The opt-in validation bridge now checks every eligible launch's width, rows, strides, pointers, SiLU operation and absence of unsupported fusion features. It launches `gate-order` into separate storage on the current CUDA context/stream after the original kernel. CUDA outputs continue feeding the model. Both output sentinels must remain intact, every value must be finite, and every element must satisfy the unchanged `1e-5 + 1e-5*abs(reference)` threshold.
+
+| Qualification | Compared calls | Compared values | Maximum absolute difference | CPU / GPU peak |
+| --- | ---: | ---: | ---: | --- |
+| Initial | 36 | 350,208 | 0.0000610351562 | 66°C / 63°C |
+| Expanded | 612 | 5,953,536 | 0.0000610351562 | 61°C / 66°C |
+
+Both passed. The expanded run validated all 612 observed eligible calls during the short 16-token `llama-bench` workload, including warmup. These use actual model weights and benchmark-driven activations; this is not a natural-language or PDF workload. This is bounded differential qualification, not exhaustive numerical proof, logit/generated-text equivalence, or an end-to-end speed measurement. Raw aggregate evidence and per-call error summaries are in [model-validation](../results/a2000/model-validation/full-612.json). Model tensors are not saved.
+
+Graphs were explicitly disabled for validation, which allocates, synchronizes, copies outputs, and loads/unloads a module per checked call. Active capture is rejected. Those deliberately expensive operations must not be carried into a production replacement. The existing blocking-wait shim was preserved. Sprite resumed after approximately 13 and 21 seconds respectively. The model hash is intentionally null in these raw results: the runner did not rehash the model; the prior separate fingerprint below remains historical evidence.
+
+```sh
+python3 tools/build_launch_observer.py
+python3 tools/run_launch_observer.py --model /path/to/model.gguf \
+  --validate-ptx /path/to/gate-order.ptx --validation-calls 612 \
+  --output results/local-model-validation
+```
+
+The PTX parser requires one self-contained sm_86 entry with four pointer parameters. The user must supply the qualified gate-order artifact; this is not a general arbitrary-kernel compatibility guarantee. The runner fails if requested calls, final counters, or finite numerical evidence are missing. Five new evidence-parser tests cover incomplete, duplicate, malformed and nonfinite records; the CPU suite now has 54 passing tests.
+
+## Earlier: launch observation
 
 [Recorded summary](../results/a2000/launch-observation/summary.json) contains the first four matching call descriptions, binary hashes, model fingerprint and thermal peaks. These are host launch calls, including warmup/capture. CUDA graph replays do not pass through these wrappers again, so the count is not a per-token kernel execution count.
 
@@ -48,8 +72,8 @@ The runner requires Docker, standard NVIDIA CDI device 0 and the pinned engine a
 
 ## Next implementation gates
 
-1. Add eligibility checks for the exact shape, layout, activation and optional arguments, with CUDA fallback for everything else.
-2. Validate Mojo against real-model projection outputs before replacing those outputs. Preserve CUDA graph semantics, context and stream ownership.
+1. Implement a separate opt-in replacement mode with cached module ownership and CUDA graph capture/replay support; retain CUDA fallback for unsupported calls.
+2. Extend real-input qualification to natural-language prompts and then validate model logits/generated outputs with candidate outputs feeding forward.
 3. Verify model logits/generated outputs on synthetic requests, then benchmark an uninstrumented baseline and replacement under matched conditions.
 4. Measure both generation throughput and complete accurate PDF processing. Keep production defaults unchanged until those checks justify adoption.
 

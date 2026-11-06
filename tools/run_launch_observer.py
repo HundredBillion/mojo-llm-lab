@@ -1,6 +1,7 @@
 """Observe a short model decode under guards; this is not a speed comparison."""
 import argparse
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -8,11 +9,28 @@ import signal
 import subprocess as S
 import time
 import uuid
+from validate_ptx import validate_ptx
 from run_benchmark import ROOT, Sensors, cold_gate, safe, remove_owned, digest
+
+
+def validation_result(stderr, expected):
+    validations=re.findall(r'mojo_validation passed_call=(\d+) rows=9728 max_abs=([^\n]+)',stderr)
+    if len(validations)!=expected or [int(x[0]) for x in validations]!=list(range(1,expected+1)):
+        raise RuntimeError('Missing requested validation calls')
+    errors=[float(x[1]) for x in validations]
+    if any(not math.isfinite(x) or x<0 for x in errors):
+        raise RuntimeError('Invalid numerical evidence')
+    summaries=re.findall(r'mojo_validation eligible_calls=(\d+) validated_calls=(\d+) outputs=CUDA',stderr)
+    if len(summaries)!=1 or int(summaries[0][1])!=expected or int(summaries[0][0])<expected:
+        raise RuntimeError('Missing consistent final validation summary')
+    return {'validated_calls':expected,'validated_elements':expected*9728,'max_abs':max(errors),
+            'eligible_calls':int(summaries[0][0])}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--validate-ptx', type=Path)
+    parser.add_argument('--validation-calls', type=int, default=36, choices=range(1,10001), metavar='N')
     parser.add_argument('--model', type=Path, required=True)
     parser.add_argument('--wait-library', type=Path)
     parser.add_argument('--output', type=Path, required=True)
@@ -39,6 +57,14 @@ def main():
         '-e','LD_LIBRARY_PATH=/app:/usr/local/cuda/lib64','--entrypoint','/app/llama-bench']
     mounts = [(ROOT/'build/upstream'/('llama-'+versions['engine_release']),'/app'),
               (observer.parent,'/observer'), (model,'/model.gguf')]
+    if args.validate_ptx:
+        ptx=args.validate_ptx.resolve(strict=True)
+        entry=validate_ptx(ptx.read_text(),expected_parameters=4)
+        mounts.append((ptx,'/candidate.ptx'))
+        command += ['-e','MOJO_VALIDATE_PTX=/candidate.ptx','-e','MOJO_VALIDATE_ENTRY='+entry,
+                    '-e','GGML_CUDA_DISABLE_GRAPHS=1','-e','MOJO_VALIDATE_CALLS='+str(args.validation_calls)]
+        result['ptx_sha256']=digest(ptx)
+        result['scope']=f'Validation only: first {args.validation_calls} eligible launches, CUDA outputs retained; graphs disabled. No throughput claim.'
     preload = '/observer/observe_launches.so'
     if args.wait_library:
         wait = args.wait_library.resolve(strict=True)
@@ -75,6 +101,8 @@ def main():
             raise RuntimeError('No target launch observed')
         result['target_launch_calls'] = max(map(int,counts))
         result['observations'] = [line for line in stderr.splitlines() if line.startswith('mojo_observer api=')]
+        if args.validate_ptx:
+            result.update(validation_result(stderr,args.validation_calls))
         result['status'] = 'passed'
     finally:
         remove_owned(name,token)
