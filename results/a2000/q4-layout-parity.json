@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "blocks": 64,
+  "values": 16384,
+  "bit_exact_for_dyadic_factors": true,
+  "canaries": "intact",
+  "scope": "Q4_K layout decoder only; no matvec or performance qualification",
+  "sources": {
+    "ggml/src/ggml-cuda/mmvq.cu": {
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/cd959bae99ff4bed22bef2604f45241c09bbb8c8/ggml/src/ggml-cuda/mmvq.cu",
+      "sha256": "fde867a6afa3f9a9818cc43b8e0ac81d829473fd0adf2a87155a147a09d5f9ae"
+    },
+    "ggml/src/ggml-cuda/vecdotq.cuh": {
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/cd959bae99ff4bed22bef2604f45241c09bbb8c8/ggml/src/ggml-cuda/vecdotq.cuh",
+      "sha256": "5e6882fe30b86f2f1ba294542ec88866c962e8f90500d4e035882eff3942f975"
+    },
+    "ggml/src/ggml-common.h": {
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/cd959bae99ff4bed22bef2604f45241c09bbb8c8/ggml/src/ggml-common.h",
+      "sha256": "0061131b615c5721fc88a78feeb22c1f8c450f1c2646a317d80796a653bf595c"
+    },
+    "ggml/src/ggml-quants.c": {
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/cd959bae99ff4bed22bef2604f45241c09bbb8c8/ggml/src/ggml-quants.c",
+      "sha256": "bcda33625707fdfcb1367cdd2bb1a2f017430162ec9623abc84ad17459698f73"
+    }
+  },
+  "kernel_sha256": "bec180ab1b03771206d2fc27bfab21546ea1e7cba8a2937fe2a2e330af108a19",
+  "ptx_sha256": "84b592938dc0f1ca4ea7221d967793d42f3477af3c4c935d30e675c5576678cd",
+  "compiler": "Mojo 1.2.0 / MAX 26.7.0, sm_86, haswell host, emit asm",
+  "build": [
+    {
+      "stage": "q4-mojo-build",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 40.21590374299558,
+      "peaks": {
+        "cpu_C": 85.0,
+        "gpu_C": 66,
+        "platform_C": 62.05
+      }
+    }
+  ],
+  "execution": [
+    {
+      "stage": "q4-gpu-check",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 2.3472856289881747,
+      "peaks": {
+        "cpu_C": 68.0,
+        "gpu_C": 64,
+        "platform_C": 63.05
+      }
+    }
+  ]
+}
