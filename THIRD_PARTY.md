@@ -15,3 +15,7 @@ NVIDIA CUDA toolkit, llama.cpp binaries, model weights, or private documents.
 Downloaded artifacts and generated binaries remain in ignored `build/` or
 `.venv/` directories. Dependency versions and checksums are in `versions.json`
 and `requirements.lock`.
+
+The packed scale/minimum unpacking in the experimental Q4_K Mojo kernels is
+adapted from the pinned GGML `vecdotq.cuh` algorithm. The upstream copyright and
+permission notice is retained in [licenses/GGML_LICENSE.txt](licenses/GGML_LICENSE.txt).

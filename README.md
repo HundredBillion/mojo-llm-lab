@@ -62,7 +62,7 @@ Do not treat a successful CPU test run as GPU qualification. Rebuilding on anoth
 
 ## Quantized matrix-vector investigation
 
-The newer [matched CUDA comparison](docs/q4-cuda-comparison.md) found the 128-thread Mojo Q4_K prototype still about **1.62× slower than GGML CUDA**. Packed instructions and improved work distribution helped the prototype, but no matrix-vector win over llama.cpp or whole-model speedup is established. Raw results include this negative finding.
+The [matched CUDA comparison](docs/q4-cuda-comparison.md) found the initial 128-thread Mojo Q4_K prototype 1.62× slower than GGML CUDA. Later [loop and load specialization](docs/q4-specialization.md) narrowed the paired gap to about **1.13× slower**, with run-to-run timing variation still requiring investigation. No matrix-vector win over llama.cpp or whole-model speedup is established. Raw results include these negative findings.
 
 ## Research direction and attribution
 

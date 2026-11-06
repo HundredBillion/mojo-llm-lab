@@ -1,0 +1,267 @@
+{
+  "repetitions_per_graph": 32,
+  "baseline_kernel_nodes": 2,
+  "mojo_kernel_nodes": 2,
+  "context_flags": 12,
+  "same_graph_control": true,
+  "samples": [
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 95.6139984,
+      "host_wall_us_per_operation": 105.207469,
+      "host_cpu_us_per_operation": 4.52340625
+    },
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 95.6159973,
+      "host_wall_us_per_operation": 106.580937,
+      "host_cpu_us_per_operation": 5.96453125
+    },
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 96.2560043,
+      "host_wall_us_per_operation": 106.106063,
+      "host_cpu_us_per_operation": 5.26509375
+    },
+    {
+      "round": 0,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 96.1279984,
+      "host_wall_us_per_operation": 105.261094,
+      "host_cpu_us_per_operation": 3.8765625
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 96.1279984,
+      "host_wall_us_per_operation": 107.839438,
+      "host_cpu_us_per_operation": 5.33303125
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 96.0960007,
+      "host_wall_us_per_operation": 108.626781,
+      "host_cpu_us_per_operation": 4.275625
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 96.1279984,
+      "host_wall_us_per_operation": 107.868656,
+      "host_cpu_us_per_operation": 5.26121875
+    },
+    {
+      "round": 1,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 97.3120041,
+      "host_wall_us_per_operation": 108.735187,
+      "host_cpu_us_per_operation": 4.5146875
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.671997,
+      "host_wall_us_per_operation": 110.003406,
+      "host_cpu_us_per_operation": 5.77046875
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.573006,
+      "host_wall_us_per_operation": 108.571562,
+      "host_cpu_us_per_operation": 2.95678125
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.512001,
+      "host_wall_us_per_operation": 105.212906,
+      "host_cpu_us_per_operation": 3.9674375
+    },
+    {
+      "round": 2,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.608002,
+      "host_wall_us_per_operation": 110.596218,
+      "host_cpu_us_per_operation": 3.15709375
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.539001,
+      "host_wall_us_per_operation": 107.405469,
+      "host_cpu_us_per_operation": 3.94096875
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.512001,
+      "host_wall_us_per_operation": 110.446344,
+      "host_cpu_us_per_operation": 4.0405
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.636002,
+      "host_wall_us_per_operation": 111.994124,
+      "host_cpu_us_per_operation": 4.528875
+    },
+    {
+      "round": 3,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.639999,
+      "host_wall_us_per_operation": 111.904469,
+      "host_cpu_us_per_operation": 4.60303125
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.639999,
+      "host_wall_us_per_operation": 110.0975,
+      "host_cpu_us_per_operation": 4.60746875
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.608002,
+      "host_wall_us_per_operation": 111.325344,
+      "host_cpu_us_per_operation": 5.53146875
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.639999,
+      "host_wall_us_per_operation": 110.958437,
+      "host_cpu_us_per_operation": 4.7905625
+    },
+    {
+      "round": 4,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.671997,
+      "host_wall_us_per_operation": 108.3065,
+      "host_cpu_us_per_operation": 6.1689375
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 100.512001,
+      "host_wall_us_per_operation": 110.053938,
+      "host_cpu_us_per_operation": 4.3829375
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 100.602997,
+      "host_wall_us_per_operation": 111.092812,
+      "host_cpu_us_per_operation": 4.64128125
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 110.431999,
+      "host_wall_us_per_operation": 120.643781,
+      "host_cpu_us_per_operation": 5.90225
+    },
+    {
+      "round": 5,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 115.967995,
+      "host_wall_us_per_operation": 125.504374,
+      "host_cpu_us_per_operation": 4.850125
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 116.384003,
+      "host_wall_us_per_operation": 126.357625,
+      "host_cpu_us_per_operation": 4.6924375
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 116.480003,
+      "host_wall_us_per_operation": 128.130781,
+      "host_cpu_us_per_operation": 4.897625
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 116.540001,
+      "host_wall_us_per_operation": 161.690812,
+      "host_cpu_us_per_operation": 6.73584375
+    },
+    {
+      "round": 6,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 116.608002,
+      "host_wall_us_per_operation": 126.353469,
+      "host_cpu_us_per_operation": 6.3925
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 116.543999,
+      "host_wall_us_per_operation": 127.612781,
+      "host_cpu_us_per_operation": 6.2489375
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 116.543999,
+      "host_wall_us_per_operation": 124.534563,
+      "host_cpu_us_per_operation": 4.87265625
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml_control",
+      "gpu_us_per_operation": 116.415001,
+      "host_wall_us_per_operation": 127.589688,
+      "host_cpu_us_per_operation": 4.55215625
+    },
+    {
+      "round": 7,
+      "gpu_clock_mhz": 1207,
+      "mode": "ggml",
+      "gpu_us_per_operation": 116.512001,
+      "host_wall_us_per_operation": 128.17175,
+      "host_cpu_us_per_operation": 3.94396875
+    }
+  ],
+  "correct": true,
+  "red_zones": "intact"
+}

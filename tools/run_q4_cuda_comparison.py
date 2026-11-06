@@ -11,9 +11,9 @@ from validate_ptx import validate_ptx
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT/'results/local-q4-cuda')
-    parser.add_argument('--variant', choices=['dp4a', 'dp4a-128'], default='dp4a')
+    parser.add_argument('--variant', choices=['dp4a', 'dp4a-128', 'unrolled', 'packed'], default='dp4a')
     args = parser.parse_args()
-    executable = 'q4-compare' + ('-128' if args.variant == 'dp4a-128' else '')
+    executable = 'q4-compare' + ('-128' if args.variant in ('dp4a-128', 'unrolled', 'packed') else '')
     args.gpu = 0
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)
