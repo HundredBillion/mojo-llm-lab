@@ -11,11 +11,11 @@ from validate_ptx import validate_ptx
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT/'results/local-q4-cuda')
-    parser.add_argument('--variant', choices=['dp4a', 'dp4a-128', 'unrolled', 'packed', 'fixed', 'prepacked', 'reduce'], default='dp4a')
+    parser.add_argument('--variant', choices=['dp4a', 'dp4a-128', 'unrolled', 'packed', 'fixed', 'prepacked', 'reduce', 'readonly'], default='dp4a')
     parser.add_argument('--fixtures', type=Path, default=ROOT/'build/q4-matvec')
     args = parser.parse_args()
     args.fixtures = args.fixtures.resolve()
-    executable = 'q4-compare' + ('-128' if args.variant in ('dp4a-128', 'unrolled', 'packed', 'fixed', 'prepacked', 'reduce') else '') + ('-split' if args.variant == 'prepacked' else '')
+    executable = 'q4-compare' + ('-128' if args.variant in ('dp4a-128', 'unrolled', 'packed', 'fixed', 'prepacked', 'reduce', 'readonly') else '') + ('-split' if args.variant == 'prepacked' else '')
     args.gpu = 0
     args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=False)

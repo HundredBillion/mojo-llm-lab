@@ -1,0 +1,14 @@
+{
+  "high_level_api": {
+    "ptx_sha256": "e46bfa0015ae3ae356e10dd7c15c6022b2f7fe44ef4f1e8f4863b4c75eaed0a3",
+    "bar_sync_count": 2,
+    "explicit_nc_32bit_loads": 0,
+    "ptxas_exit_code": 255
+  },
+  "explicit_loads": {
+    "ptx_sha256": "dbbff7b2ca48bb3b8a5872e558b36948955ad622ee0858f18e74d4a038d9e13a",
+    "bar_sync_count": 2,
+    "explicit_nc_32bit_loads": 16,
+    "ptxas_exit_code": 0
+  }
+}
