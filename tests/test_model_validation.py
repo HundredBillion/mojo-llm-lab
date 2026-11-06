@@ -70,3 +70,16 @@ class ValidationEvidenceTests(unittest.TestCase):
         for option in ['--replace-ptx','--validate-ptx']:
             with self.assertRaises(SystemExit),redirect_stderr(io.StringIO()):
                 parse_arguments(common+[option,'candidate.ptx'])
+
+    def test_2b_specialization_cannot_be_used_as_4b(self):
+        from run_launch_observer import validate_model_ptx
+        parameters=','.join('.param .u64 .ptr .align 1 p'+str(i) for i in range(4))
+        ptx='.version 8.1\n.target sm_86\n.address_size 64\n.visible .entry q4_k_q8_1_gate_order_2b_probe('+parameters+') {}'
+        self.assertEqual(validate_model_ptx(ptx,'qwen35-2b'),'q4_k_q8_1_gate_order_2b_probe')
+        with self.assertRaises(ValueError): validate_model_ptx(ptx,'qwen3-4b')
+        with self.assertRaises(ValueError): validate_model_ptx(ptx.replace('_2b_probe','_probe'),'qwen35-2b')
+
+    def test_2b_validation_requires_correct_row_count(self):
+        text=self.log().replace('rows=9728','rows=6144')
+        self.assertEqual(validation_result(text,2,rows=6144)['validated_elements'],12288)
+        with self.assertRaises(RuntimeError): validation_result(text,2)

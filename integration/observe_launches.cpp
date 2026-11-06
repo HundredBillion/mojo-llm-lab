@@ -12,6 +12,12 @@
 #include <cstdint>
 
 #include "fusion_eligibility.h"
+static const Layout &layout() {
+    const char *name=std::getenv("MOJO_SHAPE");
+    if (!name || std::strcmp(name,"qwen3-4b")==0) return layout_4b;
+    if (std::strcmp(name,"qwen35-2b")==0) return layout_2b;
+    std::fprintf(stderr,"mojo_observer unsupported_shape\n"); std::abort();
+}
 static std::atomic<unsigned long> matches{0}, eligible_calls{0}, validated{0};
 static std::mutex validation_mutex, replacement_mutex;
 static std::atomic<unsigned long> replaced{0}, captured_replacements{0};
@@ -83,7 +89,7 @@ static bool replace(void **args,cudaStream_t stream) {
     auto output=argument<void *>(args,4);
     void *parameters[]={&up,&gate,&input,&output};
     static auto launch=driver<decltype(&cuLaunchKernel)>("cuLaunchKernel");
-    checked(launch(replacement_kernel,9728,1,1,128,1,1,0,reinterpret_cast<CUstream>(stream),parameters,nullptr),"replacement_launch");
+    checked(launch(replacement_kernel,layout().rows,1,1,128,1,1,0,reinterpret_cast<CUstream>(stream),parameters,nullptr),"replacement_launch");
     ++replaced;
     if (capture==cudaStreamCaptureStatusActive) ++captured_replacements;
     return true;
@@ -118,7 +124,7 @@ static void validate(void **args, cudaStream_t stream) {
     if (!entry) std::abort();
     checked(driver<decltype(&cuModuleLoad)>("cuModuleLoad")(&module,path),"module_load");
     checked(driver<decltype(&cuModuleGetFunction)>("cuModuleGetFunction")(&kernel,module,entry),"function");
-    constexpr size_t rows=9728, bytes=(rows+2)*sizeof(float);
+    const size_t rows=layout().rows, bytes=(rows+2)*sizeof(float);
     void *allocation=nullptr;
     checked(symbol<decltype(&cudaMalloc)>("cudaMalloc")(&allocation,bytes),"allocate");
     checked(symbol<decltype(&cudaMemset)>("cudaMemset")(allocation,0xff,bytes),"sentinels");
@@ -153,12 +159,12 @@ static void validate(void **args, cudaStream_t stream) {
     std::fprintf(stderr,"mojo_validation passed_call=%lu rows=%zu max_abs=%.9g\n",++validated,rows,maximum);
 }
 static bool observe(const void *func, dim3 grid, dim3 block, void **args, const char *api) {
-    if (grid.x != 9728 || grid.y != 1 || grid.z != 1 || block.x != 32 || block.y != 4 || block.z != 1) return false;
+    if (grid.x != layout().rows || grid.y != 1 || grid.z != 1 || block.x != 32 || block.y != 4 || block.z != 1) return false;
     static auto get_name = symbol<decltype(&cudaFuncGetName)>("cudaFuncGetName");
     const char *name = nullptr;
     if (get_name(&name, func) != cudaSuccess || !name || std::strcmp(name, target)) return false;
     auto count = ++matches;
-    const bool supported = eligible(args);
+    const bool supported = eligible(args,layout());
     if (supported) ++eligible_calls;
     if (count > 4) return supported;
     const auto fusion = argument<Fusion>(args, 3);

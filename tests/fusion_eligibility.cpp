@@ -28,4 +28,10 @@ int main() {
     fusion.glu_op=1; assert(!eligible(args)); fusion.glu_op=2;
     fusion.glu_limit=1; assert(!eligible(args)); fusion.glu_limit=0;
     assert(eligible(args));
+    width=2048; rows=6144; ws=8; as=64;
+    assert(!eligible(args));
+    assert(eligible(args,layout_2b));
+    for (auto p : {&width,&rows,&ws,&as}) {
+        auto saved=*p; ++*p; assert(!eligible(args,layout_2b)); *p=saved;
+    }
 }

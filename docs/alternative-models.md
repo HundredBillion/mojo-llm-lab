@@ -17,7 +17,7 @@ The three cases require a single JSON object with `Business` and `Total`. They c
 
 The Qwen3-4B model has the same 2560-wide / 9728-row feed-forward dimensions as the current kernel. A shadow run on its weights/activations compared **1119 calls / 10,885,632 values**, all within the unchanged tolerance, with maximum absolute difference 0.00000762939453. Its three chat outputs then remained byte-identical when the replacement fed forward.
 
-Qwen3.5-2B uses different dimensions (2048 / 6144) and hybrid attention. The runner used explicit `--baseline-only`, observed zero matching specialization launches and performed zero replacements. Its result is a model/runtime result, not a Mojo gain.
+The initial Qwen3.5-2B trial used explicit `--baseline-only`: its different dimensions (2048 / 6144) did not match the original kernel. That initial result is a model/runtime result, not a Mojo gain. A subsequent dedicated 2B specialization and same-model CUDA/Mojo comparison are recorded in [the Qwen3.5 integration report](qwen35-mojo.md).
 
 ## Prompt formatting changed the quality outcome
 

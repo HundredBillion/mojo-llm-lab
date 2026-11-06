@@ -39,13 +39,21 @@ class ModelSensors(Sensors):
         return sample
 
 
-def validation_result(stderr, expected, feedback=False):
+def validate_model_ptx(text, shape):
+    entry=validate_ptx(text,expected_parameters=4)
+    is_2b=entry.startswith('q4_k_q8_1_gate_order_2b_')
+    if is_2b != (shape=='qwen35-2b'):
+        raise ValueError('PTX specialization does not match requested model shape')
+    return entry
+
+
+def validation_result(stderr, expected, feedback=False, rows=9728):
     if expected==0:
         counts=re.findall(r'mojo_validation eligible_calls=(\d+) validated_calls=(\d+) outputs=(CUDA|Mojo)',stderr)
         if len(counts)!=1 or int(counts[0][0])<1 or counts[0][0]!=counts[0][1]:
             raise RuntimeError('All-call validation incomplete')
         expected=int(counts[0][0])
-    validations=re.findall(r'mojo_validation passed_call=(\d+) rows=9728 max_abs=([^\n]+)',stderr)
+    validations=re.findall(rf'mojo_validation passed_call=(\d+) rows={rows} max_abs=([^\n]+)',stderr)
     if len(validations)!=expected or [int(x[0]) for x in validations]!=list(range(1,expected+1)):
         raise RuntimeError('Missing requested validation calls')
     errors=[float(x[1]) for x in validations]
@@ -56,7 +64,7 @@ def validation_result(stderr, expected, feedback=False):
         raise RuntimeError('Missing consistent final validation summary')
     if feedback and int(summaries[0][0])!=expected:
         raise RuntimeError('Feedback requires validation of every eligible call')
-    return {'feedback':feedback,'validated_calls':expected,'validated_elements':expected*9728,'max_abs':max(errors),
+    return {'feedback':feedback,'validated_calls':expected,'validated_elements':expected*rows,'max_abs':max(errors),
             'eligible_calls':int(summaries[0][0])}
 
 
@@ -72,6 +80,7 @@ def replacement_result(stderr, graphs):
 
 def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--shape', choices=['qwen3-4b','qwen35-2b'], default='qwen3-4b')
     parser.add_argument('--baseline-only', action='store_true', help='Allow models with no supported Mojo specialization')
     parser.add_argument('--disable-graphs', action='store_true')
     parser.add_argument('--prompt', help='Synthetic text for a greedy completion check instead of llama-bench')
@@ -111,6 +120,7 @@ def main():
               'versions':versions, 'observer_sha256':digest(observer), 'model_name':model.name,
               'model_bytes':model.stat().st_size, 'model_sha256':None,
               'cpu_quota_percent':20, 'generation_tokens':args.tokens, 'wait_library_sha256':None}
+    result['shape']=args.shape
     if args.baseline_only:
         result['scope']='Unmodified CUDA baseline; no supported Mojo specialization required. No cross-model speed claim from this run alone.'
     if S.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader'],text=True).strip():
@@ -127,11 +137,12 @@ def main():
     if args.disable_graphs:
         command += ['-e','GGML_CUDA_DISABLE_GRAPHS=1']
     result['cuda_graphs_enabled']=not (args.disable_graphs or args.validate_ptx)
+    command += ['-e','MOJO_SHAPE='+args.shape]
     mounts = [(ROOT/'build/upstream'/('llama-'+versions['engine_release']),'/app'),
               (observer.parent,'/observer'), (model,'/model.gguf')]
     if args.validate_ptx:
         ptx=args.validate_ptx.resolve(strict=True)
-        entry=validate_ptx(ptx.read_text(),expected_parameters=4)
+        entry=validate_model_ptx(ptx.read_text(),args.shape)
         mounts.append((ptx,'/candidate.ptx'))
         command += ['-e','MOJO_VALIDATE_PTX=/candidate.ptx','-e','MOJO_VALIDATE_ENTRY='+entry,
                     '-e','GGML_CUDA_DISABLE_GRAPHS=1','-e','MOJO_VALIDATE_CALLS='+str(args.validation_calls or 10000)]
@@ -141,7 +152,7 @@ def main():
         result['scope']=f'Validation only: {args.validation_calls or "all (maximum 10000)"} eligible launches, outputs={"Mojo" if args.feedback else "CUDA"}; graphs disabled. No throughput claim.'
     if args.replace_ptx:
         ptx=args.replace_ptx.resolve(strict=True)
-        entry=validate_ptx(ptx.read_text(),expected_parameters=4)
+        entry=validate_model_ptx(ptx.read_text(),args.shape)
         mounts.append((ptx,'/candidate.ptx'))
         command += ['-e','MOJO_REPLACE_PTX=/candidate.ptx','-e','MOJO_REPLACE_ENTRY='+entry]
         result['ptx_sha256']=digest(ptx)
@@ -196,7 +207,7 @@ def main():
         result['target_launch_calls'] = max(map(int,counts))
         result['observations'] = [line for line in stderr.splitlines() if line.startswith('mojo_observer api=')]
         if args.validate_ptx:
-            result.update(validation_result(stderr,args.validation_calls,args.feedback))
+            result.update(validation_result(stderr,args.validation_calls,args.feedback,6144 if args.shape=='qwen35-2b' else 9728))
         if args.replace_ptx:
             result.update(replacement_result(stderr,not args.disable_graphs))
         result['status'] = 'passed'

@@ -82,3 +82,7 @@ The runner requires Docker, standard NVIDIA CDI device 0 and the pinned engine a
 4. Measure both generation throughput and complete accurate PDF processing. Keep production defaults unchanged until those checks justify adoption.
 
 The existing isolated 1.22× operation result remains useful evidence for this next step, not a multiplier for the entire model.
+
+## Qwen3.5-2B specialization
+
+The later [Qwen3.5-2B comparison](qwen35-mojo.md) adds a separate 2048/6144 specialization selected with `--shape qwen35-2b`. Both benchmark arms load the identical verified 2B weights. The earlier 2560/9728 evidence above remains specific to the 4B models.

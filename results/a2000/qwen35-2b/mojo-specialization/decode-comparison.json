@@ -1,0 +1,221 @@
+{
+  "status": "inconclusive",
+  "scope": "Four ABBA cycles, one 16-token measurement per process, same verified Qwen3.5-2B model. Mixed cycle directions; no proved whole-model gain, PDF latency or sustained thermal benefit.",
+  "runs": [
+    {
+      "run": 0,
+      "mode": "cuda",
+      "decode_ns": 375662260,
+      "tokens_per_second": 42.59144903190435,
+      "peaks": {
+        "cpu_C": 61.0,
+        "gpu_C": 71,
+        "platform_C": 58.05
+      },
+      "raw": "paired-00-cuda"
+    },
+    {
+      "run": 1,
+      "mode": "mojo",
+      "decode_ns": 320388468,
+      "tokens_per_second": 49.9393754709049,
+      "peaks": {
+        "cpu_C": 61.0,
+        "gpu_C": 73,
+        "platform_C": 59.05
+      },
+      "raw": "paired-01-mojo"
+    },
+    {
+      "run": 2,
+      "mode": "mojo",
+      "decode_ns": 214982179,
+      "tokens_per_second": 74.42477359948984,
+      "peaks": {
+        "cpu_C": 71.0,
+        "gpu_C": 72,
+        "platform_C": 59.05
+      },
+      "raw": "paired-02-mojo"
+    },
+    {
+      "run": 3,
+      "mode": "cuda",
+      "decode_ns": 340551193,
+      "tokens_per_second": 46.9826573181319,
+      "peaks": {
+        "cpu_C": 68.0,
+        "gpu_C": 72,
+        "platform_C": 59.05
+      },
+      "raw": "paired-03-cuda"
+    },
+    {
+      "run": 4,
+      "mode": "cuda",
+      "decode_ns": 240107730,
+      "tokens_per_second": 66.6367550932242,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 72,
+        "platform_C": 59.05
+      },
+      "raw": "paired-04-cuda"
+    },
+    {
+      "run": 5,
+      "mode": "mojo",
+      "decode_ns": 329958190,
+      "tokens_per_second": 48.49099214661106,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 71,
+        "platform_C": 59.05
+      },
+      "raw": "paired-05-mojo"
+    },
+    {
+      "run": 6,
+      "mode": "mojo",
+      "decode_ns": 311377158,
+      "tokens_per_second": 51.3846298256727,
+      "peaks": {
+        "cpu_C": 65.0,
+        "gpu_C": 71,
+        "platform_C": 59.05
+      },
+      "raw": "paired-06-mojo"
+    },
+    {
+      "run": 7,
+      "mode": "cuda",
+      "decode_ns": 330875660,
+      "tokens_per_second": 48.35653369002724,
+      "peaks": {
+        "cpu_C": 59.0,
+        "gpu_C": 72,
+        "platform_C": 59.05
+      },
+      "raw": "paired-07-cuda"
+    },
+    {
+      "run": 8,
+      "mode": "cuda",
+      "decode_ns": 335095733,
+      "tokens_per_second": 47.74754920558777,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 71,
+        "platform_C": 59.05
+      },
+      "raw": "paired-08-cuda"
+    },
+    {
+      "run": 9,
+      "mode": "mojo",
+      "decode_ns": 304947643,
+      "tokens_per_second": 52.46802317471921,
+      "peaks": {
+        "cpu_C": 61.0,
+        "gpu_C": 71,
+        "platform_C": 59.05
+      },
+      "raw": "paired-09-mojo"
+    },
+    {
+      "run": 10,
+      "mode": "mojo",
+      "decode_ns": 315419987,
+      "tokens_per_second": 50.72601819617728,
+      "peaks": {
+        "cpu_C": 62.0,
+        "gpu_C": 70,
+        "platform_C": 58.05
+      },
+      "raw": "paired-10-mojo"
+    },
+    {
+      "run": 11,
+      "mode": "cuda",
+      "decode_ns": 330062639,
+      "tokens_per_second": 48.475647072554615,
+      "peaks": {
+        "cpu_C": 61.0,
+        "gpu_C": 70,
+        "platform_C": 58.05
+      },
+      "raw": "paired-11-cuda"
+    },
+    {
+      "run": 12,
+      "mode": "cuda",
+      "decode_ns": 225531456,
+      "tokens_per_second": 70.9435405764418,
+      "peaks": {
+        "cpu_C": 66.0,
+        "gpu_C": 69,
+        "platform_C": 58.05
+      },
+      "raw": "paired-12-cuda"
+    },
+    {
+      "run": 13,
+      "mode": "mojo",
+      "decode_ns": 240501401,
+      "tokens_per_second": 66.52767898013201,
+      "peaks": {
+        "cpu_C": 64.0,
+        "gpu_C": 70,
+        "platform_C": 58.05
+      },
+      "raw": "paired-13-mojo"
+    },
+    {
+      "run": 14,
+      "mode": "mojo",
+      "decode_ns": 294941110,
+      "tokens_per_second": 54.2481175309878,
+      "peaks": {
+        "cpu_C": 64.0,
+        "gpu_C": 71,
+        "platform_C": 58.05
+      },
+      "raw": "paired-14-mojo"
+    },
+    {
+      "run": 15,
+      "mode": "cuda",
+      "decode_ns": 325633494,
+      "tokens_per_second": 49.134994694372566,
+      "peaks": {
+        "cpu_C": 72.0,
+        "gpu_C": 71,
+        "platform_C": 58.05
+      },
+      "raw": "paired-15-cuda"
+    }
+  ],
+  "cycles": [
+    {
+      "cycle": 0,
+      "cuda_over_mojo_mean_latency": 1.3377899162260198
+    },
+    {
+      "cycle": 1,
+      "cuda_over_mojo_mean_latency": 0.8903039443882329
+    },
+    {
+      "cycle": 2,
+      "cuda_over_mojo_mean_latency": 1.0722003209612985
+    },
+    {
+      "cycle": 3,
+      "cuda_over_mojo_mean_latency": 1.0293634492536585
+    }
+  ],
+  "median_tokens_per_second": {
+    "cuda": 48.41609038129093,
+    "mojo": 51.926326500195955
+  },
+  "pooled_median_ratio": 1.072501436841779
+}

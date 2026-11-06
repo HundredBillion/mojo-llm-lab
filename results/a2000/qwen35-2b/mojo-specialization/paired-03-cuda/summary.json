@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "scope": "Host-launch observation only; includes capture/warmup and excludes graph replay counts. No throughput claim.",
+  "versions": {
+    "engine_revision": "cd959bae99ff4bed22bef2604f45241c09bbb8c8",
+    "engine_release": "b12110",
+    "archive": "llama-b12110-bin-ubuntu-cuda-12.8-x64.tar.gz",
+    "archive_sha256": "4af1e1da23661db4a5b84b29aae16ebc053df689c5b8b1427c4670f2c6406d8c",
+    "archive_bytes": 187314621,
+    "cuda_image": "nvidia/cuda@sha256:520292dbb4f755fd360766059e62956e9379485d9e073bbd2f6e3c20c270ed66",
+    "header_sha256": {
+      "ggml.h": "1aef7a5f465b1c19de305dd6f9a0c303f88e485133a94b9a0ee1cce6345c9101",
+      "ggml-backend.h": "34464da4b46314c710cd634626578c6f2a6811431d41eddaf5e8aa77082fea2a",
+      "ggml-alloc.h": "d114067f9099c4a0e2bbc0625c676d4894d9cf0ea27168ee072c7de0e71bb51d",
+      "ggml-cuda.h": "9cbfcea49f6da4d07f41dc22fa8dbf870825faaa2a68e34e65fe30ea6c41e042"
+    },
+    "mojo": "1.2.0",
+    "max": "26.7.0"
+  },
+  "observer_sha256": "901b486bacab97ebc5acb4a6a5b4478fd28f404e4955332a2119fd9a16c042d3",
+  "model_name": "Qwen3.5-2B-Q4_K_M.gguf",
+  "model_bytes": 1280835840,
+  "model_sha256": null,
+  "cpu_quota_percent": 20,
+  "generation_tokens": 16,
+  "wait_library_sha256": "98305c9070106bded855c6a6502150a28fbad99c1025ef37f1f6ff8fd0ac9d0c",
+  "shape": "qwen35-2b",
+  "cuda_graphs_enabled": true,
+  "samples_ns": [
+    340551193
+  ],
+  "samples_ts": [
+    46.9827
+  ],
+  "target_launch_calls": 96,
+  "observations": [
+    "mojo_observer api=launch match=1 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2",
+    "mojo_observer api=launch match=2 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2",
+    "mojo_observer api=launch match=3 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2",
+    "mojo_observer api=launch match=4 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2"
+  ],
+  "peaks": {
+    "cpu_C": 68.0,
+    "gpu_C": 72,
+    "platform_C": 59.05
+  }
+}
