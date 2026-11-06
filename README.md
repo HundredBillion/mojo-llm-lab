@@ -4,6 +4,8 @@ Experiments in making local LLM inference faster with Mojo GPU kernels, reproduc
 
 The first result is a fused RMSNorm, learned scale and IMROPE operation for one Q tensor. It runs about **1.92× faster than llama.cpp b12110 for this isolated operation** on an RTX A2000 Laptop GPU. There is no measured end-to-end LLM speedup or energy saving yet.
 
+The fused Q4_K gate/up candidate now has three matched operation runs measuring **1.22–1.26× faster** than the fused CUDA baseline on the A2000. **Whole-model replacement fails a generated-JSON quality check**, despite passing intermediate numerical tolerances. See [the reproducible evidence and rejected integration result](docs/a2000-kernel-proof.md). It is experimental and remains disabled by default.
+
 ## Recorded result
 
 Median GPU microseconds per operation, with 16 samples per arm:

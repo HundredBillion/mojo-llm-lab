@@ -1,0 +1,28 @@
+0.00.699.457 I llama_completion: llama backend init
+0.00.699.483 I llama_completion: load the model and apply lora adapter, if any
+0.05.834.472 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.09.529.280 I cmn          init: llama threadpool init, n_threads = 2
+mojo_observer api=launch match=1 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+0.10.154.227 I 
+0.10.154.351 I system_info: n_threads = 2 (n_threads_batch = 2) / 16 | CUDA : ARCHS = 500,610,700,750,800,860,890,900,1200 | USE_GRAPHS = 1 | FA_QUANTS = q4_0-q4_0,q8_0-q8_0,f16-f16,bf16-bf16 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.10.154.351 I 
+0.10.154.741 I sampler seed: 4294967295
+0.10.154.761 I sampler params: 
+0.10.154.780 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> greedy 
+0.10.154.781 I generate: n_ctx = 512, n_batch = 32, n_predict = 32, n_keep = 0
+0.10.154.781 I 
+mojo_observer api=launch match=2 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=3 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=4 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+0.11.204.926 I common_perf_print:    sampling time =      48.12 ms
+0.11.204.929 I common_perf_print:    samplers time =      17.88 ms /    59 tokens
+0.11.204.937 I common_perf_print:        load time =    5429.11 ms
+0.11.204.941 I common_perf_print: prompt eval time =     395.07 ms /    40 tokens (    9.88 ms per token,   101.25 tokens per second)
+0.11.204.944 I common_perf_print:        eval time =     596.90 ms /    18 runs   (   33.16 ms per token,    30.16 tokens per second)
+0.11.204.945 I common_perf_print:       total time =    1050.72 ms /    58 tokens
+0.11.204.947 I common_perf_print: unaccounted time =      10.64 ms /   1.0 %      (total - sampling - prompt eval - eval) / (total)
+0.11.204.947 I common_perf_print:    graphs reused =         17
+0.11.204.948 I common_perf_print:   graph reallocs =          0    /     0        (same size) / (changed size)
+mojo_replacement calls=0 captured_calls=0
+mojo_validation eligible_calls=75 validated_calls=0 outputs=CUDA
+mojo_observer target_launch_calls=75 mode=host_launches

@@ -1,0 +1,7 @@
+mojo_observer api=launch match=1 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=2 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=3 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=4 width=2560 rows=9728 weight_stride=10 activation_stride=80 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_replacement calls=72 captured_calls=36
+mojo_validation eligible_calls=72 validated_calls=0 outputs=Mojo
+mojo_observer target_launch_calls=72 mode=host_launches

@@ -1,0 +1,66 @@
+{
+  "scope": "Isolated fused gate/up plus matched activation quantization; not whole-model throughput.",
+  "runs": [
+    {
+      "run": "q4-gate-order",
+      "cuda_median_us": 267.67997749999995,
+      "mojo_median_us": 219.0719985,
+      "median_speed_ratio": 1.2218812962533865,
+      "control_ratio": 0.9987256853488187,
+      "paired_round_ratios": [
+        1.2454988732798498,
+        1.236386424385732,
+        1.228912213097552,
+        1.207826992452801,
+        1.2502142494538326,
+        1.206739917628546,
+        1.2322462036119106,
+        1.1936258762772376
+      ],
+      "paired_geometric_mean": 1.225034654492347,
+      "control_paired_geometric_mean": 0.9983469110170985
+    },
+    {
+      "run": "q4-gate-order-repeat",
+      "cuda_median_us": 270.46398899999997,
+      "mojo_median_us": 221.5839995,
+      "median_speed_ratio": 1.2205934977719362,
+      "control_ratio": 1.0077805775573128,
+      "paired_round_ratios": [
+        1.3087470252891418,
+        1.2285603103694156,
+        1.2690478584616933,
+        1.233730395834161,
+        1.1785906249551819,
+        1.215982736756525,
+        1.258436487754931,
+        1.2062522498594528
+      ],
+      "paired_geometric_mean": 1.2368407500510112,
+      "control_paired_geometric_mean": 1.0024825550518839
+    },
+    {
+      "run": "q4-pr-proof",
+      "cuda_median_us": 248.9280015,
+      "mojo_median_us": 197.82398999999998,
+      "median_speed_ratio": 1.2583307085252906,
+      "control_ratio": 1.001171295822875,
+      "paired_round_ratios": [
+        1.18630560800896,
+        1.246787150079743,
+        1.2854332285518775,
+        1.1632755996436037,
+        1.253545255869524,
+        1.2539207260824266,
+        1.2330356059684662,
+        1.2600292524269168
+      ],
+      "paired_geometric_mean": 1.2346985076780261,
+      "control_paired_geometric_mean": 1.004464182610359
+    }
+  ],
+  "paired_rounds": 24,
+  "rounds_favoring_mojo": 24,
+  "minimum_round_ratio": 1.1632755996436037,
+  "limitation": "Within-run rounds are correlated; no independence assumption or universal speed guarantee."
+}

@@ -1,5 +1,7 @@
 # Whole-model integration: real-input validation
 
+**Update:** The later replacement runs exposed a generated-output regression. See [kernel proof and model-quality gate](a2000-kernel-proof.md) before interpreting the earlier validation results below. Production use is not qualified.
+
 A guarded 16-token Qwen3VL-4B decode completed with a preload observer that **forwarded every kernel unchanged to CUDA**. It observed 72 host calls to the exact fused Q4_K specialization used by the microbenchmark. No Mojo model-kernel replacement or end-to-end speedup has been demonstrated yet.
 
 ## New: real-input differential validation

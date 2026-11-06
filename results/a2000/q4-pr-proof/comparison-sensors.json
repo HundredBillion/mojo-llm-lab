@@ -1,0 +1,218 @@
+[
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 58,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 60,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 60,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 56.0,
+    "gpu_C": 60,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 60,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 60,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 61,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 61,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 61,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 61,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 62,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 62,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 60.0,
+    "gpu_C": 62,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 62,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 62,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 67,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 67,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 67,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 67,
+    "platform_C": 55.05,
+    "ac": true
+  },
+  {
+    "cpu_C": 58.0,
+    "gpu_C": 66,
+    "platform_C": 55.05,
+    "ac": true
+  }
+]

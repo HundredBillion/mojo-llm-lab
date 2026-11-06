@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from run_launch_observer import validation_result
+from run_launch_observer import validation_result, replacement_result, parse_arguments
 
 class ValidationEvidenceTests(unittest.TestCase):
     def log(self):
@@ -35,3 +35,29 @@ class ValidationEvidenceTests(unittest.TestCase):
     def test_wrong_rows(self):
         with self.assertRaises(RuntimeError):
             validation_result(self.log().replace('rows=9728','rows=64'),2)
+
+    def test_feedback_must_cover_every_eligible_call(self):
+        text=self.log().replace('outputs=CUDA','outputs=Mojo')
+        with self.assertRaises(RuntimeError): validation_result(text,2,feedback=True)
+        result=validation_result(text.replace('eligible_calls=4','eligible_calls=2'),2,feedback=True)
+        self.assertTrue(result['feedback'])
+        with self.assertRaises(RuntimeError): validation_result(self.log(),2,feedback=True)
+
+    def test_all_calls(self):
+        with self.assertRaises(RuntimeError): validation_result(self.log(),0)
+        self.assertEqual(validation_result(self.log().replace('eligible_calls=4','eligible_calls=2'),0)['validated_calls'],2)
+
+    def test_replacement_capture_evidence(self):
+        self.assertEqual(replacement_result('mojo_replacement calls=72 captured_calls=36',True)['replacement_calls'],72)
+        self.assertEqual(replacement_result('mojo_replacement calls=72 captured_calls=0',False)['replacement_calls'],72)
+        for text,graphs in [('',True),('mojo_replacement calls=72 captured_calls=0',True),
+                            ('mojo_replacement calls=0 captured_calls=0',False),
+                            ('mojo_replacement calls=2 captured_calls=3',True),
+                            ('mojo_replacement calls=72 captured_calls=36',False)]:
+            with self.assertRaises(RuntimeError): replacement_result(text,graphs)
+
+    def test_feedback_defaults_to_all_calls(self):
+        common=['--model','model.gguf','--output','results/local-test','--validate-ptx','candidate.ptx']
+        self.assertEqual(parse_arguments(common).validation_calls,36)
+        self.assertEqual(parse_arguments(common+['--feedback']).validation_calls,0)
+        self.assertEqual(parse_arguments(common+['--feedback','--validation-calls','612']).validation_calls,612)
