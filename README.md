@@ -68,6 +68,8 @@ Broader inputs rejected the preceding `gate-pair` prototype despite its [earlier
 
 Earlier [standalone comparisons](docs/q4-cuda-comparison.md), [layout experiments](docs/q4-layout-experiments.md), [timing diagnostics](docs/q4-timing-diagnostics.md) and [read-only load investigation](docs/q4-readonly.md) document the unsuccessful approaches and remaining limits.
 
+The first [whole-model launch observation](docs/model-integration.md) confirms that real decode calls use the tested layout. It forwards every operation to CUDA; replacement and end-to-end qualification remain pending.
+
 ## Research direction and attribution
 
 The first [whole-model kernel trace](docs/decode-profile.md) attributes 87.8% of summed GPU kernel time in a short synthetic decode to quantized matrix-vector operations. This identifies the next candidate; it is not a measured speedup. The [benchmark contract](docs/benchmark-contract.md) keeps generation throughput and complete PDF latency separate.
