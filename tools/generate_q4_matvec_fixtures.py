@@ -1,4 +1,5 @@
 """Generate synthetic, quantization-matched inputs for the fixed-width prototype."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -11,7 +12,7 @@ sys.path.insert(0, str(ROOT / 'tests'))
 from test_q4_reference import packed_block
 
 
-def fixtures():
+def fixtures(random_quants=False):
     rng = random.Random(42)
     weights = []
     for _ in range(64 * 10):
@@ -22,14 +23,21 @@ def fixtures():
         values = [rng.randrange(-127, 128) for _ in range(32)]
         values[0] = 127
         activations.append(struct.pack('<ee32b', 1/128, sum(values)/128, *values))
+    if random_quants:
+        quant_rng = random.Random(12345)
+        weights = [block[:16] + bytes(quant_rng.randrange(256) for _ in range(128)) for block in weights]
     return {'weights.bin': b''.join(weights), 'activations.bin': b''.join(activations)}
 
 
 def main():
-    directory = ROOT / 'build/q4-matvec'
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT/'build/q4-matvec')
+    parser.add_argument('--random-quants', action='store_true')
+    args = parser.parse_args()
+    directory = args.output
     directory.mkdir(parents=True, exist_ok=True)
-    manifest = {'rows': 64, 'input_width': 2560, 'seed': 42, 'files': {}}
-    for name, payload in fixtures().items():
+    manifest = {'rows': 64, 'input_width': 2560, 'seed': 42, 'random_quants': args.random_quants, 'quant_seed': 12345 if args.random_quants else None, 'files': {}}
+    for name, payload in fixtures(random_quants=args.random_quants).items():
         (directory / name).write_bytes(payload)
         manifest['files'][name] = {'bytes': len(payload), 'sha256': hashlib.sha256(payload).hexdigest()}
     (directory / 'fixtures.json').write_text(json.dumps(manifest, indent=2) + '\n')

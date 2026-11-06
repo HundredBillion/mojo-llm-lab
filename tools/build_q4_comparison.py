@@ -12,8 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--threads', type=int, choices=[32,128], default=32)
+    parser.add_argument('--repetitions', type=int, choices=[32,256], default=32)
+    parser.add_argument('--warmup-pairs', type=int, choices=[2,16], default=2)
+    parser.add_argument('--prepacked', action='store_true')
     args = parser.parse_args()
-    executable = 'q4-compare' + ('-128' if args.threads == 128 else '')
+    executable = 'q4-compare' + ('-128' if args.threads == 128 else '') + ('-split' if args.prepacked else '')
     versions = json.loads((ROOT / 'versions.json').read_text())
     for name, expected in versions['header_sha256'].items():
         if hashlib.sha256((ROOT / 'build/upstream/headers' / name).read_bytes()).hexdigest() != expected:
@@ -27,7 +30,7 @@ def main():
         '--cpu-period', '5000', '--cpu-quota', '1000', '--memory', '1g', '--memory-swap', '1g',
         '--mount', f'type=bind,src={ROOT},dst=/src,readonly',
         '--mount', f'type=bind,src={output},dst=/output', '--entrypoint', 'gcc', versions['cuda_image'],
-        '-O2', f'-DMOJO_THREADS={args.threads}', '-std=gnu11', '-Wall', '-Wextra', '-Werror',
+        '-O2', *(['-DPREPACKED=1'] if args.prepacked else []), f'-DMOJO_THREADS={args.threads}', f'-DREPS={args.repetitions}', f'-DWARMUP_PAIRS={args.warmup_pairs}', '-std=gnu11', '-Wall', '-Wextra', '-Werror',
         '-I/src/build/upstream/headers', '-I/usr/local/cuda/include', '/src/benchmark/q4_compare.c',
         '-L/usr/local/cuda/lib64/stubs', '-lcuda', '-ldl', '-lm', '-rdynamic', '-o', '/output/' + executable,
     ], check=True)

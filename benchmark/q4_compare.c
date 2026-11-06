@@ -30,7 +30,12 @@
     fprintf(stderr, "missing %s\n", #name);                                    \
     return 3;                                                                  \
   }
+#ifndef REPS
 #define REPS 32
+#endif
+#ifndef WARMUP_PAIRS
+#define WARMUP_PAIRS 2
+#endif
 #define ROWS 9728
 #ifndef MOJO_THREADS
 #define MOJO_THREADS 32
@@ -264,6 +269,14 @@ int main(int argc, char **argv) {
   CUgraphNode nodes[2];
   CK(cuGraphGetNodes(captured, nodes, &count));
   CUDA_KERNEL_NODE_PARAMS quant = {0};
+  int mojo_registers = 0, baseline_registers = 0, mojo_local = 0,
+      baseline_local = 0;
+  int mojo_blocks = 0, baseline_blocks = 0;
+  CK(cuFuncGetAttribute(&mojo_registers, CU_FUNC_ATTRIBUTE_NUM_REGS, function));
+  CK(cuFuncGetAttribute(&mojo_local, CU_FUNC_ATTRIBUTE_LOCAL_SIZE_BYTES,
+                        function));
+  CK(cuOccupancyMaxActiveBlocksPerMultiprocessor(&mojo_blocks, function,
+                                                 MOJO_THREADS, 0));
   int found = 0;
   for (size_t i = 0; i < count; i++) {
     CUgraphNodeType type;
@@ -277,6 +290,15 @@ int main(int argc, char **argv) {
     if (strstr(name, "quantize_q8_1")) {
       quant = params;
       found++;
+    } else {
+      CK(cuFuncGetAttribute(&baseline_registers, CU_FUNC_ATTRIBUTE_NUM_REGS,
+                            params.func));
+      CK(cuFuncGetAttribute(&baseline_local, CU_FUNC_ATTRIBUTE_LOCAL_SIZE_BYTES,
+                            params.func));
+      CK(cuOccupancyMaxActiveBlocksPerMultiprocessor(
+          &baseline_blocks, params.func,
+          params.blockDimX * params.blockDimY * params.blockDimZ,
+          params.sharedMemBytes));
     }
   }
   if (found != 1 || !quant.kernelParams)
@@ -294,7 +316,23 @@ int main(int argc, char **argv) {
   CK(cuMemsetD32(out, sentinel, ROWS + 2));
   CK(cuCtxSynchronize());
   CUdeviceptr wp = (CUdeviceptr)a->data, op = out + 4;
+  CUdeviceptr metadata_device = 0, quants_device = 0;
+#ifdef PREPACKED
+  static unsigned char metadata[ROWS * 160], quants[ROWS * 1280];
+  for (int i = 0; i < ROWS * 10; i++) {
+    memcpy(metadata + i * 16, weights + i * 144, 16);
+    memcpy(quants + i * 128, weights + i * 144 + 16, 128);
+  }
+  CK(cuMemAlloc(&metadata_device, sizeof(metadata)));
+  CK(cuMemAlloc(&quants_device, sizeof(quants)));
+  CK(cuMemcpyHtoD(metadata_device, metadata, sizeof(metadata)));
+  CK(cuMemcpyHtoD(quants_device, quants, sizeof(quants)));
+  void *args[] = {&metadata_device, &quants_device, &ap, &op};
+  (void)wp;
+#else
   void *args[] = {&wp, &ap, &op};
+#endif
+  CK(cuCtxSynchronize());
   CUstream stream;
   CK(cuStreamCreate(&stream, CU_STREAM_NON_BLOCKING));
   CUgraph fused;
@@ -317,23 +355,31 @@ int main(int argc, char **argv) {
     CK(cuGraphUpload(groups[i].exec, stream));
     CK(cuStreamSynchronize(stream));
   }
-  for (int j = 0; j < 2; j++)
+  for (int j = 0; j < WARMUP_PAIRS; j++)
     for (int i = 0; i < 2; i++) {
       CK(cuGraphLaunch(groups[i].exec, stream));
       CK(cuStreamSynchronize(stream));
     }
   CK(cuMemcpyDtoH(output, op, sizeof(output)));
   compare(output, reference, "warmup");
-  printf("{\"repetitions_per_graph\":%d,\"baseline_kernel_nodes\":%zu,\"mojo_"
+  printf("{\"mojo_registers\":%d,\"baseline_registers\":%d,\"mojo_local_"
+         "bytes\":%d,\"baseline_local_bytes\":%d,\"mojo_max_blocks_per_sm\":%d,"
+         "\"baseline_max_blocks_per_sm\":%d,\"warmup_pairs\":%d,\"repetitions_"
+         "per_graph\":%d,\"baseline_kernel_"
+         "nodes\":%zu,\"mojo_"
          "kernel_nodes\":%zu,\"context_flags\":%u,\"same_graph_control\":%s,"
          "\"samples\":[",
-         REPS, baseline_kernels, fused_kernels, flags,
-         control ? "true" : "false");
+         mojo_registers, baseline_registers, mojo_local, baseline_local,
+         mojo_blocks, baseline_blocks, WARMUP_PAIRS, REPS, baseline_kernels,
+         fused_kernels, flags, control ? "true" : "false");
   int first = 1;
   const int abba[] = {0, 1, 1, 0};
   for (int round = 0; round < 8; round++)
     for (int slot = 0; slot < 4; slot++) {
       int mode = abba[slot], selected = control ? 0 : mode;
+      unsigned memory_before = 0, sm_before = 0;
+      if (nvclock(nvdev, 2, &memory_before) || nvclock(nvdev, 1, &sm_before))
+        return 14;
       double wall = clock_seconds(CLOCK_MONOTONIC),
              cpu = clock_seconds(CLOCK_PROCESS_CPUTIME_ID);
       CK(cuGraphLaunch(groups[selected].exec, stream));
@@ -345,13 +391,17 @@ int main(int argc, char **argv) {
                             groups[selected].stop));
       if (!(ms > 0) || !isfinite(ms))
         return 12;
-      unsigned mhz = 0;
-      if (nvclock(nvdev, 0, &mhz))
+      unsigned mhz = 0, memory_after = 0, sm_after = 0;
+      if (nvclock(nvdev, 0, &mhz) || nvclock(nvdev, 2, &memory_after) ||
+          nvclock(nvdev, 1, &sm_after))
         return 14;
-      printf("%s{\"round\":%d,\"gpu_clock_mhz\":%u,\"mode\":\"%s\",\"gpu_us_"
+      printf("%s{\"round\":%d,\"gpu_clock_mhz\":%u,\"memory_clock_before_mhz\":"
+             "%u,\"memory_clock_after_mhz\":%u,\"sm_clock_before_mhz\":%u,\"sm_"
+             "clock_after_mhz\":%u,\"mode\":\"%s\",\"gpu_us_"
              "per_operation\":%.9g,\"host_wall_us_per_operation\":%.9g,\"host_"
              "cpu_us_per_operation\":%.9g}",
-             first ? "" : ",", round, mhz,
+             first ? "" : ",", round, mhz, memory_before, memory_after,
+             sm_before, sm_after,
              mode ? (control ? "ggml_control" : "mojo") : "ggml",
              ms * 1000 / REPS, wall * 1e6 / REPS, cpu * 1e6 / REPS);
       first = 0;
@@ -373,6 +423,10 @@ int main(int argc, char **argv) {
   CK(cuGraphDestroy(fused));
   CK(cuStreamDestroy(stream));
   CK(cuMemFree(out));
+  if (metadata_device)
+    CK(cuMemFree(metadata_device));
+  if (quants_device)
+    CK(cuMemFree(quants_device));
   CK(cuModuleUnload(module));
   call_ggml_backend_buffer_free(buffer);
   call_ggml_backend_free(backend);

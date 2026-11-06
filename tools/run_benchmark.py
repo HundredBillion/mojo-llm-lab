@@ -13,6 +13,7 @@ import time
 import uuid
 
 from validate_ptx import validate_ptx
+from benchmark_statistics import paired_abba
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -121,6 +122,7 @@ def run_case(args, sensors, versions, ptx, entry, label, case, control, *,
         result = json.loads((out / f'{label}.stdout').read_text())
         if result.get('correct') is not True or result.get('red_zones') != 'intact' or len(result['samples']) != 32:
             raise RuntimeError('Incomplete or incorrect benchmark result')
+        result['paired_abba'] = paired_abba(result['samples'], 'ggml_control' if control else 'mojo')
         (out / f'{label}.json').write_text(json.dumps(result, indent=2) + '\n')
         medians = {mode: statistics.median(s['gpu_us_per_operation'] for s in result['samples'] if s['mode'] == mode)
                    for mode in {s['mode'] for s in result['samples']}}

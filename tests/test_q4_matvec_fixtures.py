@@ -13,6 +13,16 @@ class MatvecFixtureTests(unittest.TestCase):
                     'activations.bin': 'dbff591fcb974ae950824639629c928f29ac3c2c859ceb038e741373d5328c4e'}
         self.assertEqual({name:hashlib.sha256(data).hexdigest() for name,data in fixtures().items()},expected)
 
+    def test_varied_quants_preserve_metadata_and_activation_contract(self):
+        original=fixtures(); varied=fixtures(random_quants=True)
+        self.assertEqual(original['activations.bin'],varied['activations.bin'])
+        chunks=[]
+        for start in range(0,len(original['weights.bin']),144):
+            self.assertEqual(original['weights.bin'][start:start+16],varied['weights.bin'][start:start+16])
+            chunks.append(varied['weights.bin'][start+16:start+144])
+        self.assertEqual(len(set(chunks)),640)
+        self.assertEqual(set(b for chunk in chunks for b in chunk),set(range(256)))
+
     def test_cuda_quantization_reproduces_input_blocks(self):
         payload=fixtures()['activations.bin']
         for start in range(0,len(payload),36):

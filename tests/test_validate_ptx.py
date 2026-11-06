@@ -13,6 +13,7 @@ class PtxValidationTests(unittest.TestCase):
 
     def test_three_pointer_abi_requires_explicit_selection(self):
         self.assertEqual(validate_ptx(sample(3), expected_parameters=3), 'probe')
+        self.assertEqual(validate_ptx(sample(4), expected_parameters=4), 'probe')
         for text in (sample(5), sample(3).replace('p2','p0')):
             with self.assertRaises(ValueError):
                 validate_ptx(text, expected_parameters=3)

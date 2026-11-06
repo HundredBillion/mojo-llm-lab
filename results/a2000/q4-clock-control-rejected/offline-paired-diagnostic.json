@@ -1,0 +1,16 @@
+{
+  "control": {
+    "baseline_over_candidate_round_ratios": [
+      0.999660182770325,
+      0.9995036224649815,
+      0.9917477817303088,
+      1.0026516064513424,
+      0.9233070145401303,
+      0.9999827897309908,
+      1.0008253137930938,
+      0.9959782077004395
+    ],
+    "geometric_mean_ratio": 0.9888760406379534,
+    "scope": "Paired diagnostic only; does not override control rejection or establish stationarity."
+  }
+}

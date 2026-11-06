@@ -1,0 +1,30 @@
+{
+  "control": {
+    "baseline_over_candidate_round_ratios": [
+      0.9357574664845082,
+      1.0619865570933091,
+      0.9997039415302748,
+      0.9998611086995778,
+      1.0050921401709265,
+      1.0002848013259755,
+      0.9976921157871547,
+      1.0009996082402772
+    ],
+    "geometric_mean_ratio": 0.9996700351542466,
+    "scope": "Paired diagnostic only; does not override control rejection or establish stationarity."
+  },
+  "comparison": {
+    "baseline_over_candidate_round_ratios": [
+      0.8819197342948274,
+      1.0027121037319708,
+      0.9538059859040707,
+      0.8893076224150019,
+      0.8851467769641838,
+      0.8939609346387836,
+      0.8875366178577317,
+      0.8865404837565192
+    ],
+    "geometric_mean_ratio": 0.9092158704646508,
+    "scope": "Paired diagnostic only; does not override control rejection or establish stationarity."
+  }
+}
