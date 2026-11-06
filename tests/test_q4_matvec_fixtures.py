@@ -5,6 +5,7 @@ import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from generate_q4_matvec_fixtures import fixtures
+from q4_reference import dot_q4_q8
 
 
 class MatvecFixtureTests(unittest.TestCase):
@@ -31,3 +32,21 @@ class MatvecFixtureTests(unittest.TestCase):
             self.assertEqual(max(map(abs,floats))/127,delta)
             self.assertEqual([round(v/delta) for v in floats],values)
             self.assertEqual(total,sum(floats))
+
+
+class GateFixtureTests(unittest.TestCase):
+    def test_distinct_gate_weights_cover_nonlinear_regions(self):
+        baseline = fixtures(random_quants=True)
+        fused = fixtures(random_quants=True, gate_up=True)
+        self.assertEqual(fused['weights.bin'], baseline['weights.bin'])
+        self.assertEqual(fused['activations.bin'], baseline['activations.bin'])
+        self.assertEqual(len(fused['gate.bin']), len(fused['weights.bin']))
+        self.assertNotEqual(fused['gate.bin'], fused['weights.bin'])
+        values = [dot_q4_q8(fused['gate.bin'][i*1440:(i+1)*1440], fused['activations.bin']) for i in range(64)]
+        self.assertEqual(values[0], 0)
+        self.assertGreater(abs(dot_q4_q8(fused['weights.bin'][:1440], fused['activations.bin'])), 1)
+        self.assertTrue(any(v == 0 for v in values))
+        self.assertTrue(any(0 < v < 1 for v in values))
+        self.assertTrue(any(-1 < v < 0 for v in values))
+        self.assertTrue(any(v > 10 for v in values))
+        self.assertTrue(any(v < -10 for v in values))

@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / 'tests'))
 from test_q4_reference import packed_block
 
 
-def fixtures(random_quants=False):
+def fixtures(random_quants=False, gate_up=False):
     rng = random.Random(42)
     weights = []
     for _ in range(64 * 10):
@@ -26,18 +26,28 @@ def fixtures(random_quants=False):
     if random_quants:
         quant_rng = random.Random(12345)
         weights = [block[:16] + bytes(quant_rng.randrange(256) for _ in range(128)) for block in weights]
-    return {'weights.bin': b''.join(weights), 'activations.bin': b''.join(activations)}
+    result = {'weights.bin': b''.join(weights), 'activations.bin': b''.join(activations)}
+    if gate_up:
+        gate_rng = random.Random(54321)
+        gate = []
+        for index, block in enumerate(weights):
+            factor = (0, 1, -1, 1/16, -1/16, 8, -8, 1)[(index // 10) % 8]
+            gate.append(struct.pack('<ee', factor/8192, factor/16384) + block[4:16] +
+                        bytes(gate_rng.randrange(256) for _ in range(128)))
+        result['gate.bin'] = b''.join(gate)
+    return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT/'build/q4-matvec')
     parser.add_argument('--random-quants', action='store_true')
+    parser.add_argument('--gate-up', action='store_true')
     args = parser.parse_args()
     directory = args.output
     directory.mkdir(parents=True, exist_ok=True)
-    manifest = {'rows': 64, 'input_width': 2560, 'seed': 42, 'random_quants': args.random_quants, 'quant_seed': 12345 if args.random_quants else None, 'files': {}}
-    for name, payload in fixtures(random_quants=args.random_quants).items():
+    manifest = {'rows': 64, 'input_width': 2560, 'seed': 42, 'random_quants': args.random_quants, 'gate_up': args.gate_up, 'gate_seed': 54321 if args.gate_up else None, 'quant_seed': 12345 if args.random_quants else None, 'files': {}}
+    for name, payload in fixtures(random_quants=args.random_quants, gate_up=args.gate_up).items():
         (directory / name).write_bytes(payload)
         manifest['files'][name] = {'bytes': len(payload), 'sha256': hashlib.sha256(payload).hexdigest()}
     (directory / 'fixtures.json').write_text(json.dumps(manifest, indent=2) + '\n')

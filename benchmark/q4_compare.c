@@ -164,6 +164,9 @@ int main(int argc, char **argv) {
   LOAD(ggml_free);
   LOAD(ggml_new_tensor_2d);
   LOAD(ggml_mul_mat);
+#ifdef GATE_UP
+  LOAD(ggml_swiglu_split);
+#endif
   LOAD(ggml_new_graph_custom);
   LOAD(ggml_build_forward_expand);
   LOAD(ggml_backend_cuda_init);
@@ -186,6 +189,19 @@ int main(int argc, char **argv) {
     return 4;
   for (int tile = 1; tile < 152; tile++)
     memcpy(weights + tile * 64 * 1440, weights, 64 * 1440);
+#ifdef GATE_UP
+  static unsigned char gate_weights[ROWS * 1440];
+  snprintf(path, sizeof(path), "%s/gate.bin", argv[1]);
+  in = fopen(path, "rb");
+  if (!in)
+    return 4;
+  valid = fread(gate_weights, 1, 64 * 1440, in) == 64 * 1440 && fgetc(in) == EOF;
+  fclose(in);
+  if (!valid)
+    return 4;
+  for (int tile = 1; tile < 152; tile++)
+    memcpy(gate_weights + tile * 64 * 1440, gate_weights, 64 * 1440);
+#endif
   snprintf(path, sizeof(path), "%s/activations.bin", argv[1]);
   in = fopen(path, "rb");
   if (!in)
@@ -230,6 +246,11 @@ int main(int argc, char **argv) {
       call_ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_K, 2560, ROWS);
   struct ggml_tensor *b = call_ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 2560, 1);
   struct ggml_tensor *result = call_ggml_mul_mat(ctx, a, b);
+#ifdef GATE_UP
+  struct ggml_tensor *gate = call_ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_K, 2560, ROWS);
+  struct ggml_tensor *gate_result = call_ggml_mul_mat(ctx, gate, b);
+  result = call_ggml_swiglu_split(ctx, gate_result, result);
+#endif
   struct ggml_cgraph *graph = call_ggml_new_graph_custom(ctx, 64, false);
   call_ggml_build_forward_expand(graph, result);
   ggml_backend_buffer_t buffer =
@@ -245,6 +266,9 @@ int main(int argc, char **argv) {
 
   call_ggml_backend_tensor_set(a, weights, 0, sizeof(weights));
   call_ggml_backend_tensor_set(b, input, 0, sizeof(input));
+#ifdef GATE_UP
+  call_ggml_backend_tensor_set(gate, gate_weights, 0, sizeof(gate_weights));
+#endif
   armed = 1;
   for (int i = 0; i < 4; i++)
     if (call_ggml_backend_graph_compute(backend, graph))
@@ -291,6 +315,13 @@ int main(int argc, char **argv) {
       quant = params;
       found++;
     } else {
+      fprintf(stderr, "baseline kernel: %s\n", name);
+#ifdef GATE_UP
+      if (!strstr(name, "mul_mat_vec_q") || !strstr(name, "Li1ELb1E")) {
+        fprintf(stderr, "Expected fused quantized matvec specialization\n");
+        return 16;
+      }
+#endif
       CK(cuFuncGetAttribute(&baseline_registers, CU_FUNC_ATTRIBUTE_NUM_REGS,
                             params.func));
       CK(cuFuncGetAttribute(&baseline_local, CU_FUNC_ATTRIBUTE_LOCAL_SIZE_BYTES,
@@ -330,7 +361,12 @@ int main(int argc, char **argv) {
   void *args[] = {&metadata_device, &quants_device, &ap, &op};
   (void)wp;
 #else
+#ifdef GATE_UP
+  CUdeviceptr gp = (CUdeviceptr)gate->data;
+  void *args[] = {&wp, &gp, &ap, &op};
+#else
   void *args[] = {&wp, &ap, &op};
+#endif
 #endif
   CK(cuCtxSynchronize());
   CUstream stream;

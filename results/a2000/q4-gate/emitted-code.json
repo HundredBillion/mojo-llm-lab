@@ -1,0 +1,14 @@
+{
+  "rejected_vector": {
+    "ptx_sha256": "d98501182b12981d864ed06698b88e3e85348eefa43499e0ead9efeae0be638e",
+    "block_barriers": 2,
+    "shared_load_instructions": 1,
+    "shared_store_instructions": 1
+  },
+  "scalar_reductions": {
+    "ptx_sha256": "2ec277434c85c91366e04782718a8444eb396b2e2ff933171c795c39c51950f9",
+    "block_barriers": 4,
+    "shared_load_instructions": 2,
+    "shared_store_instructions": 2
+  }
+}
