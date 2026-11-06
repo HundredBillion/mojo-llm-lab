@@ -66,7 +66,7 @@ def main():
      for graph in graphs:fn('cuGraphDestroy',[ptr])(graph)
      for event in events:fn('cuEventDestroy_v2',[ptr])(event)
      for mod in modules:unload(mod)
-    
+
     finally:
      if module.value:unload(module)
      if activation.value:free(activation)
