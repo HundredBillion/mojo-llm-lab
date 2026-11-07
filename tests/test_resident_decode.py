@@ -81,3 +81,20 @@ class CleanupTests(unittest.TestCase):
         self.assertEqual(errors,['daemon unavailable'])
         client.terminate.assert_called_once();client.wait.assert_called_once()
         logger.terminate.assert_called_once();logger.wait.assert_called_once()
+
+
+class ResidentCapabilityTests(unittest.TestCase):
+    def test_long_trial_requires_full_fixture_and_worker_support(self):
+        from run_resident_decode import validate_ready
+        row=dict(ready=True,prime_tokens=2,mojo_arm=1,max_timed_tokens=128,fixture_tokens=138)
+        validate_ready(row,2,1,128)
+        for change in (dict(fixture_tokens=137),dict(max_timed_tokens=32),dict(fixture_tokens=True),
+                       dict(prime_tokens=1),dict(mojo_arm=0),dict(ready=False)):
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                validate_ready({**row,**change},2,1,128)
+        del row['max_timed_tokens']
+        with self.assertRaises(ValueError):validate_ready(row,2,1,128)
+
+    def test_short_trial_remains_supported_by_new_worker(self):
+        from run_resident_decode import validate_ready
+        validate_ready(dict(ready=True,prime_tokens=0,mojo_arm=0,max_timed_tokens=128,fixture_tokens=138),0,0,16)

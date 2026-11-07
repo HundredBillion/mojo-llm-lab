@@ -70,14 +70,20 @@ int main(int argc,char **argv) try {
     if (!contexts[0] || !contexts[1]) throw std::runtime_error("context creation failed");
     for (auto *ctx:contexts) llama_attach_threadpool(ctx,pool,pool);
     const auto *vocab=llama_model_get_vocab(model);
-    const std::string text="Invoice for Oak Street Bakery. The statement lists coffee, rent, supplies and tax. The total amount includes all transactions. Review the business name and total carefully. Invoice for Oak Street Bakery. The statement lists coffee, rent, supplies and tax.";
-    std::vector<llama_token> tokens(256);
+    const std::string original_text="Invoice for Oak Street Bakery. The statement lists coffee, rent, supplies and tax. The total amount includes all transactions. Review the business name and total carefully. Invoice for Oak Street Bakery. The statement lists coffee, rent, supplies and tax.";
+    std::vector<llama_token> original_tokens(256);
+    const int original_n=llama_tokenize(vocab,original_text.data(),original_text.size(),original_tokens.data(),original_tokens.size(),true,true);
+    if (original_n<42) throw std::runtime_error("original fixture tokenization failed");
+    std::string text=original_text;
+    for (int repeat=1;repeat<8;++repeat) text+=" "+original_text;
+    std::vector<llama_token> tokens(1024);
     int n=llama_tokenize(vocab,text.data(),text.size(),tokens.data(),tokens.size(),true,true);
-    if (n<40) throw std::runtime_error("fixture tokenization failed");
-    std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << ",\"prime_tokens\":" << prime_tokens << ",\"mojo_arm\":" << mojo_arm << "}" << std::endl;
+    if (n<138 || !std::equal(original_tokens.begin(),original_tokens.begin()+42,tokens.begin()))
+        throw std::runtime_error("extended fixture capacity or prefix mismatch");
+    std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << ",\"max_timed_tokens\":128,\"prime_tokens\":" << prime_tokens << ",\"mojo_arm\":" << mojo_arm << "}" << std::endl;
     int arm,steps; int trial=0;
     while (std::cin >> arm >> steps) {
-        if (arm<0 || arm>1 || steps<1 || steps>32 || 8+prime_tokens+steps>n) throw std::runtime_error("invalid trial");
+        if (arm<0 || arm>1 || steps<1 || steps>128 || 8+prime_tokens+steps>n) throw std::runtime_error("invalid trial");
         auto *ctx=contexts[arm]; select(arm);
         llama_memory_clear(llama_get_memory(ctx),true);
         if (llama_decode(ctx,llama_batch_get_one(tokens.data(),8))) throw std::runtime_error("prefill failed");

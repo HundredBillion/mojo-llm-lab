@@ -17,6 +17,18 @@ from cuda_wait_policy import verify_wait_policy
 ROOT=Path(__file__).resolve().parents[1]
 
 
+def validate_ready(row, prime_tokens, mojo_arm, tokens):
+    if row.get('ready') is not True:
+        raise ValueError('Missing ready handshake')
+    for key, expected in (('prime_tokens', prime_tokens), ('mojo_arm', mojo_arm)):
+        if type(row.get(key)) is not int or row[key] != expected:
+            raise ValueError('Worker capability mismatch: '+key)
+    if type(row.get('max_timed_tokens')) is not int or row['max_timed_tokens'] < tokens:
+        raise ValueError('Worker does not support requested timed tokens')
+    if type(row.get('fixture_tokens')) is not int or row['fixture_tokens'] < 8+prime_tokens+tokens:
+        raise ValueError('Worker fixture is too short')
+
+
 def validate_trial(row, arm, previous, mode, tokens=32, prime_tokens=0, mojo_arm=1):
     if type(row.get('mojo_arm')) is not int or row['mojo_arm']!=mojo_arm:
         raise ValueError('Candidate context mismatch')
@@ -48,7 +60,7 @@ def main():
     p.add_argument('--model',type=Path,required=True)
     p.add_argument('--ptx',type=Path,required=True)
     p.add_argument('--wait-library',type=Path,required=True)
-    p.add_argument('--tokens',type=int,choices=[16,32],default=16)
+    p.add_argument('--tokens',type=int,choices=[16,32,128],default=16)
     p.add_argument('--cycles',type=int,choices=[1,2],default=1)
     p.add_argument('--cpu-quota-us',type=int,choices=[1000,2000],default=1000,
                    help='Experimental container CPU quota per 5000us period; default unchanged')
@@ -108,8 +120,8 @@ def main():
                         return json.loads(line)
                 raise RuntimeError('Worker deadline')
             ready=receive()
-            if ready.get('ready') is not True or type(ready.get('prime_tokens')) is not int or ready['prime_tokens']!=a.prime_tokens:raise RuntimeError('Missing ready handshake')
-            if type(ready.get('mojo_arm')) is not int or ready['mojo_arm']!=a.mojo_arm:raise RuntimeError('Candidate context handshake mismatch')
+            validate_ready(ready,a.prime_tokens,a.mojo_arm,a.tokens)
+            result['worker_capabilities']=ready
             cold_gate(sensor)
             previous=0
             for index,arm in enumerate([0,1]+[0,1,1,0]*a.cycles):
