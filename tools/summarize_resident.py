@@ -7,6 +7,8 @@ import statistics
 
 def summarize(path):
     result=json.loads(path.read_text())
+    if result.get('validation_only') or result.get('protocol')=='resident-logit-validation-v1':
+        raise ValueError('Numerical validation timings are not performance evidence')
     if result['status']!='passed':raise ValueError('Incomplete/failed run')
     rows=result['trials'];cycles=result.get('cycles',2);tokens=result.get('tokens',32)
     if [r['arm'] for r in rows]!=[0,1]+[0,1,1,0]*cycles or [r['warmup'] for r in rows]!=[True,True]+[False]*(4*cycles):

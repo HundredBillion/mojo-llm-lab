@@ -11,6 +11,7 @@ case "${1:-}" in
   packed) variant=q4-packed; source=q4_k_q8_1_matvec_packed.mojo ;;
   gate-order-2b-64) variant=q4-gate-order-2b-64; source=q4_k_q8_1_gate_order_2b_64.mojo ;;
   gate-order-2b-256) variant=q4-gate-order-2b-256; source=q4_k_q8_1_gate_order_2b_256.mojo ;;
+  gate-order-2b-fastdiv) variant=q4-gate-order-2b-fastdiv; source=q4_k_q8_1_gate_order_2b_fastdiv.mojo ;;
   gate-order-2b) variant=q4-gate-order-2b; source=q4_k_q8_1_gate_order_2b.mojo ;;
   gate-order) variant=q4-gate-order; source=q4_k_q8_1_gate_order.mojo ;;
   gate-pair) variant=q4-gate-pair; source=q4_k_q8_1_gate_pair.mojo ;;

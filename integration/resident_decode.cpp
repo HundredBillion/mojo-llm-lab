@@ -1,5 +1,8 @@
 #include "llama.h"
 #include "ggml-backend.h"
+#ifdef MOJO_VALIDATE_LOGITS
+#include "logit_validation.h"
+#endif
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -81,22 +84,52 @@ int main(int argc,char **argv) try {
     if (n<138 || !std::equal(original_tokens.begin(),original_tokens.begin()+42,tokens.begin()))
         throw std::runtime_error("extended fixture capacity or prefix mismatch");
     std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << ",\"max_timed_tokens\":128,\"prime_tokens\":" << prime_tokens << ",\"mojo_arm\":" << mojo_arm << "}" << std::endl;
+#ifdef MOJO_VALIDATE_LOGITS
+    if (mode!="mojo") throw std::runtime_error("logit validation requires Mojo comparison");
+    const int validation_vocab=llama_vocab_n_tokens(vocab);
+    if (validation_vocab<=0) throw std::runtime_error("invalid validation vocabulary");
+    LogitValidation validation(validation_vocab);
+    int validation_steps=-1;
+    size_t candidate_trials=0,cuda_trials=0;
+    auto observe_logits=[&](llama_context *ctx,bool candidate,size_t position) {
+        llama_synchronize(ctx);
+        validation.observe(candidate,position,llama_get_logits_ith(ctx,-1),validation_vocab);
+    };
+#endif
     int arm,steps; int trial=0;
     while (std::cin >> arm >> steps) {
         if (arm<0 || arm>1 || steps<1 || steps>128 || 8+prime_tokens+steps>n) throw std::runtime_error("invalid trial");
+#ifdef MOJO_VALIDATE_LOGITS
+        if (validation_steps>=0 && validation_steps!=steps) throw std::runtime_error("validation workload changed");
+        validation_steps=steps;
+        const bool candidate=arm==mojo_arm;
+#endif
         auto *ctx=contexts[arm]; select(arm);
         llama_memory_clear(llama_get_memory(ctx),true);
         if (llama_decode(ctx,llama_batch_get_one(tokens.data(),8))) throw std::runtime_error("prefill failed");
         llama_synchronize(ctx);
+#ifdef MOJO_VALIDATE_LOGITS
+        observe_logits(ctx,candidate,0);
+#endif
         for (int prime=0;prime<prime_tokens;++prime) {
             if (llama_decode(ctx,llama_batch_get_one(tokens.data()+8+prime,1))) throw std::runtime_error("priming decode failed");
             llama_synchronize(ctx);
+#ifdef MOJO_VALIDATE_LOGITS
+            observe_logits(ctx,candidate,1+prime);
+#endif
         }
         const auto calls_before=count(), captures_before=captured();
         const auto before=cpu_stat(); const auto begin=Clock::now();
-        for (int i=0;i<steps;++i)
+        for (int i=0;i<steps;++i) {
             if (llama_decode(ctx,llama_batch_get_one(tokens.data()+8+prime_tokens+i,1))) throw std::runtime_error("decode failed");
+#ifdef MOJO_VALIDATE_LOGITS
+            observe_logits(ctx,candidate,1+prime_tokens+i);
+#endif
+        }
         llama_synchronize(ctx);
+#ifdef MOJO_VALIDATE_LOGITS
+        if (candidate) ++candidate_trials; else ++cuda_trials;
+#endif
         const auto elapsed=ns(begin); const auto after=cpu_stat();
         const auto timed_calls=count()-calls_before, timed_captures=captured()-captures_before;
         const auto *logits=llama_get_logits_ith(ctx,-1);
@@ -117,6 +150,12 @@ int main(int argc,char **argv) try {
                   << ",\"nr_throttled\":" << after.at("nr_throttled")-before.at("nr_throttled")
                   << ",\"throttled_usec\":" << after.at("throttled_usec")-before.at("throttled_usec") << "}" << std::endl;
     }
+#ifdef MOJO_VALIDATE_LOGITS
+    const size_t positions=1+prime_tokens+validation_steps;
+    const bool valid=validation.passed(positions,candidate_trials,cuda_trials);
+    validation.report(stderr,valid,positions);
+    if (!valid) throw std::runtime_error("whole-logit validation failed");
+#endif
     for (auto *ctx:contexts) { llama_detach_threadpool(ctx); llama_free(ctx); }
     free_pool(pool);
     llama_model_free(model); llama_backend_free();

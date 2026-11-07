@@ -1,0 +1,13 @@
+{
+  "watchdog_seconds": 80,
+  "deadline_seconds": 75,
+  "targets": [
+    {
+      "name": "sprite"
+    }
+  ],
+  "started_unix": 1794094333.1335437,
+  "returncode": 1,
+  "pause_seconds": 35.90346006996697,
+  "all_resumed": true
+}

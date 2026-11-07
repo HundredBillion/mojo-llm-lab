@@ -1,0 +1,73 @@
+{
+  "schedule": [
+    [
+      "control",
+      "1"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "control",
+      "1"
+    ]
+  ],
+  "stages": [
+    {
+      "label": "local-long-crossover-00-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794093089.8729064,
+      "ended_unix": 1794093122.865173,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-crossover-01-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794093130.8659484,
+      "ended_unix": 1794093162.9621282,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-crossover-02-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794093170.9629183,
+      "ended_unix": 1794093202.7589884,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-crossover-03-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794093210.75995,
+      "ended_unix": 1794093242.8116643,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-crossover-04-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794093250.812971,
+      "ended_unix": 1794093282.4083748,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-crossover-05-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794093290.409158,
+      "ended_unix": 1794093322.1033967,
+      "fan_window_valid": true
+    }
+  ],
+  "status": "passed"
+}

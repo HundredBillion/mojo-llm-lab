@@ -1,0 +1,6 @@
+{
+  "purpose": "Single-instruction diagnostic, not a compiled Mojo implementation or performance result",
+  "source_sha256": "bdf2c0514a8058d4d8175aef6c2cc6168b78dc6be3f49f8887f37a3af717267b",
+  "candidate_sha256": "217bf17d4260cda870225722cf0025ad5b8029d6992f440f1e49741e981cde33",
+  "replacement": "div.rn.f32 -> div.approx.ftz.f32"
+}

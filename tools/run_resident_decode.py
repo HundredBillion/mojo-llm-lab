@@ -1,6 +1,8 @@
 """Guarded resident fixed-token comparison; not sampled-output or PDF latency."""
 import argparse
 import json
+import math
+import re
 import os
 from pathlib import Path
 import selectors
@@ -55,11 +57,38 @@ def validate_trial(row, arm, previous, mode, tokens=32, prime_tokens=0, mojo_arm
 
 
 
+def validate_logits_report(stderr, tokens, prime_tokens, cycles):
+    matches=re.findall(r'^mojo_logits (\{.*\})$',stderr,re.M)
+    if len(matches)!=1:raise ValueError('Missing or ambiguous logit validation report')
+    report=json.loads(matches[0])
+    positions=1+prime_tokens+tokens
+    vocabulary=report.get('vocabulary')
+    if type(vocabulary) is not int or vocabulary<=0:raise ValueError('Invalid validation vocabulary')
+    expected={'positions':positions,'candidate_positions':(1+2*cycles)*positions,
+              'control_positions':2*cycles*positions}
+    expected.update(candidate_values=expected['candidate_positions']*vocabulary,
+                    control_values=expected['control_positions']*vocabulary)
+    for name,value in expected.items():
+        if type(report.get(name)) is not int or report[name]!=value:raise ValueError('Incomplete logit validation: '+name)
+    if report.get('passed') is not True or report.get('atol')!=1e-4 or report.get('rtol')!=1e-5:
+        raise ValueError('Logit validation failed or tolerance changed')
+    for mode in ('candidate','control'):
+        for suffix in ('violations','top_mismatches'):
+            value=report.get(mode+'_'+suffix)
+            if type(value) is not int or value!=0:raise ValueError('Numerical or top-token mismatch')
+        for suffix in ('max_abs','max_tolerance_ratio'):
+            value=report.get(mode+'_'+suffix)
+            if type(value) not in (int,float) or not math.isfinite(value) or value<0:raise ValueError('Invalid numerical error')
+        if report[mode+'_max_tolerance_ratio']>1:raise ValueError('Numerical tolerance exceeded')
+    return report
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model',type=Path,required=True)
     p.add_argument('--ptx',type=Path,required=True)
     p.add_argument('--wait-library',type=Path,required=True)
+    p.add_argument('--validate-logits',action='store_true',help='Separate numerical-only worker; its timings are not performance evidence')
     p.add_argument('--tokens',type=int,choices=[16,32,128],default=16)
     p.add_argument('--cycles',type=int,choices=[1,2],default=1)
     p.add_argument('--cpu-quota-us',type=int,choices=[1000,2000],default=1000,
@@ -70,7 +99,10 @@ def main():
     p.add_argument('--mojo-arm',type=int,choices=[0,1],default=1)
     p.add_argument('--mode',choices=['control','mojo'],required=True)
     p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args(); out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+    a=p.parse_args()
+    if a.validate_logits and a.mode!='mojo':p.error('--validate-logits requires --mode mojo')
+    worker='resident-logits' if a.validate_logits else 'resident-decode'
+    out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     versions=json.loads((ROOT/'versions.json').read_text())
     entry=validate_model_ptx(a.ptx.read_text(),'qwen35-2b')
     if S.check_output(['nvidia-smi','--query-compute-apps=pid','--format=csv,noheader'],text=True).strip():
@@ -85,22 +117,22 @@ def main():
         '--device','nvidia.com/gpu=0','--user',f'{os.getuid()}:{os.getgid()}',
         '--network','none','--read-only','--tmpfs','/tmp:rw,size=512m','--cap-drop','ALL',
         '--security-opt','no-new-privileges','--cpu-period','5000','--cpu-quota',str(a.cpu_quota_us),
-        '--memory','12g','--memory-swap','12g','--entrypoint','/observer/resident-decode',
+        '--memory','12g','--memory-swap','12g','--entrypoint','/observer/'+worker,
         '-e','LD_LIBRARY_PATH=/app:/usr/local/cuda/lib64',
         '-e','LD_PRELOAD=/observer/observe_launches.so:/wait.so','-e','MOJO_SHAPE=qwen35-2b',
-        '-e','LLAMA_CUDA_WAIT_TARGET=/observer/resident-decode','-e','LLAMA_CUDA_WAIT='+a.cuda_wait,
+        '-e','LLAMA_CUDA_WAIT_TARGET=/observer/'+worker,'-e','LLAMA_CUDA_WAIT='+a.cuda_wait,
         '-e','MOJO_RESIDENT=1','-e','MOJO_CANDIDATE_PTX=/candidate.ptx','-e','MOJO_REPLACE_ENTRY='+entry]
     for src,dst in [(ROOT/'build/upstream/llama-b12110','/app'),(ROOT/'build/integration','/observer'),
                     (a.model,'/model.gguf'),(a.ptx,'/candidate.ptx'),(a.wait_library,'/wait.so')]:
         command+=['--mount',f'type=bind,src={src.resolve()},dst={dst},readonly']
     command += [versions['cuda_image'],'/model.gguf',a.mode,str(a.prime_tokens),str(a.mojo_arm)]
-    result={'status':'failed_or_stopped','mode':a.mode,'versions':versions,'protocol':'resident-block-v2' if a.continuous else 'resident-cooldown-v3','tokens':a.tokens,'cycles':a.cycles,
+    result={'status':'failed_or_stopped','mode':a.mode,'versions':versions,'validation_only':a.validate_logits,'protocol':'resident-logit-validation-v1' if a.validate_logits else 'resident-block-v2' if a.continuous else 'resident-cooldown-v3','tokens':a.tokens,'cycles':a.cycles,
             'mojo_arm':a.mojo_arm,'cuda_wait_requested':a.cuda_wait,'prime_tokens':a.prime_tokens,'cpu_period_us':5000,'cpu_quota_us':a.cpu_quota_us,
             'model_name':a.model.name,'model_bytes':a.model.stat().st_size,
-            'ptx_sha256':digest(a.ptx),'worker_sha256':digest(ROOT/'build/integration/resident-decode'),
+            'ptx_sha256':digest(a.ptx),'worker_sha256':digest(ROOT/'build/integration'/worker),
             'observer_sha256':digest(ROOT/'build/integration/observe_launches.so'),
             'wait_sha256':digest(a.wait_library),'trials':rows,
-            'scope':'Resident fixed-token decode, separate contexts, two warmups then ABBA cycles. Not sampled-output or PDF latency.'}
+            'scope':'Numerical-only comparison at every fixed-fixture position; synchronization/copies invalidate timing.' if a.validate_logits else 'Resident fixed-token decode, separate contexts, two warmups then ABBA cycles. Not sampled-output or PDF latency.'}
     process=None; start=time.monotonic()
     signal.signal(signal.SIGTERM,lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
     try:
@@ -137,6 +169,7 @@ def main():
             if process.returncode:raise RuntimeError('Worker failed')
             if len({r['top_token'] for r in rows})!=1:raise RuntimeError('Fixed-prefix top-token mismatch')
             result['cuda_wait_verified']=verify_wait_policy((out/'stderr.log').read_text(),a.cuda_wait)
+            if a.validate_logits:result['logit_validation']=validate_logits_report((out/'stderr.log').read_text(),a.tokens,a.prime_tokens,a.cycles)
             result['status']='passed'
     except BaseException as error:
         result['error']=str(error)

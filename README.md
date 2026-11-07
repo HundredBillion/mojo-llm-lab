@@ -1,5 +1,7 @@
 # Mojo LLM Lab
 
+Latest: [longer whole-model decode confirmation](docs/long-resident-confirmation.md) passes its timing rule with 1.97–2.43% gains, but the original candidate fails full-logit validation. A source-built division correction now produces exact logits in both context assignments; fresh performance confirmation is pending. This is not yet a qualified end-to-end speedup.
+
 [Alternative-model follow-up](docs/alternative-models.md): Qwen3.5-2B shows memory headroom; chat-format tests pass, but whole-model Mojo timing remains inconclusive.
 
 Experiments in making local LLM inference faster with Mojo GPU kernels, reproducible comparisons and preserved numerical accuracy. The guiding target is **2× faster token generation and complete PDF parsing**, with preserved quality. Any reproducible speed improvement is a success; 2× is not a minimum threshold. Neither end-to-end target has been achieved.

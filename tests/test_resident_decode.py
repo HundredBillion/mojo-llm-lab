@@ -98,3 +98,32 @@ class ResidentCapabilityTests(unittest.TestCase):
     def test_short_trial_remains_supported_by_new_worker(self):
         from run_resident_decode import validate_ready
         validate_ready(dict(ready=True,prime_tokens=0,mojo_arm=0,max_timed_tokens=128,fixture_tokens=138),0,0,16)
+
+
+class WholeLogitReportTests(unittest.TestCase):
+    def report(self):
+        return dict(passed=True,vocabulary=3,positions=19,atol=1e-4,rtol=1e-5,
+                    candidate_values=171,candidate_positions=57,candidate_violations=0,candidate_top_mismatches=0,candidate_max_abs=0,candidate_max_tolerance_ratio=0,
+                    control_values=114,control_positions=38,control_violations=0,control_top_mismatches=0,control_max_abs=0,control_max_tolerance_ratio=0)
+
+    def test_requires_complete_finite_bounded_comparisons(self):
+        import json
+        from run_resident_decode import validate_logits_report
+        report=self.report()
+        text='mojo_logits '+json.dumps(report)+'\n'
+        self.assertEqual(validate_logits_report(text,16,2,1),report)
+        for change in (dict(candidate_values=168),dict(control_values=0),dict(atol=1),dict(candidate_max_tolerance_ratio=1.1),
+                       dict(candidate_top_mismatches=1),dict(candidate_max_abs=float('nan')),dict(passed=False),dict(vocabulary=True)):
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                validate_logits_report('mojo_logits '+json.dumps({**report,**change})+'\n',16,2,1)
+        for bad in ('',text+text):
+            with self.assertRaises(ValueError):validate_logits_report(bad,16,2,1)
+
+    def test_validation_output_cannot_be_summarized_as_speed(self):
+        import json,tempfile
+        from summarize_resident import summarize
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'summary.json'
+            for metadata in ({'validation_only':True},{'protocol':'resident-logit-validation-v1'}):
+                path.write_text(json.dumps(dict(status='passed',**metadata)))
+                with self.assertRaisesRegex(ValueError,'not performance evidence'):summarize(path)

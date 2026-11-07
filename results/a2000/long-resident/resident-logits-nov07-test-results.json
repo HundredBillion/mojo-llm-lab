@@ -1,0 +1,29 @@
+{
+  "started_utc": "2026-11-07T23:30:02.042327+00:00",
+  "purpose": "Compile fused gate/up Q4 candidate under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "resident-logits-nov07-worker-build",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 26.50437616300769,
+      "peaks": {
+        "cpu_C": 57.0,
+        "gpu_C": 53,
+        "platform_C": 49.05
+      }
+    },
+    {
+      "stage": "resident-logits-nov07-tests",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 31.792599931010045,
+      "peaks": {
+        "cpu_C": 64.0,
+        "gpu_C": 54,
+        "platform_C": 50.05
+      }
+    }
+  ],
+  "status": "passed"
+}
