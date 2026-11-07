@@ -12,11 +12,14 @@ import uuid
 from run_benchmark import cold_gate, safe, digest
 from run_launch_observer import ModelSensors, validate_model_ptx
 from run_pdf_smoke import cleanup
+from cuda_wait_policy import verify_wait_policy
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def validate_trial(row, arm, previous, mode, tokens=32):
+def validate_trial(row, arm, previous, mode, tokens=32, prime_tokens=0):
+    if type(row.get('prime_tokens')) is not int or row['prime_tokens']!=prime_tokens:
+        raise ValueError('Priming workload mismatch')
     if row.get('arm')!=arm or row.get('tokens')!=tokens or row.get('decode_ns',0)<=0:
         raise ValueError('Unexpected trial workload or timing')
     for key in ('cpu_usage_usec','nr_throttled','throttled_usec','replacement_calls','captured_calls','timed_replacement_calls','timed_captured_calls'):
@@ -37,6 +40,7 @@ def validate_trial(row, arm, previous, mode, tokens=32):
     return row['replacement_calls']
 
 
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model',type=Path,required=True)
@@ -46,6 +50,8 @@ def main():
     p.add_argument('--cycles',type=int,choices=[1,2],default=1)
     p.add_argument('--cpu-quota-us',type=int,choices=[1000,2000],default=1000,
                    help='Experimental container CPU quota per 5000us period; default unchanged')
+    p.add_argument('--cuda-wait',choices=['auto','blocking'],default='blocking')
+    p.add_argument('--prime-tokens',type=int,choices=[0,1,2],default=0,help='Synchronized untimed decode tokens after prefill')
     p.add_argument('--continuous',action='store_true',help='No inter-trial cooldown; all absolute guards still apply')
     p.add_argument('--mode',choices=['control','mojo'],required=True)
     p.add_argument('--output',type=Path,required=True)
@@ -67,13 +73,14 @@ def main():
         '--memory','12g','--memory-swap','12g','--entrypoint','/observer/resident-decode',
         '-e','LD_LIBRARY_PATH=/app:/usr/local/cuda/lib64',
         '-e','LD_PRELOAD=/observer/observe_launches.so:/wait.so','-e','MOJO_SHAPE=qwen35-2b',
+        '-e','LLAMA_CUDA_WAIT_TARGET=/observer/resident-decode','-e','LLAMA_CUDA_WAIT='+a.cuda_wait,
         '-e','MOJO_RESIDENT=1','-e','MOJO_CANDIDATE_PTX=/candidate.ptx','-e','MOJO_REPLACE_ENTRY='+entry]
     for src,dst in [(ROOT/'build/upstream/llama-b12110','/app'),(ROOT/'build/integration','/observer'),
                     (a.model,'/model.gguf'),(a.ptx,'/candidate.ptx'),(a.wait_library,'/wait.so')]:
         command+=['--mount',f'type=bind,src={src.resolve()},dst={dst},readonly']
-    command += [versions['cuda_image'],'/model.gguf',a.mode]
+    command += [versions['cuda_image'],'/model.gguf',a.mode,str(a.prime_tokens)]
     result={'status':'failed_or_stopped','mode':a.mode,'versions':versions,'protocol':'resident-block-v2' if a.continuous else 'resident-cooldown-v3','tokens':a.tokens,'cycles':a.cycles,
-            'cpu_period_us':5000,'cpu_quota_us':a.cpu_quota_us,
+            'cuda_wait_requested':a.cuda_wait,'prime_tokens':a.prime_tokens,'cpu_period_us':5000,'cpu_quota_us':a.cpu_quota_us,
             'model_name':a.model.name,'model_bytes':a.model.stat().st_size,
             'ptx_sha256':digest(a.ptx),'worker_sha256':digest(ROOT/'build/integration/resident-decode'),
             'observer_sha256':digest(ROOT/'build/integration/observe_launches.so'),
@@ -98,7 +105,7 @@ def main():
                         return json.loads(line)
                 raise RuntimeError('Worker deadline')
             ready=receive()
-            if ready.get('ready') is not True:raise RuntimeError('Missing ready handshake')
+            if ready.get('ready') is not True or type(ready.get('prime_tokens')) is not int or ready['prime_tokens']!=a.prime_tokens:raise RuntimeError('Missing ready handshake')
             cold_gate(sensor)
             previous=0
             for index,arm in enumerate([0,1]+[0,1,1,0]*a.cycles):
@@ -107,12 +114,13 @@ def main():
                 process.stdin.write(f'{arm} {a.tokens}\n');process.stdin.flush()
                 row=receive()
                 if row.get('trial')!=index:raise RuntimeError('Trial order mismatch')
-                previous=validate_trial(row,arm,previous,a.mode,a.tokens)
+                previous=validate_trial(row,arm,previous,a.mode,a.tokens,a.prime_tokens)
                 row['warmup']=index<2;rows.append(row)
                 print(json.dumps(row),flush=True)
             process.stdin.close();process.wait(timeout=30)
             if process.returncode:raise RuntimeError('Worker failed')
             if len({r['top_token'] for r in rows})!=1:raise RuntimeError('Fixed-prefix top-token mismatch')
+            result['cuda_wait_verified']=verify_wait_policy((out/'stderr.log').read_text(),a.cuda_wait)
             result['status']='passed'
     except BaseException as error:
         result['error']=str(error)

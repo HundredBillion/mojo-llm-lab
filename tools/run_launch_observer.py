@@ -11,6 +11,7 @@ import subprocess as S
 import time
 import uuid
 from validate_ptx import validate_ptx
+from cuda_wait_policy import verify_wait_policy
 from run_benchmark import ROOT, Sensors, cold_gate, safe, remove_owned, digest
 
 
@@ -163,6 +164,9 @@ def main():
         result['wait_library_sha256'] = digest(wait)
         mounts.append((wait,'/wait.so'))
         preload += ':/wait.so'
+        target='/app/llama-completion' if args.prompt else '/app/llama-bench'
+        command += ['-e','LLAMA_CUDA_WAIT_TARGET='+target,'-e','LLAMA_CUDA_WAIT=blocking']
+        result['cuda_wait_requested']='blocking'
     for src, dst in mounts:
         command += ['--mount',f'type=bind,src={src},dst={dst},readonly']
     command += ['-e','LD_PRELOAD='+preload, versions['cuda_image'],
@@ -201,6 +205,8 @@ def main():
             result['samples_ns']=rows[0]['samples_ns']
             result['samples_ts']=rows[0]['samples_ts']
         stderr = (out/'stderr.log').read_text()
+        if args.wait_library:
+            result['cuda_wait_verified']=verify_wait_policy(stderr,'blocking')
         counts = re.findall(r'mojo_observer target_launch_calls=(\d+) mode=host_launches',stderr)
         if not counts or (max(map(int,counts)) == 0 and not args.baseline_only):
             raise RuntimeError('No target launch observed')

@@ -16,3 +16,17 @@ Constraints: CPU<90C, GPU<82C, platform<75C; AC required; existing cold gates. Q
 - [x] Report findings and remaining uncertainty before any higher-quota comparison.
 
 Outcome: control passed; candidate attempt rejected before launch at CPU93C. Higher quota deferred. No new speedup claim or permanent change.
+
+
+## Primed decode follow-up
+
+- [x] Add optional priming worker argument and report it in handshake/trials.
+- [x] Expose --prime-tokens, pass it to worker and validate matching workload metadata.
+- [x] Add regression cases for priming mismatch/missing evidence; compile and run guarded tests.
+- [x] Prepare identity-checked independent80-second resume watchdog for Chromium/Sprite; runner limited to75seconds and cleanup on timeout.
+- [x] Run matched short controls/candidate only under original guards; retain raw outcomes and pause receipts.
+- [x] Review results and publish bounded conclusions, without equating benchmark priming with a model optimization.
+
+Two priming tokens are now selectable (default0, choices0/1/2). One left24 captures timed; two produced zero timed replacement/capture calls in the measured candidate. Validate the full prefill+prime+timed token count before each trial; the fixed Qwen fixture has49tokens. The timer excludes priming on both arms; this does not reduce actual request work.
+
+Outcome: two priming tokens produced zero timed replacement captures; verified blocking waits cut CPU work in exploratory matched controls. Whole-model Mojo speedup remains unproved. Next separate work: cross over context assignments and qualify the isolated 2B operation.

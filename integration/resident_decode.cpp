@@ -28,7 +28,10 @@ static long long ns(Clock::time_point start) {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-start).count();
 }
 int main(int argc,char **argv) try {
-    if (argc!=3) throw std::runtime_error("model and control|mojo required");
+    if (argc!=3 && argc!=4) throw std::runtime_error("model, control|mojo and optional priming flag required");
+    const std::string prime_arg=argc==4 ? argv[3] : "0";
+    if (prime_arg!="0" && prime_arg!="1" && prime_arg!="2") throw std::runtime_error("invalid priming flag");
+    const int prime_tokens=std::stoi(prime_arg);
     const std::string mode=argv[2];
     if (mode!="control" && mode!="mojo") throw std::runtime_error("invalid mode");
     const char *path=std::getenv("MOJO_CANDIDATE_PTX");
@@ -68,18 +71,22 @@ int main(int argc,char **argv) try {
     std::vector<llama_token> tokens(256);
     int n=llama_tokenize(vocab,text.data(),text.size(),tokens.data(),tokens.size(),true,true);
     if (n<40) throw std::runtime_error("fixture tokenization failed");
-    std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << "}" << std::endl;
+    std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << ",\"prime_tokens\":" << prime_tokens << "}" << std::endl;
     int arm,steps; int trial=0;
     while (std::cin >> arm >> steps) {
-        if (arm<0 || arm>1 || steps<1 || steps>32) throw std::runtime_error("invalid trial");
+        if (arm<0 || arm>1 || steps<1 || steps>32 || 8+prime_tokens+steps>n) throw std::runtime_error("invalid trial");
         auto *ctx=contexts[arm]; select(arm);
         llama_memory_clear(llama_get_memory(ctx),true);
         if (llama_decode(ctx,llama_batch_get_one(tokens.data(),8))) throw std::runtime_error("prefill failed");
         llama_synchronize(ctx);
+        for (int prime=0;prime<prime_tokens;++prime) {
+            if (llama_decode(ctx,llama_batch_get_one(tokens.data()+8+prime,1))) throw std::runtime_error("priming decode failed");
+            llama_synchronize(ctx);
+        }
         const auto calls_before=count(), captures_before=captured();
         const auto before=cpu_stat(); const auto begin=Clock::now();
         for (int i=0;i<steps;++i)
-            if (llama_decode(ctx,llama_batch_get_one(tokens.data()+8+i,1))) throw std::runtime_error("decode failed");
+            if (llama_decode(ctx,llama_batch_get_one(tokens.data()+8+prime_tokens+i,1))) throw std::runtime_error("decode failed");
         llama_synchronize(ctx);
         const auto elapsed=ns(begin); const auto after=cpu_stat();
         const auto timed_calls=count()-calls_before, timed_captures=captured()-captures_before;
@@ -90,6 +97,7 @@ int main(int argc,char **argv) try {
             if (logits[i]>logits[top]) top=i;
         }
         std::cout << "{\"trial\":" << trial++ << ",\"arm\":" << arm
+                  << ",\"prime_tokens\":" << prime_tokens
                   << ",\"tokens\":" << steps << ",\"decode_ns\":" << elapsed
                   << ",\"top_token\":" << top << ",\"replacement_calls\":" << count()
                   << ",\"captured_calls\":" << captured()

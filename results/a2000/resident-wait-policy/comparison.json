@@ -1,0 +1,109 @@
+{
+  "matching_artifacts_and_workload": {
+    "worker_sha256": "4fd16b2de5401915217093604e8ee3ade90fd8a3a413e75a8711638272c0ae64",
+    "observer_sha256": "ef729b865af50c61cf52075bb12d6384e2d8d3e552b783ec2ce15c4f7f00d7c2",
+    "ptx_sha256": "bdf2c0514a8058d4d8175aef6c2cc6168b78dc6be3f49f8887f37a3af717267b",
+    "wait_sha256": "98305c9070106bded855c6a6502150a28fbad99c1025ef37f1f6ff8fd0ac9d0c",
+    "model_name": "Qwen3.5-2B-Q4_K_M.gguf",
+    "model_bytes": 1280835840,
+    "prime_tokens": 2,
+    "cpu_period_us": 5000,
+    "cpu_quota_us": 1000,
+    "tokens": 16,
+    "cycles": 1,
+    "protocol": "resident-block-v2"
+  },
+  "runs": [
+    {
+      "run": "wait-auto-control20-01",
+      "mode": "control",
+      "wait": {
+        "device": 0,
+        "policy": "auto",
+        "flags": 0
+      },
+      "median_cpu_usec": 43903.0,
+      "median_tokens_per_second": 72.6334168041985,
+      "median_throttle_counter_over_wall": 0.7955470103572485,
+      "peaks": {
+        "cpu_C": 71.0,
+        "gpu_C": 78,
+        "platform_C": 59.05
+      },
+      "arm0_over_arm1_latency_ratio": 0.9369775509923901
+    },
+    {
+      "run": "wait-blocking-control20-01",
+      "mode": "control",
+      "wait": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "median_cpu_usec": 14557.0,
+      "median_tokens_per_second": 76.46965607052006,
+      "median_throttle_counter_over_wall": 0.04037757413277835,
+      "peaks": {
+        "cpu_C": 67.0,
+        "gpu_C": 78,
+        "platform_C": 57.05
+      },
+      "arm0_over_arm1_latency_ratio": 0.9052787852052198
+    },
+    {
+      "run": "wait-blocking-mojo20-01",
+      "mode": "mojo",
+      "wait": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "median_cpu_usec": 15938.5,
+      "median_tokens_per_second": 75.88842537722661,
+      "median_throttle_counter_over_wall": 0.039561952775869505,
+      "peaks": {
+        "cpu_C": 62.0,
+        "gpu_C": 78,
+        "platform_C": 58.05
+      },
+      "arm0_over_arm1_latency_ratio": 0.915925966128735
+    },
+    {
+      "run": "wait-blocking-control20-02",
+      "mode": "control",
+      "wait": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "median_cpu_usec": 14216.0,
+      "median_tokens_per_second": 79.81952301688149,
+      "median_throttle_counter_over_wall": 0.01711226451234176,
+      "peaks": {
+        "cpu_C": 65.0,
+        "gpu_C": 77,
+        "platform_C": 59.05
+      },
+      "arm0_over_arm1_latency_ratio": 0.9646605624705319
+    },
+    {
+      "run": "wait-auto-control20-02",
+      "mode": "control",
+      "wait": {
+        "device": 0,
+        "policy": "auto",
+        "flags": 0
+      },
+      "median_cpu_usec": 43416.0,
+      "median_tokens_per_second": 73.5197226339477,
+      "median_throttle_counter_over_wall": 0.7981343808879661,
+      "peaks": {
+        "cpu_C": 73.0,
+        "gpu_C": 79,
+        "platform_C": 57.05
+      },
+      "arm0_over_arm1_latency_ratio": 0.9963644728039182
+    }
+  ],
+  "scope": "Exploratory fixed-token decode. Wait-policy efficiency is distinct from Mojo performance; no whole-model Mojo speedup established."
+}

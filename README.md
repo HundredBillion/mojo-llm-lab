@@ -84,3 +84,5 @@ This repository's code is licensed under [MIT](LICENSE). The benchmark uses sepa
 
 
 The [resident Qwen3.5-2B comparison and actual-PDF smoke test](docs/resident-comparison.md) retain the latest controls and failures. The short candidate ratio (1.0534×) is smaller than the same-implementation control difference (1.0669×), so there is still no proved whole-model gain. The tested default the application PDF response failed strict decimal validation; the compact variant stopped at the thermal guard. These results do not change production defaults.
+
+The [wait-policy follow-up](docs/resident-wait-policy.md) fixes benchmark helper targeting and records approximately 67% lower CPU work in short matched controls. This efficiency change is separate from Mojo acceleration; a whole-model Mojo gain remains unproved.

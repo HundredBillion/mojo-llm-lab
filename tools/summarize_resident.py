@@ -14,7 +14,11 @@ def summarize(path):
     rows=rows[2:]
     medians={str(arm):statistics.median(tokens*1e9/r['decode_ns'] for r in rows if r['arm']==arm) for arm in (0,1)}
     ratios=[(rows[i]['decode_ns']+rows[i+3]['decode_ns'])/(rows[i+1]['decode_ns']+rows[i+2]['decode_ns']) for i in range(0,4*cycles,4)]
-    return {'mode':result['mode'],'median_tokens_per_second':medians,
+    return {'mode':result['mode'],'protocol':result.get('protocol'),
+            'cuda_wait_verified':result.get('cuda_wait_verified'),
+            'prime_tokens':result.get('prime_tokens',int(result.get('prime_decode',False))),
+            'cpu_quota_us':result.get('cpu_quota_us',1000),
+            'cpu_period_us':result.get('cpu_period_us',5000),'median_tokens_per_second':medians,
             'arm1_over_arm0_median_rate':medians['1']/medians['0'],
             'cycle_latency_ratios':ratios,
             'median_reported_throttle_usec_over_wall_usec':statistics.median(r['throttled_usec']*1000/r['decode_ns'] for r in rows),

@@ -2,11 +2,11 @@ import unittest
 import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"tools"))
-from run_resident_decode import validate_trial
+from run_resident_decode import validate_trial, verify_wait_policy
 
 class ResidentEvidenceTests(unittest.TestCase):
     def row(self):
-        return dict(arm=1,tokens=32,decode_ns=100,top_token=7,cpu_usage_usec=2,
+        return dict(prime_tokens=0,arm=1,tokens=32,decode_ns=100,top_token=7,cpu_usage_usec=2,
                     nr_throttled=1,throttled_usec=4,replacement_calls=10,captured_calls=5,
                     timed_replacement_calls=0,timed_captured_calls=0)
 
@@ -42,6 +42,25 @@ class ResidentEvidenceTests(unittest.TestCase):
         row={**self.row(),'captured_calls':10,
              'timed_replacement_calls':4,'timed_captured_calls':3}
         with self.assertRaises(ValueError):validate_trial(row,1,5,'mojo')
+
+    def test_priming_metadata_must_match_requested_workload(self):
+        row={**self.row(),'prime_tokens':2}
+        self.assertEqual(validate_trial(row,1,0,'mojo',prime_tokens=2),10)
+        with self.assertRaises(ValueError):validate_trial(row,1,0,'mojo')
+        del row['prime_tokens']
+        with self.assertRaises(ValueError):validate_trial(row,1,0,'mojo',prime_tokens=2)
+        with self.assertRaises(ValueError):validate_trial(row,1,0,'mojo')
+
+
+class WaitPolicyTests(unittest.TestCase):
+    def test_verified_policy_preserves_unrelated_flag_bits(self):
+        self.assertEqual(verify_wait_policy('LLAMA_CUDA_WAIT device=0 policy=blocking flags=12 verified=1\n','blocking')['flags'],12)
+        self.assertEqual(verify_wait_policy('LLAMA_CUDA_WAIT device=0 policy=auto flags=0 verified=1\n','auto')['flags'],0)
+
+    def test_missing_wrong_or_ambiguous_wait_evidence_fails(self):
+        good='LLAMA_CUDA_WAIT device=0 policy=blocking flags=4 verified=1\n'
+        for text in ['',good+good,good.replace('blocking','auto'),good.replace('flags=4','flags=0'),good.replace('device=0','device=1'),good.replace('verified=1','verified=0')]:
+            with self.subTest(text=text),self.assertRaises(ValueError):verify_wait_policy(text,'blocking')
 
 
 class CleanupTests(unittest.TestCase):
