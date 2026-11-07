@@ -54,3 +54,5 @@ The next useful work is to isolate CPU sampling/schema and graph-recapture costs
 
 
 Verification completed: 70 CPU regression tests passed under the thermal guard, including invalid evidence and cleanup-after-daemon-failure cases. The observer and resident C++ worker compiled successfully in the pinned CPU-limited container. The existing operation-evidence verifier still finds all 24 paired rounds favoring the 4B Mojo kernel. Focused code and evidence reviews found no remaining blocking issue; no full PDF capability or whole-model gain is inferred from these checks.
+
+Follow-up: [timed capture instrumentation and host CPU allowance investigation](resident-host-cost.md). A new CUDA control completed; the candidate was rejected at preflight, so it adds no Mojo speed result.

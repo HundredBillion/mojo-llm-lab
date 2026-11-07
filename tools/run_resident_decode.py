@@ -19,11 +19,17 @@ ROOT=Path(__file__).resolve().parents[1]
 def validate_trial(row, arm, previous, mode, tokens=32):
     if row.get('arm')!=arm or row.get('tokens')!=tokens or row.get('decode_ns',0)<=0:
         raise ValueError('Unexpected trial workload or timing')
-    for key in ('cpu_usage_usec','nr_throttled','throttled_usec','replacement_calls','captured_calls'):
+    for key in ('cpu_usage_usec','nr_throttled','throttled_usec','replacement_calls','captured_calls','timed_replacement_calls','timed_captured_calls'):
         if not isinstance(row.get(key),int) or row[key]<0:
             raise ValueError('Invalid counter: '+key)
     if row['captured_calls']>row['replacement_calls'] or row['replacement_calls']<previous:
         raise ValueError('Inconsistent replacement counters')
+    if (row['timed_captured_calls']>row['timed_replacement_calls']
+        or row['timed_replacement_calls']>row['replacement_calls']-previous
+        or row['timed_captured_calls']>row['captured_calls']
+        or row['timed_replacement_calls']-row['timed_captured_calls']
+            >row['replacement_calls']-row['captured_calls']):
+        raise ValueError('Inconsistent timed counters')
     if (mode=='control' or arm==0) and row['replacement_calls']!=previous:
         raise ValueError('CUDA arm unexpectedly replaced kernels')
     if mode=='mojo' and arm==1 and row['captured_calls']==0:
@@ -38,6 +44,8 @@ def main():
     p.add_argument('--wait-library',type=Path,required=True)
     p.add_argument('--tokens',type=int,choices=[16,32],default=16)
     p.add_argument('--cycles',type=int,choices=[1,2],default=1)
+    p.add_argument('--cpu-quota-us',type=int,choices=[1000,2000],default=1000,
+                   help='Experimental container CPU quota per 5000us period; default unchanged')
     p.add_argument('--continuous',action='store_true',help='No inter-trial cooldown; all absolute guards still apply')
     p.add_argument('--mode',choices=['control','mojo'],required=True)
     p.add_argument('--output',type=Path,required=True)
@@ -55,7 +63,7 @@ def main():
     command=['docker','run','--rm','-i','--name',name,'--label','io.mojo-imrope.benchmark='+token,
         '--device','nvidia.com/gpu=0','--user',f'{os.getuid()}:{os.getgid()}',
         '--network','none','--read-only','--tmpfs','/tmp:rw,size=512m','--cap-drop','ALL',
-        '--security-opt','no-new-privileges','--cpu-period','5000','--cpu-quota','1000',
+        '--security-opt','no-new-privileges','--cpu-period','5000','--cpu-quota',str(a.cpu_quota_us),
         '--memory','12g','--memory-swap','12g','--entrypoint','/observer/resident-decode',
         '-e','LD_LIBRARY_PATH=/app:/usr/local/cuda/lib64',
         '-e','LD_PRELOAD=/observer/observe_launches.so:/wait.so','-e','MOJO_SHAPE=qwen35-2b',
@@ -65,6 +73,7 @@ def main():
         command+=['--mount',f'type=bind,src={src.resolve()},dst={dst},readonly']
     command += [versions['cuda_image'],'/model.gguf',a.mode]
     result={'status':'failed_or_stopped','mode':a.mode,'versions':versions,'protocol':'resident-block-v2' if a.continuous else 'resident-cooldown-v3','tokens':a.tokens,'cycles':a.cycles,
+            'cpu_period_us':5000,'cpu_quota_us':a.cpu_quota_us,
             'model_name':a.model.name,'model_bytes':a.model.stat().st_size,
             'ptx_sha256':digest(a.ptx),'worker_sha256':digest(ROOT/'build/integration/resident-decode'),
             'observer_sha256':digest(ROOT/'build/integration/observe_launches.so'),

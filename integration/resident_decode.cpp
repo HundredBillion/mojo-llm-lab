@@ -76,11 +76,13 @@ int main(int argc,char **argv) try {
         llama_memory_clear(llama_get_memory(ctx),true);
         if (llama_decode(ctx,llama_batch_get_one(tokens.data(),8))) throw std::runtime_error("prefill failed");
         llama_synchronize(ctx);
+        const auto calls_before=count(), captures_before=captured();
         const auto before=cpu_stat(); const auto begin=Clock::now();
         for (int i=0;i<steps;++i)
             if (llama_decode(ctx,llama_batch_get_one(tokens.data()+8+i,1))) throw std::runtime_error("decode failed");
         llama_synchronize(ctx);
         const auto elapsed=ns(begin); const auto after=cpu_stat();
+        const auto timed_calls=count()-calls_before, timed_captures=captured()-captures_before;
         const auto *logits=llama_get_logits_ith(ctx,-1);
         const int nv=llama_vocab_n_tokens(vocab); int top=0;
         for (int i=0;i<nv;++i) {
@@ -91,6 +93,8 @@ int main(int argc,char **argv) try {
                   << ",\"tokens\":" << steps << ",\"decode_ns\":" << elapsed
                   << ",\"top_token\":" << top << ",\"replacement_calls\":" << count()
                   << ",\"captured_calls\":" << captured()
+                  << ",\"timed_replacement_calls\":" << timed_calls
+                  << ",\"timed_captured_calls\":" << timed_captures
                   << ",\"cpu_usage_usec\":" << after.at("usage_usec")-before.at("usage_usec")
                   << ",\"nr_throttled\":" << after.at("nr_throttled")-before.at("nr_throttled")
                   << ",\"throttled_usec\":" << after.at("throttled_usec")-before.at("throttled_usec") << "}" << std::endl;

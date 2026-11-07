@@ -7,7 +7,8 @@ from run_resident_decode import validate_trial
 class ResidentEvidenceTests(unittest.TestCase):
     def row(self):
         return dict(arm=1,tokens=32,decode_ns=100,top_token=7,cpu_usage_usec=2,
-                    nr_throttled=1,throttled_usec=4,replacement_calls=10,captured_calls=5)
+                    nr_throttled=1,throttled_usec=4,replacement_calls=10,captured_calls=5,
+                    timed_replacement_calls=0,timed_captured_calls=0)
 
     def test_cuda_cannot_claim_replacement(self):
         row=self.row();row['arm']=0
@@ -26,6 +27,21 @@ class ResidentEvidenceTests(unittest.TestCase):
                        dict(tokens=16),dict(arm=0),dict(throttled_usec=-1)]:
             with self.subTest(change=change),self.assertRaises(ValueError):
                 validate_trial({**self.row(),**change},1,0,'mojo')
+
+    def test_timed_capture_must_fit_trial_and_cumulative_counters(self):
+        row={**self.row(),'timed_replacement_calls':4,'timed_captured_calls':3}
+        self.assertEqual(validate_trial(row,1,5,'mojo'),10)
+        for change in [dict(timed_replacement_calls=-1),dict(timed_captured_calls=5),
+                       dict(timed_replacement_calls=6),dict(timed_captured_calls=None)]:
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                validate_trial({**row,**change},1,5,'mojo')
+        del row['timed_captured_calls']
+        with self.assertRaises(ValueError):validate_trial(row,1,5,'mojo')
+
+    def test_timed_noncaptures_cannot_exceed_entire_history(self):
+        row={**self.row(),'captured_calls':10,
+             'timed_replacement_calls':4,'timed_captured_calls':3}
+        with self.assertRaises(ValueError):validate_trial(row,1,5,'mojo')
 
 
 class CleanupTests(unittest.TestCase):
