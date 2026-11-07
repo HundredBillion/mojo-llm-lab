@@ -58,3 +58,5 @@ All original AC and thermal guards remain. Desktop pausing is not performed by t
 - Whole-model Mojo speed/complete PDF quality: still unproved. Existing limited synthetic correctness checks do not satisfy this acceptance criterion.
 
 [Raw evidence and derived comparison](../results/a2000/resident-wait-policy/comparison.json) include every successful comparison, earlier aborted retry, pause receipts and artifact hashes. The next comparison should cross over which independent context receives Mojo and check timing variability; a 2B operation benchmark would also establish whether this specialization has an isolated gain before expecting a whole-model benefit.
+
+The [completed context crossover](context-crossover.md) retained all six planned runs and found no consistent whole-model gain. The next diagnostic is a direct2B-shaped operation comparison.

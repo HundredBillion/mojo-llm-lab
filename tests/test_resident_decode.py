@@ -6,7 +6,7 @@ from run_resident_decode import validate_trial, verify_wait_policy
 
 class ResidentEvidenceTests(unittest.TestCase):
     def row(self):
-        return dict(prime_tokens=0,arm=1,tokens=32,decode_ns=100,top_token=7,cpu_usage_usec=2,
+        return dict(mojo_arm=1,prime_tokens=0,arm=1,tokens=32,decode_ns=100,top_token=7,cpu_usage_usec=2,
                     nr_throttled=1,throttled_usec=4,replacement_calls=10,captured_calls=5,
                     timed_replacement_calls=0,timed_captured_calls=0)
 
@@ -50,6 +50,13 @@ class ResidentEvidenceTests(unittest.TestCase):
         del row['prime_tokens']
         with self.assertRaises(ValueError):validate_trial(row,1,0,'mojo',prime_tokens=2)
         with self.assertRaises(ValueError):validate_trial(row,1,0,'mojo')
+
+    def test_candidate_can_be_context_zero_without_mislabeling_cuda(self):
+        row={**self.row(),'arm':0,'mojo_arm':0}
+        self.assertEqual(validate_trial(row,0,0,'mojo',mojo_arm=0),10)
+        with self.assertRaises(ValueError):validate_trial(row,0,0,'mojo',mojo_arm=1)
+        with self.assertRaises(ValueError):validate_trial({**row,'arm':1},1,0,'mojo',mojo_arm=0)
+        with self.assertRaises(ValueError):validate_trial({**row,'captured_calls':0},0,0,'mojo',mojo_arm=0)
 
 
 class WaitPolicyTests(unittest.TestCase):

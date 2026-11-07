@@ -1,0 +1,67 @@
+{
+  "schedule": [
+    [
+      "control",
+      "1"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "control",
+      "1"
+    ]
+  ],
+  "stages": [
+    {
+      "label": "local-crossover-00-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794062141.5443351,
+      "ended_unix": 1794062164.5970666
+    },
+    {
+      "label": "local-crossover-01-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794062172.5973365,
+      "ended_unix": 1794062201.9905326
+    },
+    {
+      "label": "local-crossover-02-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794062209.9910054,
+      "ended_unix": 1794062232.588109
+    },
+    {
+      "label": "local-crossover-03-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794062240.5885012,
+      "ended_unix": 1794062264.3971505
+    },
+    {
+      "label": "local-crossover-04-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794062272.3975039,
+      "ended_unix": 1794062296.707363
+    },
+    {
+      "label": "local-crossover-05-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794062304.7077665,
+      "ended_unix": 1794062327.6235893
+    }
+  ],
+  "status": "passed"
+}

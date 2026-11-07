@@ -17,7 +17,9 @@ from cuda_wait_policy import verify_wait_policy
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def validate_trial(row, arm, previous, mode, tokens=32, prime_tokens=0):
+def validate_trial(row, arm, previous, mode, tokens=32, prime_tokens=0, mojo_arm=1):
+    if type(row.get('mojo_arm')) is not int or row['mojo_arm']!=mojo_arm:
+        raise ValueError('Candidate context mismatch')
     if type(row.get('prime_tokens')) is not int or row['prime_tokens']!=prime_tokens:
         raise ValueError('Priming workload mismatch')
     if row.get('arm')!=arm or row.get('tokens')!=tokens or row.get('decode_ns',0)<=0:
@@ -33,9 +35,9 @@ def validate_trial(row, arm, previous, mode, tokens=32, prime_tokens=0):
         or row['timed_replacement_calls']-row['timed_captured_calls']
             >row['replacement_calls']-row['captured_calls']):
         raise ValueError('Inconsistent timed counters')
-    if (mode=='control' or arm==0) and row['replacement_calls']!=previous:
+    if (mode=='control' or arm!=mojo_arm) and row['replacement_calls']!=previous:
         raise ValueError('CUDA arm unexpectedly replaced kernels')
-    if mode=='mojo' and arm==1 and row['captured_calls']==0:
+    if mode=='mojo' and arm==mojo_arm and row['captured_calls']==0:
         raise ValueError('Candidate graph capture missing')
     return row['replacement_calls']
 
@@ -53,6 +55,7 @@ def main():
     p.add_argument('--cuda-wait',choices=['auto','blocking'],default='blocking')
     p.add_argument('--prime-tokens',type=int,choices=[0,1,2],default=0,help='Synchronized untimed decode tokens after prefill')
     p.add_argument('--continuous',action='store_true',help='No inter-trial cooldown; all absolute guards still apply')
+    p.add_argument('--mojo-arm',type=int,choices=[0,1],default=1)
     p.add_argument('--mode',choices=['control','mojo'],required=True)
     p.add_argument('--output',type=Path,required=True)
     a=p.parse_args(); out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -78,9 +81,9 @@ def main():
     for src,dst in [(ROOT/'build/upstream/llama-b12110','/app'),(ROOT/'build/integration','/observer'),
                     (a.model,'/model.gguf'),(a.ptx,'/candidate.ptx'),(a.wait_library,'/wait.so')]:
         command+=['--mount',f'type=bind,src={src.resolve()},dst={dst},readonly']
-    command += [versions['cuda_image'],'/model.gguf',a.mode,str(a.prime_tokens)]
+    command += [versions['cuda_image'],'/model.gguf',a.mode,str(a.prime_tokens),str(a.mojo_arm)]
     result={'status':'failed_or_stopped','mode':a.mode,'versions':versions,'protocol':'resident-block-v2' if a.continuous else 'resident-cooldown-v3','tokens':a.tokens,'cycles':a.cycles,
-            'cuda_wait_requested':a.cuda_wait,'prime_tokens':a.prime_tokens,'cpu_period_us':5000,'cpu_quota_us':a.cpu_quota_us,
+            'mojo_arm':a.mojo_arm,'cuda_wait_requested':a.cuda_wait,'prime_tokens':a.prime_tokens,'cpu_period_us':5000,'cpu_quota_us':a.cpu_quota_us,
             'model_name':a.model.name,'model_bytes':a.model.stat().st_size,
             'ptx_sha256':digest(a.ptx),'worker_sha256':digest(ROOT/'build/integration/resident-decode'),
             'observer_sha256':digest(ROOT/'build/integration/observe_launches.so'),
@@ -106,6 +109,7 @@ def main():
                 raise RuntimeError('Worker deadline')
             ready=receive()
             if ready.get('ready') is not True or type(ready.get('prime_tokens')) is not int or ready['prime_tokens']!=a.prime_tokens:raise RuntimeError('Missing ready handshake')
+            if type(ready.get('mojo_arm')) is not int or ready['mojo_arm']!=a.mojo_arm:raise RuntimeError('Candidate context handshake mismatch')
             cold_gate(sensor)
             previous=0
             for index,arm in enumerate([0,1]+[0,1,1,0]*a.cycles):
@@ -114,7 +118,7 @@ def main():
                 process.stdin.write(f'{arm} {a.tokens}\n');process.stdin.flush()
                 row=receive()
                 if row.get('trial')!=index:raise RuntimeError('Trial order mismatch')
-                previous=validate_trial(row,arm,previous,a.mode,a.tokens,a.prime_tokens)
+                previous=validate_trial(row,arm,previous,a.mode,a.tokens,a.prime_tokens,a.mojo_arm)
                 row['warmup']=index<2;rows.append(row)
                 print(json.dumps(row),flush=True)
             process.stdin.close();process.wait(timeout=30)

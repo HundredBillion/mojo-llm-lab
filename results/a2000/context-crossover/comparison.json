@@ -1,0 +1,214 @@
+{
+  "matching_artifacts_and_workload": {
+    "worker_sha256": "e126bd280f7e5ef26acb1a15059f92eb25806bdc9ccdb77da123af6bc1d7e6f6",
+    "observer_sha256": "ef729b865af50c61cf52075bb12d6384e2d8d3e552b783ec2ce15c4f7f00d7c2",
+    "ptx_sha256": "bdf2c0514a8058d4d8175aef6c2cc6168b78dc6be3f49f8887f37a3af717267b",
+    "wait_sha256": "b617385b54323cc5f09ce39d6c16ffa0d778122492e26fa341736705d7a27604",
+    "model_name": "Qwen3.5-2B-Q4_K_M.gguf",
+    "model_bytes": 1280835840,
+    "cpu_period_us": 5000,
+    "cpu_quota_us": 1000,
+    "prime_tokens": 2,
+    "tokens": 16,
+    "cycles": 1,
+    "protocol": "resident-block-v2",
+    "cuda_wait_verified": {
+      "device": 0,
+      "policy": "blocking",
+      "flags": 4
+    }
+  },
+  "fixed_prefix_top_token": 4952,
+  "runs": [
+    {
+      "run": "crossover-00-control-arm1",
+      "mojo_arm": 1,
+      "mode": "control",
+      "protocol": "resident-block-v2",
+      "cuda_wait_verified": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "prime_tokens": 2,
+      "cpu_quota_us": 1000,
+      "cpu_period_us": 5000,
+      "median_tokens_per_second": {
+        "0": 79.76449362851228,
+        "1": 76.63966720045816
+      },
+      "arm1_over_arm0_median_rate": 0.9608243431894974,
+      "cycle_latency_ratios": [
+        0.9595051140243774
+      ],
+      "cuda_over_mojo_latency_ratios": null,
+      "median_reported_throttle_usec_over_wall_usec": 0.028744401001915835,
+      "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution.",
+      "peaks": {
+        "cpu_C": 72.0,
+        "gpu_C": 77,
+        "platform_C": 60.05
+      }
+    },
+    {
+      "run": "crossover-01-mojo-arm1",
+      "mojo_arm": 1,
+      "mode": "mojo",
+      "protocol": "resident-block-v2",
+      "cuda_wait_verified": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "prime_tokens": 2,
+      "cpu_quota_us": 1000,
+      "cpu_period_us": 5000,
+      "median_tokens_per_second": {
+        "0": 79.1292446656125,
+        "1": 76.7439798479476
+      },
+      "arm1_over_arm0_median_rate": 0.9698560901504286,
+      "cycle_latency_ratios": [
+        0.9670285182680192
+      ],
+      "cuda_over_mojo_latency_ratios": [
+        0.9670285182680192
+      ],
+      "median_reported_throttle_usec_over_wall_usec": 0.02067005976803454,
+      "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution.",
+      "peaks": {
+        "cpu_C": 77.0,
+        "gpu_C": 77,
+        "platform_C": 57.05
+      }
+    },
+    {
+      "run": "crossover-02-mojo-arm0",
+      "mojo_arm": 0,
+      "mode": "mojo",
+      "protocol": "resident-block-v2",
+      "cuda_wait_verified": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "prime_tokens": 2,
+      "cpu_quota_us": 1000,
+      "cpu_period_us": 5000,
+      "median_tokens_per_second": {
+        "0": 78.83008942932746,
+        "1": 76.81666871603574
+      },
+      "arm1_over_arm0_median_rate": 0.9744587285404923,
+      "cycle_latency_ratios": [
+        0.9746721286920088
+      ],
+      "cuda_over_mojo_latency_ratios": [
+        1.02598604244689
+      ],
+      "median_reported_throttle_usec_over_wall_usec": 0.02908047153949763,
+      "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution.",
+      "peaks": {
+        "cpu_C": 69.0,
+        "gpu_C": 79,
+        "platform_C": 58.05
+      }
+    },
+    {
+      "run": "crossover-03-mojo-arm0",
+      "mojo_arm": 0,
+      "mode": "mojo",
+      "protocol": "resident-block-v2",
+      "cuda_wait_verified": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "prime_tokens": 2,
+      "cpu_quota_us": 1000,
+      "cpu_period_us": 5000,
+      "median_tokens_per_second": {
+        "0": 74.9074140579017,
+        "1": 75.14923079806479
+      },
+      "arm1_over_arm0_median_rate": 1.0032282083583364,
+      "cycle_latency_ratios": [
+        1.0015903359895875
+      ],
+      "cuda_over_mojo_latency_ratios": [
+        0.998412189163131
+      ],
+      "median_reported_throttle_usec_over_wall_usec": 0.06351424297349023,
+      "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution.",
+      "peaks": {
+        "cpu_C": 72.0,
+        "gpu_C": 81,
+        "platform_C": 59.05
+      }
+    },
+    {
+      "run": "crossover-04-mojo-arm1",
+      "mojo_arm": 1,
+      "mode": "mojo",
+      "protocol": "resident-block-v2",
+      "cuda_wait_verified": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "prime_tokens": 2,
+      "cpu_quota_us": 1000,
+      "cpu_period_us": 5000,
+      "median_tokens_per_second": {
+        "0": 77.7709637908853,
+        "1": 75.32031609068983
+      },
+      "arm1_over_arm0_median_rate": 0.9684889117899463,
+      "cycle_latency_ratios": [
+        0.9689061462527421
+      ],
+      "cuda_over_mojo_latency_ratios": [
+        0.9689061462527421
+      ],
+      "median_reported_throttle_usec_over_wall_usec": 0.04427699841766641,
+      "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution.",
+      "peaks": {
+        "cpu_C": 71.0,
+        "gpu_C": 78,
+        "platform_C": 59.05
+      }
+    },
+    {
+      "run": "crossover-05-control-arm1",
+      "mojo_arm": 1,
+      "mode": "control",
+      "protocol": "resident-block-v2",
+      "cuda_wait_verified": {
+        "device": 0,
+        "policy": "blocking",
+        "flags": 4
+      },
+      "prime_tokens": 2,
+      "cpu_quota_us": 1000,
+      "cpu_period_us": 5000,
+      "median_tokens_per_second": {
+        "0": 79.3603121308393,
+        "1": 71.73031379465888
+      },
+      "arm1_over_arm0_median_rate": 0.9038562458826895,
+      "cycle_latency_ratios": [
+        0.9037884832138356
+      ],
+      "cuda_over_mojo_latency_ratios": null,
+      "median_reported_throttle_usec_over_wall_usec": 0.029882054366076636,
+      "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution.",
+      "peaks": {
+        "cpu_C": 75.0,
+        "gpu_C": 78,
+        "platform_C": 59.05
+      }
+    }
+  ],
+  "candidate_ratio_geometric_mean": 0.9897900415151376,
+  "scope": "Exploratory context crossover; CUDA latency divided by Mojo latency. No whole-model Mojo speedup established."
+}

@@ -28,10 +28,13 @@ static long long ns(Clock::time_point start) {
     return std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-start).count();
 }
 int main(int argc,char **argv) try {
-    if (argc!=3 && argc!=4) throw std::runtime_error("model, control|mojo and optional priming flag required");
-    const std::string prime_arg=argc==4 ? argv[3] : "0";
+    if (argc<3 || argc>5) throw std::runtime_error("model, control|mojo and optional priming and candidate-context arguments required");
+    const std::string prime_arg=argc>=4 ? argv[3] : "0";
     if (prime_arg!="0" && prime_arg!="1" && prime_arg!="2") throw std::runtime_error("invalid priming flag");
     const int prime_tokens=std::stoi(prime_arg);
+    const std::string arm_arg=argc==5 ? argv[4] : "1";
+    if (arm_arg!="0" && arm_arg!="1") throw std::runtime_error("invalid candidate context");
+    const int mojo_arm=std::stoi(arm_arg);
     const std::string mode=argv[2];
     if (mode!="control" && mode!="mojo") throw std::runtime_error("invalid mode");
     const char *path=std::getenv("MOJO_CANDIDATE_PTX");
@@ -40,7 +43,7 @@ int main(int argc,char **argv) try {
     auto captured=reinterpret_cast<unsigned long(*)()>(dlsym(RTLD_DEFAULT,"mojo_capture_count"));
     if (!count || !captured) throw std::runtime_error("observer counters required");
     auto select=[&](int arm) {
-        if (arm==1 && mode=="mojo") setenv("MOJO_REPLACE_PTX",path,1);
+        if (arm==mojo_arm && mode=="mojo") setenv("MOJO_REPLACE_PTX",path,1);
         else unsetenv("MOJO_REPLACE_PTX");
     };
     unsetenv("MOJO_REPLACE_PTX");
@@ -71,7 +74,7 @@ int main(int argc,char **argv) try {
     std::vector<llama_token> tokens(256);
     int n=llama_tokenize(vocab,text.data(),text.size(),tokens.data(),tokens.size(),true,true);
     if (n<40) throw std::runtime_error("fixture tokenization failed");
-    std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << ",\"prime_tokens\":" << prime_tokens << "}" << std::endl;
+    std::cout << "{\"ready\":true,\"fixture_tokens\":" << n << ",\"prime_tokens\":" << prime_tokens << ",\"mojo_arm\":" << mojo_arm << "}" << std::endl;
     int arm,steps; int trial=0;
     while (std::cin >> arm >> steps) {
         if (arm<0 || arm>1 || steps<1 || steps>32 || 8+prime_tokens+steps>n) throw std::runtime_error("invalid trial");
@@ -97,6 +100,7 @@ int main(int argc,char **argv) try {
             if (logits[i]>logits[top]) top=i;
         }
         std::cout << "{\"trial\":" << trial++ << ",\"arm\":" << arm
+                  << ",\"mojo_arm\":" << mojo_arm
                   << ",\"prime_tokens\":" << prime_tokens
                   << ",\"tokens\":" << steps << ",\"decode_ns\":" << elapsed
                   << ",\"top_token\":" << top << ",\"replacement_calls\":" << count()
