@@ -41,36 +41,39 @@ def vary_activation_scales(payload, seed):
     return bytes(result)
 
 
-def fixtures(random_quants=False, gate_up=False, rows=64, factor_seed=None, activation_scale_seed=None):
+def fixtures(random_quants=False, gate_up=False, rows=64, factor_seed=None, activation_scale_seed=None, input_width=2560):
     if rows < 64 or rows > 9728 or rows % 64:
         raise ValueError('rows must be a multiple of 64 between 64 and 9728')
+    if input_width not in (2048, 2560):
+        raise ValueError("input_width must be 2048 or 2560")
+    blocks = input_width // 256
     rng = random.Random(42)
     weights = []
-    for _ in range(64 * 10):
+    for _ in range(64 * blocks):
         weights.append(packed_block([rng.randrange(64) for _ in range(8)],
                                     [rng.randrange(64) for _ in range(8)], 1/512, 1/1024))
     activations = []
-    for _ in range(80):
+    for _ in range(input_width // 32):
         values = [rng.randrange(-127, 128) for _ in range(32)]
         values[0] = 127
         activations.append(struct.pack('<ee32b', 1/128, sum(values)/128, *values))
-    for _ in range((rows - 64) * 10):
+    for _ in range((rows - 64) * blocks):
         weights.append(packed_block([rng.randrange(64) for _ in range(8)],
                                     [rng.randrange(64) for _ in range(8)], 1/512, 1/1024))
     if random_quants:
         quant_rng = random.Random(12345)
         weights = [block[:16] + (bytes(quant_rng.randrange(256) for _ in range(128))
-                   if index < 640 else quant_rng.randbytes(128))
+                   if index < 64 * blocks else quant_rng.randbytes(128))
                    for index, block in enumerate(weights)]
     result = {'weights.bin': b''.join(weights), 'activations.bin': b''.join(activations)}
     if gate_up:
         gate_rng = random.Random(54321)
         gate = []
         for index, block in enumerate(weights):
-            factor = (0, 1, -1, 1/16, -1/16, 8, -8, 1)[(index // 10) % 8]
+            factor = (0, 1, -1, 1/16, -1/16, 8, -8, 1)[(index // blocks) % 8]
             gate.append(struct.pack('<ee', factor/8192, factor/16384) + block[4:16] +
                         (bytes(gate_rng.randrange(256) for _ in range(128))
-                         if index < 640 else gate_rng.randbytes(128)))
+                         if index < 64 * blocks else gate_rng.randbytes(128)))
         result['gate.bin'] = b''.join(gate)
     if factor_seed is not None:
         result['weights.bin'] = vary_factors(result['weights.bin'], factor_seed)
@@ -86,14 +89,15 @@ def main():
     parser.add_argument('--output', type=Path, default=ROOT/'build/q4-matvec')
     parser.add_argument('--random-quants', action='store_true')
     parser.add_argument('--gate-up', action='store_true')
-    parser.add_argument('--rows', type=int, choices=[64,9728], default=64)
+    parser.add_argument('--rows', type=int, choices=[64,6144,9728], default=64)
+    parser.add_argument('--input-width', type=int, choices=[2048,2560], default=2560)
     parser.add_argument('--factor-seed', type=int)
     parser.add_argument('--activation-scale-seed', type=int)
     args = parser.parse_args()
     directory = args.output
     directory.mkdir(parents=True, exist_ok=True)
-    manifest = {'activation_scale_seed': args.activation_scale_seed, 'factor_seed': args.factor_seed, 'rows': args.rows, 'input_width': 2560, 'seed': 42, 'random_quants': args.random_quants, 'gate_up': args.gate_up, 'gate_seed': 54321 if args.gate_up else None, 'quant_seed': 12345 if args.random_quants else None, 'files': {}}
-    for name, payload in fixtures(random_quants=args.random_quants, gate_up=args.gate_up, rows=args.rows, factor_seed=args.factor_seed, activation_scale_seed=args.activation_scale_seed).items():
+    manifest = {'activation_scale_seed': args.activation_scale_seed, 'factor_seed': args.factor_seed, 'rows': args.rows, 'input_width': args.input_width, 'seed': 42, 'random_quants': args.random_quants, 'gate_up': args.gate_up, 'gate_seed': 54321 if args.gate_up else None, 'quant_seed': 12345 if args.random_quants else None, 'files': {}}
+    for name, payload in fixtures(random_quants=args.random_quants, gate_up=args.gate_up, rows=args.rows, factor_seed=args.factor_seed, activation_scale_seed=args.activation_scale_seed, input_width=args.input_width).items():
         (directory / name).write_bytes(payload)
         manifest['files'][name] = {'bytes': len(payload), 'sha256': hashlib.sha256(payload).hexdigest()}
     (directory / 'fixtures.json').write_text(json.dumps(manifest, indent=2) + '\n')

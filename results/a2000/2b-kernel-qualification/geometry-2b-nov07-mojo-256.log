@@ -1,0 +1,106 @@
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:21:40: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                var factors = (weights + wbase).bitcast[Float16]()
+                               ~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:21:48: warning: 'bitcast' is deprecated, use 'unsafe_bitcast' instead
+                var factors = (weights + wbase).bitcast[Float16]()
+                              ~~~~~~~~~~~~~~~~~^~~~~~~~
+                                                unsafe_bitcast
+<unknown>:0: note: 'bitcast' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:24:43: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                var scales_ptr = (weights + wbase + 4).bitcast[UInt16]()
+                                  ~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:24:51: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                var scales_ptr = (weights + wbase + 4).bitcast[UInt16]()
+                                  ~~~~~~~~~~~~~~~~^~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:24:55: warning: 'bitcast' is deprecated, use 'unsafe_bitcast' instead
+                var scales_ptr = (weights + wbase + 4).bitcast[UInt16]()
+                                 ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+                                                       unsafe_bitcast
+<unknown>:0: note: 'bitcast' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:26:43: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                var s0 = UInt32(scales_ptr[index])
+                                ~~~~~~~~~~^~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:27:43: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                var s2 = UInt32(scales_ptr[index + 2])
+                                ~~~~~~~~~~^~~~~~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:28:43: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                var s4 = UInt32(scales_ptr[index + 4])
+                                ~~~~~~~~~~^~~~~~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:37:54: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                    var delta = Float32((activations + abase).bitcast[Float16]()[0])
+                                         ~~~~~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:37:62: warning: 'bitcast' is deprecated, use 'unsafe_bitcast' instead
+                    var delta = Float32((activations + abase).bitcast[Float16]()[0])
+                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+                                                              unsafe_bitcast
+<unknown>:0: note: 'bitcast' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:37:81: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                    var delta = Float32((activations + abase).bitcast[Float16]()[0])
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:42:49: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var packed_q = (weights + wbase + 16 + pair * 32 + index).bitcast[UInt32]()[0]
+                                        ~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:42:57: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var packed_q = (weights + wbase + 16 + pair * 32 + index).bitcast[UInt32]()[0]
+                                        ~~~~~~~~~~~~~~~~^~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:42:62: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var packed_q = (weights + wbase + 16 + pair * 32 + index).bitcast[UInt32]()[0]
+                                        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:42:74: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var packed_q = (weights + wbase + 16 + pair * 32 + index).bitcast[UInt32]()[0]
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:42:82: warning: 'bitcast' is deprecated, use 'unsafe_bitcast' instead
+                        var packed_q = (weights + wbase + 16 + pair * 32 + index).bitcast[UInt32]()[0]
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+                                                                                  unsafe_bitcast
+<unknown>:0: note: 'bitcast' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:42:100: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                        var packed_q = (weights + wbase + 16 + pair * 32 + index).bitcast[UInt32]()[0]
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:44:46: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var a = (activations + abase + 4 + index).bitcast[Int32]()[0]
+                                 ~~~~~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:44:54: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var a = (activations + abase + 4 + index).bitcast[Int32]()[0]
+                                 ~~~~~~~~~~~~~~~~~~~~^~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:44:58: warning: '__add__' is deprecated, use 'unsafe_offset' instead
+                        var a = (activations + abase + 4 + index).bitcast[Int32]()[0]
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+<unknown>:0: note: '__add__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:44:66: warning: 'bitcast' is deprecated, use 'unsafe_bitcast' instead
+                        var a = (activations + abase + 4 + index).bitcast[Int32]()[0]
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~
+                                                                  unsafe_bitcast
+<unknown>:0: note: 'bitcast' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:44:83: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                        var a = (activations + abase + 4 + index).bitcast[Int32]()[0]
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:51:43: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                partial += Float32(factors[0]) * scaled_dot - Float32(factors[1]) * scaled_sum
+                                   ~~~~~~~^~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:51:78: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+                partial += Float32(factors[0]) * scaled_dot - Float32(factors[1]) * scaled_sum
+                                                                      ~~~~~~~^~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/q4_k_q8_1_gate_order_2b_256.mojo:80:19: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+            output[row] = up_sum * (gate_sum / (Float32(1) + exp(-gate_sum)))
+            ~~~~~~^~~~~
+<unknown>:0: note: '__getitem__' declared here

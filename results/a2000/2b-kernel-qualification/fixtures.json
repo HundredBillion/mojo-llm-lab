@@ -1,0 +1,25 @@
+{
+  "activation_scale_seed": null,
+  "factor_seed": null,
+  "rows": 6144,
+  "input_width": 2048,
+  "seed": 42,
+  "random_quants": true,
+  "gate_up": true,
+  "gate_seed": 54321,
+  "quant_seed": 12345,
+  "files": {
+    "weights.bin": {
+      "bytes": 7077888,
+      "sha256": "da2eaf5bd6c394d254977526788b4c033e315c57baf6956f8704067e654bacc6"
+    },
+    "activations.bin": {
+      "bytes": 2304,
+      "sha256": "adca0a518b0d1faf15745843eb5182f7cd27fc88ddb56143a5cdcb808451b424"
+    },
+    "gate.bin": {
+      "bytes": 7077888,
+      "sha256": "92ecfe72f232612f25908f7bf06e916129164c8e0830d69de806ddc239d9420d"
+    }
+  }
+}

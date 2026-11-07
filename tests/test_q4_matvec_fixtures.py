@@ -113,3 +113,26 @@ class ActivationScaleTests(unittest.TestCase):
     def test_invalid_activation_blocks_rejected(self):
         for data in (b'', bytes(35), bytes(36), struct.pack('<ee32b',float('inf'),0,*([127]*32))):
             with self.assertRaises(ValueError):vary_activation_scales(data, 971)
+
+
+class TwoBFixtureTests(unittest.TestCase):
+    def test_width_and_extension_preserve_quantization_contract(self):
+        small = fixtures(random_quants=True, gate_up=True, input_width=2048)
+        extended = fixtures(random_quants=True, gate_up=True, rows=128, input_width=2048)
+        self.assertEqual(len(small['activations.bin']), 2304)
+        self.assertEqual(small['activations.bin'], extended['activations.bin'])
+        for name in ('weights.bin', 'gate.bin'):
+            self.assertEqual(len(extended[name]), 128 * 1152)
+            self.assertEqual(extended[name][:64 * 1152], small[name])
+            self.assertEqual(len({extended[name][i*1152:(i+1)*1152] for i in range(128)}), 128)
+        for start in range(0, 2304, 36):
+            delta, total, *values = struct.unpack_from('<ee32b', small['activations.bin'], start)
+            self.assertEqual(max(abs(delta*v) for v in values)/127, delta)
+            self.assertEqual(total, sum(values)*delta)
+        self.assertEqual(dot_q4_q8(small['gate.bin'][:1152], small['activations.bin']), 0)
+        self.assertNotEqual(dot_q4_q8(small['weights.bin'][:1152], small['activations.bin']), 0)
+
+    def test_unsupported_width_rejected(self):
+        for width in (0, 1024, 2049, 4096):
+            with self.assertRaises(ValueError):
+                fixtures(input_width=width)

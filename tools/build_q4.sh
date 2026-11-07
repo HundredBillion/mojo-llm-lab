@@ -9,6 +9,8 @@ case "${1:-}" in
   dp4a-128) variant=q4-dp4a-128; source=q4_k_q8_1_matvec_dp4a_128.mojo ;;
   unrolled) variant=q4-unrolled; source=q4_k_q8_1_matvec_unrolled.mojo ;;
   packed) variant=q4-packed; source=q4_k_q8_1_matvec_packed.mojo ;;
+  gate-order-2b-64) variant=q4-gate-order-2b-64; source=q4_k_q8_1_gate_order_2b_64.mojo ;;
+  gate-order-2b-256) variant=q4-gate-order-2b-256; source=q4_k_q8_1_gate_order_2b_256.mojo ;;
   gate-order-2b) variant=q4-gate-order-2b; source=q4_k_q8_1_gate_order_2b.mojo ;;
   gate-order) variant=q4-gate-order; source=q4_k_q8_1_gate_order.mojo ;;
   gate-pair) variant=q4-gate-pair; source=q4_k_q8_1_gate_pair.mojo ;;
