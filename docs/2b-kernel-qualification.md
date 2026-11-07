@@ -21,10 +21,24 @@ Generate fixtures with `python3 tools/generate_q4_matvec_fixtures.py --gate-up -
 
 ## Experimental geometry and thermal stop
 
-The 64-thread variant assigns two Q4 blocks per projection lane and reduces two warps. The 256-thread variant assigns 128 threads each to gate and up and preserves the original four-warp projection reduction order. Source review found no indexing or launch-selection defects, but neither variant has live numerical or performance qualification yet.
+The 64-thread variant assigns two Q4 blocks per projection lane and reduces two warps. The 256-thread variant assigns 128 threads each to gate and up and preserves the original four-warp projection reduction order. Source review found no indexing or launch-selection defects, but neither variant had live numerical or performance qualification at the end of this initial batch.
 
 All 82 CPU tests passed. The 64-thread Mojo and native harness builds completed; its Mojo compile peaked at CPU 85°C/GPU 70°C. The subsequent 256-thread Mojo compilation was stopped by the unchanged guard at sampled CPU 92°C/GPU 70°C/platform 65.05°C, about 115 seconds into the stage, despite its 10% CPU scope allowance. The batch stopped there; the 256-thread native harness was not built and neither new layout was benchmarked. The partial PTX is not treated as a qualified build. The guard samples temperature and cannot guarantee zero overshoot between samples.
 
 After cleanup, there was no GPU compute process or owned benchmark/build container; CPU had fallen to 75°C and GPU to 62°C. The post-stop process snapshot cannot establish which process caused the spike. No sustained safety or causal attribution is claimed. Logs and stage receipts retain the failed build.
 
-Next: resume only after a cold window, investigate the compile-period CPU spike, qualify both geometries under the same numerical checks, and return to whole-model evidence. Do not enable either experimental geometry in the application or the resident integration based on these results.
+The follow-up below resumes after cold gates and retains the original failure. Do not enable either experimental geometry in the application or the resident integration based on these results.
+
+## Follow-up: 64 threads pass; 256 timing remains pending
+
+The 64-thread variant passed a guarded control/comparison with the same full-row fixture and numerical tolerance. CUDA's median was 114.560 µs and Mojo's 98.432 µs (1.16385×); the eight paired ratios had a geometric mean of 1.14229× and all favored Mojo. The CUDA/CUDA control ratio was 1.03217×. This one run does not distinguish 64 threads from the existing 128-thread results (~1.138–1.139× paired). Mojo used 40 registers and no local memory. Sampled peaks were CPU 60°C/GPU 65°C.
+
+The 256-thread rebuild completed under the same CPU and thermal limits, peaking at CPU 67°C/GPU 65°C. A half-second host recording showed the compiler near its 10% CPU allowance; the prior 92°C spike did not recur and remains unattributed. The build reused the same source and environment but was not a cold compiler-cache experiment.
+
+The subsequent 256-thread benchmark completed its control (ratio 0.99943×, correctness and canaries passed), then stopped at the candidate preflight when CPU reached 94°C with GPU 62°C. Sprite was paused with its independent resume watchdog. No candidate timing was collected, and the failure is retained. A later three-minute observation without GPU work peaked at CPU 74°C/GPU 65°C; this does not explain the earlier spike.
+
+Read-only inspection found the installed the application fan service filters specifically for the managed the application model container; these benchmark containers do not match. Fan readback was automatic, approximately 2486/2341 RPM. This is a cooling-policy coverage gap, not proof that it caused either spike. A temporary maximum-normal-fan experiment is prepared but still requires administrator authentication; no persistent host setting has been changed.
+
+A GGUF header inspection also identifies Q6_K token embeddings of dimensions [2048, 248320], plus Q6_K feed-forward down projections and Q5_K attention projections. Type enums were checked against the pinned GGML header. These are potential optimization targets, not timing attribution. The next whole-model diagnostic should profile the actual 2B model; the older 4B profile cannot establish this model's bottlenecks. The Q4_K replacement alone does not cover those operations.
+
+The whole-model acceleration requirement remains unmet. Both primary user metrics—prompt processing and token generation—still need credible gains with preserved output quality; 2× remains an aspiration rather than a condition for reporting smaller verified gains.
