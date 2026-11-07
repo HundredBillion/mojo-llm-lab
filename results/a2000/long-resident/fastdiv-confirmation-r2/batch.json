@@ -1,0 +1,59 @@
+{
+  "schedule": [
+    [
+      "control",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "control",
+      "1"
+    ]
+  ],
+  "stages": [
+    {
+      "label": "local-fastdiv-r2-confirmation-00-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794095791.8418655,
+      "ended_unix": 1794095821.8597956,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-fastdiv-r2-confirmation-01-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794095829.8606262,
+      "ended_unix": 1794095856.9552164,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-fastdiv-r2-confirmation-02-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794095864.9558535,
+      "ended_unix": 1794095896.8222013,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-fastdiv-r2-confirmation-03-mojo-arm1",
+      "returncode": 1,
+      "started_unix": 1794095904.822879,
+      "ended_unix": 1794095905.6451106,
+      "fan_window_valid": true
+    }
+  ],
+  "status": "stopped_after_failure"
+}
