@@ -1,0 +1,19 @@
+{
+  "started_utc": "2026-11-07T22:56:42.290129+00:00",
+  "purpose": "Compile fused gate/up Q4 candidate under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "profile-2b-export-nov07",
+      "returncode": 125,
+      "guard_stopped": false,
+      "seconds_including_initialization": 0.2582891950150952,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 45,
+        "platform_C": 50.05
+      }
+    }
+  ],
+  "status": "stopped_or_failed",
+  "error": "Numerical stage failed: profile-2b-export-nov07"
+}

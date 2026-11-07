@@ -1,0 +1,3 @@
+docker: Error response from daemon: CPU cfs quota can not be less than 1ms (i.e. 1000)
+
+Run 'docker run --help' for more information

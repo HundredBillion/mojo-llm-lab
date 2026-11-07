@@ -42,3 +42,11 @@ Read-only inspection found the installed the application fan service filters spe
 A GGUF header inspection also identifies Q6_K token embeddings of dimensions [2048, 248320], plus Q6_K feed-forward down projections and Q5_K attention projections. Type enums were checked against the pinned GGML header. These are potential optimization targets, not timing attribution. The next whole-model diagnostic should profile the actual 2B model; the older 4B profile cannot establish this model's bottlenecks. The Q4_K replacement alone does not cover those operations.
 
 The whole-model acceleration requirement remains unmet. Both primary user metrics—prompt processing and token generation—still need credible gains with preserved output quality; 2× remains an aspiration rather than a condition for reporting smaller verified gains.
+
+## Completed 256-thread comparison under the fan window
+
+After authentication, the three-minute normal-maximum-fan window enabled a complete 256-thread comparison. CUDA's median was 107.903 µs and Mojo's 109.568 µs (CUDA/Mojo 0.98480×); paired geometric mean was 0.98413×, with only two of eight rounds favoring Mojo. The CUDA/CUDA control ratio was 0.99519×. Numerical checks and canaries passed. Sampled peaks across control and comparison were CPU 57°C/GPU 52°C/platform 46.05°C.
+
+The 256-thread kernel uses 29 registers versus the 128-thread kernel's previously observed 34, but its theoretical resident-block capacity is six rather than twelve. Lower register count did not translate into a speed improvement. One run does not prove a general regression, but it supplies no reason to replace the qualified 128-thread candidate. The changed cooling conditions prevent treating cross-run timing differences as a fan-only effect.
+
+The fan helper restored automatic control, original watchdog 0 and the the application fan service. The same window also produced the [current 2B model profile](qwen35-2b-profile.md), which now guides whole-model testing and further kernel selection. All earlier thermal failures remain retained.
