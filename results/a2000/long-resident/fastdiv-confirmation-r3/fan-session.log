@@ -1,0 +1,2 @@
+Normal maximum fans active for at most 1200 seconds
+{"started_unix": 1794096242.0093143, "duration_seconds": 1200, "watchdog_seconds": 30, "original_watchdog": "0", "service_was_active": true, "status": "restored", "errors": [], "finished_unix": 1794096350.723378, "fan_readback": "status:\t\tenabled\nspeed:\t\t5689\nlevel:\t\tauto\ncommands:\tlevel <level> (<level> is 0-7, auto, disengaged, full-speed)\ncommands:\tenable, disable\ncommands:\twatchdog <timeout> (<timeout> is 0 (off), 1-120 (seconds))\n"}

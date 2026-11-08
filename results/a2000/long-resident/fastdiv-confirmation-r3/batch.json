@@ -1,0 +1,74 @@
+{
+  "schedule": [
+    [
+      "control",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "control",
+      "1"
+    ]
+  ],
+  "stages": [
+    {
+      "label": "local-fastdiv-r3-confirmation-00-control-arm1",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 5.227584813022986,
+        "samples": 21,
+        "last": {
+          "cpu_C": 59.0,
+          "gpu_C": 58,
+          "platform_C": 57.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794096268.8465378,
+      "ended_unix": 1794096297.4989104,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-fastdiv-r3-confirmation-01-mojo-arm0",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 8.051369809021708,
+        "samples": 32,
+        "last": {
+          "cpu_C": 63.0,
+          "gpu_C": 57,
+          "platform_C": 56.05,
+          "ac": true
+        }
+      },
+      "returncode": 1,
+      "started_unix": 1794096305.5508237,
+      "ended_unix": 1794096336.6195054,
+      "fan_window_valid": true
+    }
+  ],
+  "status": "stopped_after_failure",
+  "cooldown": {
+    "cpu_below_C": 70,
+    "gpu_below_C": 68,
+    "stable_seconds": 5,
+    "timeout_seconds": 180,
+    "stop_on_unsafe_sample": true
+  }
+}
