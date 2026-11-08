@@ -1,0 +1,29 @@
+{
+  "started_utc": "2026-11-08T00:32:47.187390+00:00",
+  "purpose": "Compile resident coverage worker and run CPU tests under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "coverage-nov07-worker-build",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 28.128761405008845,
+      "peaks": {
+        "cpu_C": 69.0,
+        "gpu_C": 61,
+        "platform_C": 52.05
+      }
+    },
+    {
+      "stage": "coverage-nov07-tests",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 40.96483474300476,
+      "peaks": {
+        "cpu_C": 70.0,
+        "gpu_C": 63,
+        "platform_C": 54.05
+      }
+    }
+  ],
+  "status": "passed"
+}
