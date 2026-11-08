@@ -1,0 +1,6 @@
+LLAMA_CUDA_WAIT device=0 policy=blocking flags=4 verified=1
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 3822 MiB):
+  Device 0: NVIDIA RTX A2000 Laptop GPU, compute capability 8.6, VMM: yes, VRAM: 3822 MiB
+load_backend: loaded CUDA backend from /app/libggml-cuda.so
+load_backend: loaded RPC backend from /app/libggml-rpc.so
+load_backend: loaded CPU backend from /app/libggml-cpu-icelake.so
