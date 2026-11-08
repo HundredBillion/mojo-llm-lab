@@ -1,0 +1,16 @@
+{
+  "started_unix": 1794096852.0169902,
+  "duration_seconds": 1200,
+  "watchdog_seconds": 30,
+  "original_watchdog": "0",
+  "original_power_limit_W": 35.0,
+  "power_cap_W": 25,
+  "service_was_active": true,
+  "samples": [],
+  "power_limit_readback_W": 35.0,
+  "power_limit_restored_W": 35.0,
+  "status": "restored",
+  "errors": [],
+  "finished_unix": 1794096852.1267304,
+  "fan_readback": "status:\t\tenabled\nspeed:\t\t3623\nlevel:\t\tauto\ncommands:\tlevel <level> (<level> is 0-7, auto, disengaged, full-speed)\ncommands:\tenable, disable\ncommands:\twatchdog <timeout> (<timeout> is 0 (off), 1-120 (seconds))\n"
+}
