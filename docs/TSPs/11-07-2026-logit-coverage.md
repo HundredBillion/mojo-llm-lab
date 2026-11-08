@@ -81,3 +81,7 @@ Runs 3–6 (`local-coverage-r3-*`) use these changes, which leave the numerics u
 - the controller's `--trial-cooldown` waits for the existing cold window (CPU < 70 °C, GPU < 68 °C for 5 s, at most 60 s) before **each** of the six trials, not only before the process. The overall worker deadline grows from 420 s to 1200 s to allow for these waits.
 
 Everything else is unchanged, including the pass rule, the abort thresholds and the fan session. If the window runs short, the remaining runs continue in a new, recorded window.
+
+## Amendment (attempt 4)
+
+Committed after attempt 3 and before attempt 4. [Attempt 3](../../results/a2000/logit-coverage/attempt3/) passed runs 3–4, which are retained. Run 5 failed its process preflight on a transient CPU 90 °C reading when it launched immediately after run 4, matching the fast-division r2 stop. Before **each** remaining run (5 and 6, `local-coverage-r4-*`), the batch now idles 20 s and then waits for CPU < 70 °C and GPU < 68 °C held for 5 s (at most 180 s), stopping on any unsafe sample. This is the [fast-division r3](11-07-2026-fast-division-confirmation-r3.md) cool-down. All other attempt-3 settings are unchanged, including the ≤ 900 MHz clock lock and the per-trial cool-down.
