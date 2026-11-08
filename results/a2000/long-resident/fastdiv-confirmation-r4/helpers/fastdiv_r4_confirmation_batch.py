@@ -34,7 +34,7 @@ for index,(mode,arm) in enumerate(plan):
         or not all(4500<=rpm<10000 for rpm in fan['samples'][-1]['fan_rpm'])):
         result.update(status='stopped_before_run',error='Fan window not ready or insufficient time')
         output.write_text(json.dumps(result,indent=2));sys.exit(1)
-    cap=float(S.check_output(['nvidia-smi','--query-gpu=power.limit','--format=csv,noheader,nounits'],text=True).strip())
+    cap=float(S.check_output(['nvidia-smi','--query-gpu=enforced.power.limit','--format=csv,noheader,nounits'],text=True).strip())
     if abs(cap-25.0)>0.01 or fan.get('power_limit_readback_W')!=25.0:
         result.update(status='stopped_before_run',error='GPU power cap not active: %s' % cap)
         output.write_text(json.dumps(result,indent=2));sys.exit(1)

@@ -22,7 +22,7 @@ def main():
         raise SystemExit('Another manual fan policy is active')
     original = WATCH.read_text().strip()
     def gpu_limit():
-        return float(S.check_output(['nvidia-smi','--query-gpu=power.limit','--format=csv,noheader,nounits'],text=True).strip())
+        return float(S.check_output(['nvidia-smi','--query-gpu=enforced.power.limit','--format=csv,noheader,nounits'],text=True).strip())
     original_power = gpu_limit()
     if abs(original_power-35.0)>0.01:
         raise SystemExit('Unexpected GPU power limit %s' % original_power)
