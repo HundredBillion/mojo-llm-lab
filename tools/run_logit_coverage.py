@@ -120,6 +120,8 @@ def main():
     p.add_argument('--steps', type=int, choices=[128], default=128)
     p.add_argument('--mojo-arm', type=int, choices=[0, 1], required=True)
     p.add_argument('--cpu-quota-us', type=int, choices=[1000, 2000], default=1000)
+    p.add_argument('--trial-cooldown', action='store_true',
+                   help='Wait for the cold window (CPU <70 C, GPU <68 C for 5 s) before every trial')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
     if a.policy == 'greedy' and a.seed:
@@ -153,7 +155,7 @@ def main():
     command += [versions['cuda_image'], '/model.gguf', a.policy, str(a.seed), str(a.steps), str(a.mojo_arm)]
     result = {'status': 'failed_or_stopped', 'protocol': 'resident-logit-coverage-v1', 'validation_only': True,
               'versions': versions, 'policy': a.policy, 'seed': a.seed, 'steps': a.steps, 'mojo_arm': a.mojo_arm,
-              'cpu_period_us': 5000, 'cpu_quota_us': a.cpu_quota_us, 'cuda_wait_requested': 'blocking',
+              'trial_cooldown': a.trial_cooldown, 'cpu_period_us': 5000, 'cpu_quota_us': a.cpu_quota_us, 'cuda_wait_requested': 'blocking',
               'prompt_name': a.prompt.name, 'prompt_sha256': digest(a.prompt),
               'model_name': a.model.name, 'model_bytes': a.model.stat().st_size, 'model_sha256': digest(a.model),
               'ptx_sha256': digest(a.ptx), 'worker_sha256': digest(ROOT / 'build/integration' / worker),
@@ -171,7 +173,7 @@ def main():
 
             def receive(limit):
                 deadline = time.monotonic() + limit
-                while time.monotonic() < deadline and time.monotonic() - start < 420:
+                while time.monotonic() < deadline and time.monotonic() - start < (1200 if a.trial_cooldown else 420):
                     if not safe(sensor.read()):
                         raise RuntimeError('Temperature or AC guard')
                     if sel.select(.1):
@@ -185,6 +187,8 @@ def main():
             validate_ready(ready, a.policy, a.seed, a.steps, a.mojo_arm)
             result['worker_capabilities'] = ready
             for arm in schedule_arms(a.mojo_arm):
+                if a.trial_cooldown:
+                    cold_gate(sensor)
                 process.stdin.write(f'{arm}\n'); process.stdin.flush()
                 rows.append(receive(150))
             process.stdin.close(); process.wait(timeout=60)

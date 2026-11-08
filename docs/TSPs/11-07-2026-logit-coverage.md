@@ -70,3 +70,14 @@ Committed after attempt 1 and before attempt 2. [Attempt 1](../../results/a2000/
 Attempt 2 reruns the complete six-run schedule from the start (new output names, `local-coverage-r2-*`) inside a bounded root session. That session sets the fans to level 7 with a 30 s hardware watchdog, locks the GPU graphics clock to 210–1200 MHz and enables persistence mode temporarily. Everything is restored on every exit path, as in the [r5 confirmation](11-07-2026-fast-division-confirmation-r5.md). Before each run, the batch requires an active window with at least 300 s remaining and valid fan readings. After each run, it requires a recorded maximum SM clock of at most 1215 MHz.
 
 Clock frequency does not change kernel selection or the instruction stream, so the numerical pass rule is unchanged. If the 1200 s window ends before all six runs, the remaining runs continue in a new, separately recorded window. Completed runs are not repeated.
+
+## Amendment (attempt 3)
+
+Committed after attempt 2 and before attempt 3. [Attempt 2](../../results/a2000/logit-coverage/attempt2/) passed runs 1–2. These are retained and not repeated. Run 3 (`statement-long`, 6772 prompt tokens) reached the GPU 82 °C guard during its first CUDA trial at ≤ 1200 MHz.
+
+Runs 3–6 (`local-coverage-r3-*`) use these changes, which leave the numerics unaffected:
+
+- the GPU clock lock is lowered to 210–900 MHz (verified per run: max recorded SM clock ≤ 915 MHz);
+- the controller's `--trial-cooldown` waits for the existing cold window (CPU < 70 °C, GPU < 68 °C for 5 s, at most 60 s) before **each** of the six trials, not only before the process. The overall worker deadline grows from 420 s to 1200 s to allow for these waits.
+
+Everything else is unchanged, including the pass rule, the abort thresholds and the fan session. If the window runs short, the remaining runs continue in a new, recorded window.
