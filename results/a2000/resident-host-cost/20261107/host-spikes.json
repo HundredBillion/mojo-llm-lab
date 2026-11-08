@@ -1,0 +1,242 @@
+{
+  "sample_interval_seconds": 0.5,
+  "actual_intervals_vary": true,
+  "duration_seconds": 420.16683769226074,
+  "max_cpu_C": 94.0,
+  "max_gpu_C": 79,
+  "samples_at_or_above_90C": [
+    {
+      "time": 1794058185.7639894,
+      "cpu_C": 92.0,
+      "gpu_C": 68,
+      "gpu_memory_used_bytes": 1770782720,
+      "top_cpu": [
+        [
+          52.25483220214196,
+          "3201830",
+          "chromium"
+        ],
+        [
+          3.8707283112697746,
+          "63153",
+          "chromium"
+        ],
+        [
+          3.8707283112697746,
+          "5563",
+          "codex"
+        ],
+        [
+          1.9353641556348873,
+          "849",
+          "irq/35-SYNA8013:00"
+        ],
+        [
+          1.9353641556348873,
+          "63203",
+          "chromium"
+        ],
+        [
+          1.9353641556348873,
+          "1339",
+          "Hyprland"
+        ],
+        [
+          1.9353641556348873,
+          "129",
+          "irq/9-acpi"
+        ],
+        [
+          0.0,
+          "989",
+          "systemd-logind"
+        ],
+        [
+          0.0,
+          "983",
+          "bash"
+        ],
+        [
+          0.0,
+          "982",
+          "boltd"
+        ]
+      ]
+    },
+    {
+      "time": 1794058186.2871082,
+      "cpu_C": 92.0,
+      "gpu_C": 68,
+      "gpu_memory_used_bytes": 288161792,
+      "top_cpu": [
+        [
+          32.89707133659323,
+          "3201830",
+          "chromium"
+        ],
+        [
+          7.740487373316053,
+          "5563",
+          "codex"
+        ],
+        [
+          7.740487373316053,
+          "1122",
+          "containerd"
+        ],
+        [
+          5.80536552998704,
+          "3284156",
+          "python3"
+        ],
+        [
+          3.8702436866580263,
+          "63203",
+          "chromium"
+        ],
+        [
+          3.8702436866580263,
+          "63153",
+          "chromium"
+        ],
+        [
+          3.8702436866580263,
+          "3576",
+          "herdr"
+        ],
+        [
+          3.8702436866580263,
+          "2480898",
+          "codex"
+        ],
+        [
+          3.8702436866580263,
+          "1262",
+          "dockerd"
+        ],
+        [
+          1.9351218433290132,
+          "63205",
+          "chromium"
+        ]
+      ]
+    },
+    {
+      "time": 1794058189.910963,
+      "cpu_C": 94.0,
+      "gpu_C": 65,
+      "gpu_memory_used_bytes": 288161792,
+      "top_cpu": [
+        [
+          48.3759959494843,
+          "2701162",
+          "chromium"
+        ],
+        [
+          3.8700796759587437,
+          "5563",
+          "codex"
+        ],
+        [
+          1.9350398379793718,
+          "3576",
+          "herdr"
+        ],
+        [
+          1.9350398379793718,
+          "1339",
+          "Hyprland"
+        ],
+        [
+          0.0,
+          "989",
+          "systemd-logind"
+        ],
+        [
+          0.0,
+          "983",
+          "bash"
+        ],
+        [
+          0.0,
+          "982",
+          "boltd"
+        ],
+        [
+          0.0,
+          "981",
+          "bluetoothd"
+        ],
+        [
+          0.0,
+          "980",
+          "avahi-daemon"
+        ],
+        [
+          0.0,
+          "98",
+          "ksoftirqd/13"
+        ]
+      ]
+    },
+    {
+      "time": 1794058190.4282181,
+      "cpu_C": 94.0,
+      "gpu_C": 64,
+      "gpu_memory_used_bytes": 288161792,
+      "top_cpu": [
+        [
+          40.53828550169029,
+          "2701162",
+          "chromium"
+        ],
+        [
+          3.860789095399075,
+          "3284156",
+          "python3"
+        ],
+        [
+          1.9303945476995374,
+          "849",
+          "irq/35-SYNA8013:00"
+        ],
+        [
+          1.9303945476995374,
+          "63153",
+          "chromium"
+        ],
+        [
+          1.9303945476995374,
+          "5563",
+          "codex"
+        ],
+        [
+          1.9303945476995374,
+          "129",
+          "irq/9-acpi"
+        ],
+        [
+          0.0,
+          "989",
+          "systemd-logind"
+        ],
+        [
+          0.0,
+          "983",
+          "bash"
+        ],
+        [
+          0.0,
+          "982",
+          "boltd"
+        ],
+        [
+          0.0,
+          "981",
+          "bluetoothd"
+        ]
+      ]
+    }
+  ],
+  "limitations": "Process CPU percentages cover preceding intervals; temperature is point sampled. Correlation does not isolate thermal causality. Private full host trace retained locally; no browser tab identified. Includes terminal experiments and model runs, not a single workload."
+}

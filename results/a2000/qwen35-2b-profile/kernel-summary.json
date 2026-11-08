@@ -1,0 +1,679 @@
+{
+  "scope": "Summed recorded GPU kernel durations; includes warmup unless separately filtered. Not wall-clock time or production throughput.",
+  "kernel_calls": 11802,
+  "total_gpu_ns": 173613353,
+  "groups": [
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)14, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        248320,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 17,
+      "gpu_ns": 41808496,
+      "share_percent": 24.08138272636207
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)12, (int)1, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        6144,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 408,
+      "gpu_ns": 39371623,
+      "share_percent": 22.67776200370947
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)13, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        6144,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 17464204,
+      "share_percent": 10.05925160606742
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)14, (int)1, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        2048,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 204,
+      "gpu_ns": 13076988,
+      "share_percent": 7.532247821974845
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)12, (int)1, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        2048,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 289,
+      "gpu_ns": 12072235,
+      "share_percent": 6.953517567280668
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)13, (int)1, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        2048,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 8322307,
+      "share_percent": 4.793586931069755
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)12, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        2048,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 323,
+      "gpu_ns": 7598197,
+      "share_percent": 4.37650495696607
+    },
+    {
+      "kernel": "quantize_q8_1(const float *, void *, long, long, long, long, long, unsigned int, uint3)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 2363,
+      "gpu_ns": 4317165,
+      "share_percent": 2.486654929128637
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)12, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        4096,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 3880006,
+      "share_percent": 2.2348545966968336
+    },
+    {
+      "kernel": "void k_get_rows_float_vec<float>(const T1 *, const int *, T1 *, long, long, uint3, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long)",
+      "grid": [
+        1,
+        256,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 2875866,
+      "share_percent": 1.6564774254431915
+    },
+    {
+      "kernel": "void rms_norm_f32<(int)512, (int)1, (bool)1, (bool)1, (bool)0, (bool)0>(const float *, float *, int, int, int, long, long, long, float, const float *, long, long, long, uint3, uint3, uint3, uint3, const float *, long, long, long, uint3, uint3, uint3, uint3, float)",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        512,
+        1,
+        1
+      ],
+      "calls": 833,
+      "gpu_ns": 2698132,
+      "share_percent": 1.5541039634203713
+    },
+    {
+      "kernel": "void gated_delta_net_cuda<(int)128, (bool)0, (bool)0, (int)4>(const float *, const float *, const float *, const float *, const float *, const float *, float *, float *, long, long, long, long, long, long, long, long, long, long, long, long, uint3, uint3, float, long, int)",
+      "grid": [
+        16,
+        1,
+        8
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 2465398,
+      "share_percent": 1.4200509104849786
+    },
+    {
+      "kernel": "void flash_attn_ext_vec<(int)256, (int)1, (ggml_type)2, (ggml_type)2, (bool)0>(const char *, const char *, const char *, const char *, const char *, const int *, const int *, float *, float2 *, float, float, float, float, unsigned int, float, int, uint3, int, int, int, int, int, int, int, int, int, int, int, long, int, int, long, int, int, int, int, int, long)",
+      "grid": [
+        1,
+        1,
+        8
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 1998780,
+      "share_percent": 1.1512824131678396
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        16,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 612,
+      "gpu_ns": 1652878,
+      "share_percent": 0.9520454339707384
+    },
+    {
+      "kernel": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long, long, long, long, long, long, long, long, long, long, long, long, long, long, long)",
+      "grid": [
+        288,
+        1,
+        1
+      ],
+      "block": [
+        64,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 1217040,
+      "share_percent": 0.701005987713399
+    },
+    {
+      "kernel": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long, long, long, long, long, long)",
+      "grid": [
+        96,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 1132143,
+      "share_percent": 0.6521059471733145
+    },
+    {
+      "kernel": "void rms_norm_f32<(int)32, (int)1, (bool)1, (bool)0, (bool)0, (bool)1>(const float *, float *, int, int, int, long, long, long, float, const float *, long, long, long, uint3, uint3, uint3, uint3, const float *, long, long, long, uint3, uint3, uint3, uint3, float)",
+      "grid": [
+        16,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        1,
+        1
+      ],
+      "calls": 612,
+      "gpu_ns": 1110252,
+      "share_percent": 0.6394968939975487
+    },
+    {
+      "kernel": "void ssm_conv_f32<(bool)1, (unsigned long)128, (unsigned long)4>(const float *, const float *, const float *, int, int, int, int, float *, int, int, int, long)",
+      "grid": [
+        1,
+        48,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 1088778,
+      "share_percent": 0.6271280297201564
+    },
+    {
+      "kernel": "void k_get_rows_float<float, float>(const T1 *, const int *, T2 *, long, long, uint3, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long)",
+      "grid": [
+        1,
+        72,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 932808,
+      "share_percent": 0.5372904698177219
+    },
+    {
+      "kernel": "quantize_q8_1(const float *, void *, long, long, long, long, long, unsigned int, uint3)",
+      "grid": [
+        24,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 408,
+      "gpu_ns": 930319,
+      "share_percent": 0.5358568243307875
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)12, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        512,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 136,
+      "gpu_ns": 897069,
+      "share_percent": 0.5167050716427325
+    },
+    {
+      "kernel": "void rms_norm_f32<(int)32, (int)1, (bool)1, (bool)1, (bool)0, (bool)0>(const float *, float *, int, int, int, long, long, long, float, const float *, long, long, long, uint3, uint3, uint3, uint3, const float *, long, long, long, uint3, uint3, uint3, uint3, float)",
+      "grid": [
+        16,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 787628,
+      "share_percent": 0.45366786965977207
+    },
+    {
+      "kernel": "void k_bin_bcast<&op_add, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        8,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 676136,
+      "share_percent": 0.38944930693205376
+    },
+    {
+      "kernel": "void unary_gated_op_kernel<&op_silu, float>(const T2 *, const T2 *, T2 *, long, long, long, long)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 599718,
+      "share_percent": 0.3454331073255638
+    },
+    {
+      "kernel": "void k_set_rows_quant<long, block_q4_0, (int)32, &quantize_f32_q4_0_block>(const float *, const T1 *, T2 *, long, long, long, long, long, long, long, long, long, long, long, long, long, long, uint3, uint3, uint3, uint3, uint3)",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 204,
+      "gpu_ns": 570247,
+      "share_percent": 0.3284580305294835
+    },
+    {
+      "kernel": "void unary_gated_op_kernel<&op_softplus, float>(const T2 *, const T2 *, T2 *, long, long, long, long)",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 534926,
+      "share_percent": 0.30811339724542963
+    },
+    {
+      "kernel": "void mul_mat_vec_q<(ggml_type)14, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        512,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 68,
+      "gpu_ns": 507426,
+      "share_percent": 0.29227360178914347
+    },
+    {
+      "kernel": "void unary_op_kernel<&op_sigmoid, float>(const T2 *, T2 *, int)",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 306,
+      "gpu_ns": 419398,
+      "share_percent": 0.24157012853729057
+    },
+    {
+      "kernel": "void scale_f32<float>(const T1 *, T1 *, float, float, unsigned int, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        1024,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 36,
+      "gpu_ns": 394306,
+      "share_percent": 0.22711732317041305
+    },
+    {
+      "kernel": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long, long, long, long, long, long, long, long, long, long, long, long, long, long, long)",
+      "grid": [
+        32,
+        1,
+        1
+      ],
+      "block": [
+        64,
+        1,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 272226,
+      "share_percent": 0.15680015119574356
+    },
+    {
+      "kernel": "void rms_norm_f32<(int)128, (int)1, (bool)1, (bool)1, (bool)0, (bool)0>(const float *, float *, int, int, int, long, long, long, float, const float *, long, long, long, uint3, uint3, uint3, uint3, const float *, long, long, long, uint3, uint3, uint3, uint3, float)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 266019,
+      "share_percent": 0.15322496536311928
+    },
+    {
+      "kernel": "void rms_norm_f32<(int)128, (int)1, (bool)1, (bool)1, (bool)0, (bool)0>(const float *, float *, int, int, int, long, long, long, float, const float *, long, long, long, uint3, uint3, uint3, uint3, const float *, long, long, long, uint3, uint3, uint3, uint3, float)",
+      "grid": [
+        2,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 227684,
+      "share_percent": 0.13114429049705642
+    },
+    {
+      "kernel": "void rope_multi<(bool)1, (bool)0, float, float>(const T3 *, T4 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, const long *, int, bool)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        1,
+        256,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 218976,
+      "share_percent": 0.12612854726675315
+    },
+    {
+      "kernel": "void rope_multi<(bool)1, (bool)0, float, float>(const T3 *, T4 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, const long *, int, bool)",
+      "grid": [
+        2,
+        1,
+        1
+      ],
+      "block": [
+        1,
+        256,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 198882,
+      "share_percent": 0.11455455272498538
+    },
+    {
+      "kernel": "void fwht_cuda<(int)256, float>(const T2 *, float *, long, float)",
+      "grid": [
+        2,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 183233,
+      "share_percent": 0.10554084512151551
+    },
+    {
+      "kernel": "void fwht_cuda<(int)256, float>(const T2 *, float *, long, float)",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 170433,
+      "share_percent": 0.09816814032731687
+    },
+    {
+      "kernel": "void unary_gated_op_kernel<&op_sigmoid, float>(const T2 *, const T2 *, T2 *, long, long, long, long)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 164545,
+      "share_percent": 0.0947766961219855
+    },
+    {
+      "kernel": "void fwht_cuda<(int)64, float>(const T2 *, float *, long, float)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 157089,
+      "share_percent": 0.09048209557936479
+    },
+    {
+      "kernel": "void fwht_cuda<(int)64, float>(const T2 *, float *, long, float)",
+      "grid": [
+        2,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        4,
+        1
+      ],
+      "calls": 102,
+      "gpu_ns": 152037,
+      "share_percent": 0.08757218115590452
+    },
+    {
+      "kernel": "void scale_f32<float>(const T1 *, T1 *, float, float, unsigned int, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "grid": [
+        72,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 36,
+      "gpu_ns": 91936,
+      "share_percent": 0.052954452184331695
+    },
+    {
+      "kernel": "void k_get_rows_float<float, float>(const T1 *, const int *, T2 *, long, long, uint3, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long)",
+      "grid": [
+        1,
+        8,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "calls": 34,
+      "gpu_ns": 79136,
+      "share_percent": 0.045581747390133064
+    },
+    {
+      "kernel": "void k_bin_bcast<&op_add, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "calls": 17,
+      "gpu_ns": 30688,
+      "share_percent": 0.017676059744091227
+    }
+  ]
+}

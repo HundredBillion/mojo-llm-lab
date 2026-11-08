@@ -1,0 +1,14 @@
+{
+  "cuda": {
+    "valid": true,
+    "business": "Oak Street Bakery",
+    "total": "127.5"
+  },
+  "mojo": {
+    "valid": true,
+    "business": "Oak Street Bakery",
+    "total": "127.5"
+  },
+  "byte_identical": true,
+  "scope": "One properly formatted chat prompt; does not erase the raw-completion regression."
+}

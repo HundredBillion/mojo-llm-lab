@@ -1,0 +1,11 @@
+{"ready":true,"fixture_tokens":49}
+{"trial":0,"arm":0,"tokens":32,"decode_ns":480941899,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":96574,"nr_throttled":96,"throttled_usec":382954}
+{"trial":1,"arm":1,"tokens":32,"decode_ns":450423798,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":90169,"nr_throttled":91,"throttled_usec":362939}
+{"trial":2,"arm":0,"tokens":32,"decode_ns":441216193,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":88518,"nr_throttled":88,"throttled_usec":351008}
+{"trial":3,"arm":1,"tokens":32,"decode_ns":449874232,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":90710,"nr_throttled":90,"throttled_usec":357969}
+{"trial":4,"arm":1,"tokens":32,"decode_ns":449886931,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":90057,"nr_throttled":90,"throttled_usec":358770}
+{"trial":5,"arm":0,"tokens":32,"decode_ns":459804396,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":92303,"nr_throttled":92,"throttled_usec":366356}
+{"trial":6,"arm":0,"tokens":32,"decode_ns":446161974,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":90044,"nr_throttled":89,"throttled_usec":354427}
+{"trial":7,"arm":1,"tokens":32,"decode_ns":449842709,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":90252,"nr_throttled":90,"throttled_usec":358397}
+{"trial":8,"arm":1,"tokens":32,"decode_ns":459938697,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":92355,"nr_throttled":92,"throttled_usec":366400}
+{"trial":9,"arm":0,"tokens":32,"decode_ns":444900519,"top_token":11140,"replacement_calls":0,"captured_calls":0,"cpu_usage_usec":89018,"nr_throttled":89,"throttled_usec":354692}

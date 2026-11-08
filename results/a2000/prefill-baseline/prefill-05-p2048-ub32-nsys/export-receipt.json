@@ -1,0 +1,18 @@
+{
+  "started_utc": "2026-11-08T01:15:01.831211+00:00",
+  "purpose": "Export recorded 2B prefill CUDA profile under CPU and thermal guards; no GPU work",
+  "stages": [
+    {
+      "stage": "prefill-export-nov07",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 20.715740747982636,
+      "peaks": {
+        "cpu_C": 69.0,
+        "gpu_C": 53,
+        "platform_C": 46.05
+      }
+    }
+  ],
+  "status": "passed"
+}

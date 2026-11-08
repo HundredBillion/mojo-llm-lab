@@ -1,0 +1,7 @@
+Starting local-coverage-r2-00-statement-short-greedy-arm1
+{"status": "passed", "error": null, "peaks": {"cpu_C": 79.0, "gpu_C": 81, "platform_C": 56.05}}
+Starting local-coverage-r2-01-statement-medium-greedy-arm0
+{"status": "passed", "error": null, "peaks": {"cpu_C": 83.0, "gpu_C": 81, "platform_C": 60.05}}
+Starting local-coverage-r2-02-statement-long-greedy-arm1
+{"status": "failed_or_stopped", "error": "RuntimeError: Temperature or AC guard", "peaks": {"cpu_C": 80.0, "gpu_C": 82, "platform_C": 60.05}}
+STOPPED local-coverage-r2-02-statement-long-greedy-arm1

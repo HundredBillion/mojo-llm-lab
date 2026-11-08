@@ -1,5 +1,9 @@
 # Whole-model integration: real-input validation
 
+[Alternative-model follow-up](alternative-models.md): Qwen3.5-2B shows memory headroom; chat-format tests pass, but whole-model Mojo timing remains inconclusive.
+
+**Update:** The later replacement runs exposed a generated-output regression. See [kernel proof and model-quality gate](a2000-kernel-proof.md) before interpreting the earlier validation results below. Production use is not qualified.
+
 A guarded 16-token Qwen3VL-4B decode completed with a preload observer that **forwarded every kernel unchanged to CUDA**. It observed 72 host calls to the exact fused Q4_K specialization used by the microbenchmark. No Mojo model-kernel replacement or end-to-end speedup has been demonstrated yet.
 
 ## New: real-input differential validation
@@ -78,3 +82,7 @@ The runner requires Docker, standard NVIDIA CDI device 0 and the pinned engine a
 4. Measure both generation throughput and complete accurate PDF processing. Keep production defaults unchanged until those checks justify adoption.
 
 The existing isolated 1.22× operation result remains useful evidence for this next step, not a multiplier for the entire model.
+
+## Qwen3.5-2B specialization
+
+The later [Qwen3.5-2B comparison](qwen35-mojo.md) adds a separate 2048/6144 specialization selected with `--shape qwen35-2b`. Both benchmark arms load the identical verified 2B weights. The earlier 2560/9728 evidence above remains specific to the 4B models.

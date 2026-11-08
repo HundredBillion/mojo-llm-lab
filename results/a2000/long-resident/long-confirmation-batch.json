@@ -1,0 +1,73 @@
+{
+  "schedule": [
+    [
+      "control",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "control",
+      "1"
+    ]
+  ],
+  "stages": [
+    {
+      "label": "local-long-confirmation-00-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794093824.3149068,
+      "ended_unix": 1794093854.350209,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-confirmation-01-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794093862.3509781,
+      "ended_unix": 1794093893.6388826,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-confirmation-02-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794093901.6397784,
+      "ended_unix": 1794093934.7399004,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-confirmation-03-mojo-arm1",
+      "returncode": 0,
+      "started_unix": 1794093942.7410493,
+      "ended_unix": 1794093974.3399544,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-confirmation-04-mojo-arm0",
+      "returncode": 0,
+      "started_unix": 1794093982.3408294,
+      "ended_unix": 1794094014.1334333,
+      "fan_window_valid": true
+    },
+    {
+      "label": "local-long-confirmation-05-control-arm1",
+      "returncode": 0,
+      "started_unix": 1794094022.134342,
+      "ended_unix": 1794094054.284264,
+      "fan_window_valid": true
+    }
+  ],
+  "status": "passed"
+}

@@ -36,7 +36,15 @@
 #ifndef WARMUP_PAIRS
 #define WARMUP_PAIRS 2
 #endif
+#ifndef ROWS
 #define ROWS 9728
+#endif
+#ifndef INPUT_WIDTH
+#define INPUT_WIDTH 2560
+#endif
+#define Q4_BLOCKS (INPUT_WIDTH / 256)
+#define ROW_BYTES (Q4_BLOCKS * 144)
+#define ACTIVATION_BYTES (INPUT_WIDTH / 32 * 36)
 #ifndef MOJO_THREADS
 #define MOJO_THREADS 32
 #endif
@@ -141,17 +149,17 @@ static int read_weight_rows(const char *path, unsigned char *weights) {
   FILE *in = fopen(path, "rb");
   if (!in)
     return 0;
-  size_t bytes = fread(weights, 1, ROWS * 1440, in);
+  size_t bytes = fread(weights, 1, ROWS * ROW_BYTES, in);
   int trailing = fgetc(in);
   int valid = !ferror(in) && trailing == EOF &&
-              (bytes == 64 * 1440 || bytes == ROWS * 1440);
+              (bytes == 64 * ROW_BYTES || bytes == ROWS * ROW_BYTES);
   fclose(in);
   if (!valid)
     return 0;
-  if (bytes == 64 * 1440)
+  if (bytes == 64 * ROW_BYTES)
     for (int tile = 1; tile < ROWS / 64; tile++)
-      memcpy(weights + tile * 64 * 1440, weights, 64 * 1440);
-  return (int)(bytes / 1440);
+      memcpy(weights + tile * 64 * ROW_BYTES, weights, 64 * ROW_BYTES);
+  return (int)(bytes / ROW_BYTES);
 }
 
 int main(int argc, char **argv) {
@@ -194,15 +202,15 @@ int main(int argc, char **argv) {
   LOAD(ggml_backend_graph_compute);
   LOAD(ggml_backend_buffer_free);
   LOAD(ggml_backend_free);
-  static unsigned char weights[ROWS * 1440], activation[2880];
-  float input[2560], reference[ROWS], output[ROWS];
+  static unsigned char weights[ROWS * ROW_BYTES], activation[ACTIVATION_BYTES];
+  float input[INPUT_WIDTH], reference[ROWS], output[ROWS];
   char path[4096];
   snprintf(path, sizeof(path), "%s/weights.bin", argv[1]);
   int source_rows = read_weight_rows(path, weights);
   if (!source_rows)
     return 4;
 #ifdef GATE_UP
-  static unsigned char gate_weights[ROWS * 1440];
+  static unsigned char gate_weights[ROWS * ROW_BYTES];
   snprintf(path, sizeof(path), "%s/gate.bin", argv[1]);
   if (read_weight_rows(path, gate_weights) != source_rows)
     return 4;
@@ -216,7 +224,7 @@ int main(int argc, char **argv) {
   fclose(in);
   if (!valid)
     return 4;
-  for (int group = 0; group < 80; group++) {
+  for (int group = 0; group < INPUT_WIDTH / 32; group++) {
     uint16_t delta;
     memcpy(&delta, activation + group * 36, 2);
     float scale = call_ggml_fp16_to_fp32(delta);
@@ -249,11 +257,11 @@ int main(int argc, char **argv) {
   if (!nvinit || !nvget || !nvclock || nvinit() || nvget(pci, &nvdev))
     return 14;
   struct ggml_tensor *a =
-      call_ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_K, 2560, ROWS);
-  struct ggml_tensor *b = call_ggml_new_tensor_2d(ctx, GGML_TYPE_F32, 2560, 1);
+      call_ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_K, INPUT_WIDTH, ROWS);
+  struct ggml_tensor *b = call_ggml_new_tensor_2d(ctx, GGML_TYPE_F32, INPUT_WIDTH, 1);
   struct ggml_tensor *result = call_ggml_mul_mat(ctx, a, b);
 #ifdef GATE_UP
-  struct ggml_tensor *gate = call_ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_K, 2560, ROWS);
+  struct ggml_tensor *gate = call_ggml_new_tensor_2d(ctx, GGML_TYPE_Q4_K, INPUT_WIDTH, ROWS);
   struct ggml_tensor *gate_result = call_ggml_mul_mat(ctx, gate, b);
   result = call_ggml_swiglu_split(ctx, gate_result, result);
 #endif
@@ -341,7 +349,7 @@ int main(int argc, char **argv) {
   if (found != 1 || !quant.kernelParams)
     return 16;
   CUdeviceptr ap = *(CUdeviceptr *)quant.kernelParams[1];
-  unsigned char actual_activation[2880];
+  unsigned char actual_activation[ACTIVATION_BYTES];
   CK(cuMemcpyDtoH(actual_activation, ap, sizeof(actual_activation)));
   if (memcmp(activation, actual_activation, sizeof(activation))) {
     fprintf(stderr, "Activation bytes differ\n");
@@ -355,8 +363,8 @@ int main(int argc, char **argv) {
   CUdeviceptr wp = (CUdeviceptr)a->data, op = out + 4;
   CUdeviceptr metadata_device = 0, quants_device = 0;
 #ifdef PREPACKED
-  static unsigned char metadata[ROWS * 160], quants[ROWS * 1280];
-  for (int i = 0; i < ROWS * 10; i++) {
+  static unsigned char metadata[ROWS * Q4_BLOCKS * 16], quants[ROWS * Q4_BLOCKS * 128];
+  for (int i = 0; i < ROWS * Q4_BLOCKS; i++) {
     memcpy(metadata + i * 16, weights + i * 144, 16);
     memcpy(quants + i * 128, weights + i * 144 + 16, 128);
   }
@@ -404,14 +412,14 @@ int main(int argc, char **argv) {
     }
   CK(cuMemcpyDtoH(output, op, sizeof(output)));
   compare(output, reference, "warmup");
-  printf("{\"source_rows\":%d,\"mojo_registers\":%d,\"baseline_registers\":%d,\"mojo_local_"
+  printf("{\"rows\":%d,\"input_width\":%d,\"source_rows\":%d,\"mojo_registers\":%d,\"baseline_registers\":%d,\"mojo_local_"
          "bytes\":%d,\"baseline_local_bytes\":%d,\"mojo_max_blocks_per_sm\":%d,"
          "\"baseline_max_blocks_per_sm\":%d,\"warmup_pairs\":%d,\"repetitions_"
          "per_graph\":%d,\"baseline_kernel_"
          "nodes\":%zu,\"mojo_"
          "kernel_nodes\":%zu,\"context_flags\":%u,\"same_graph_control\":%s,"
          "\"samples\":[",
-         source_rows, mojo_registers, baseline_registers, mojo_local, baseline_local,
+         ROWS, INPUT_WIDTH, source_rows, mojo_registers, baseline_registers, mojo_local, baseline_local,
          mojo_blocks, baseline_blocks, WARMUP_PAIRS, REPS, baseline_kernels,
          fused_kernels, flags, control ? "true" : "false");
   int first = 1;

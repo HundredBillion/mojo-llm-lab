@@ -1,0 +1,13 @@
+Starting local-prefill-00-p512-ub32
+{"status": "passed", "error": null, "peaks": {"cpu_C": 75.0, "gpu_C": 65, "platform_C": 47.05}, "prefill": {"prompt_tokens": 512, "batch": 32, "ubatch": 32, "repetitions": 3, "samples_tokens_per_second": [1189.89, 1088.64, 1057.02], "mean_tokens_per_second": 1111.850949, "stddev_tokens_per_second": 69.409635, "build_commit": "cd959bae9"}}
+Starting local-prefill-01-p2048-ub32
+{"status": "passed", "error": null, "peaks": {"cpu_C": 71.0, "gpu_C": 74, "platform_C": 50.05}, "prefill": {"prompt_tokens": 2048, "batch": 32, "ubatch": 32, "repetitions": 3, "samples_tokens_per_second": [1159.66, 1160.2, 1164.44], "mean_tokens_per_second": 1161.429797, "stddev_tokens_per_second": 2.618042, "build_commit": "cd959bae9"}}
+Starting local-prefill-02-p6144-ub32
+{"status": "passed", "error": null, "peaks": {"cpu_C": 87.0, "gpu_C": 80, "platform_C": 55.05}, "prefill": {"prompt_tokens": 6144, "batch": 32, "ubatch": 32, "repetitions": 3, "samples_tokens_per_second": [1163.13, 1160.96, 1175.17], "mean_tokens_per_second": 1166.421974, "stddev_tokens_per_second": 7.656628, "build_commit": "cd959bae9"}}
+Starting local-prefill-03-p2048-ub128
+{"status": "passed", "error": null, "peaks": {"cpu_C": 74.0, "gpu_C": 72, "platform_C": 52.05}, "prefill": {"prompt_tokens": 2048, "batch": 128, "ubatch": 128, "repetitions": 3, "samples_tokens_per_second": [2425.85, 2636.27, 2860.69], "mean_tokens_per_second": 2640.93287, "stddev_tokens_per_second": 217.457416, "build_commit": "cd959bae9"}}
+Starting local-prefill-04-p2048-ub512
+{"status": "passed", "error": null, "peaks": {"cpu_C": 81.0, "gpu_C": 71, "platform_C": 51.05}, "prefill": {"prompt_tokens": 2048, "batch": 512, "ubatch": 512, "repetitions": 3, "samples_tokens_per_second": [3276.87, 3296.74, 3248.26], "mean_tokens_per_second": 3273.957554, "stddev_tokens_per_second": 24.36939, "build_commit": "cd959bae9"}}
+Starting local-prefill-05-p2048-ub32-nsys
+{"status": "passed", "error": null, "peaks": {"cpu_C": 75.0, "gpu_C": 68, "platform_C": 51.05}, "prefill": null}
+Prefill batch completed

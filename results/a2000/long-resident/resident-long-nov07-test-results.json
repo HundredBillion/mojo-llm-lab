@@ -1,0 +1,29 @@
+{
+  "started_utc": "2026-11-07T23:09:57.609299+00:00",
+  "purpose": "Compile fused gate/up Q4 candidate under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "resident-long-nov07-worker-build",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 23.123545159993228,
+      "peaks": {
+        "cpu_C": 74.0,
+        "gpu_C": 61,
+        "platform_C": 56.05
+      }
+    },
+    {
+      "stage": "resident-long-nov07-tests",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 17.633616573002655,
+      "peaks": {
+        "cpu_C": 79.0,
+        "gpu_C": 63,
+        "platform_C": 58.05
+      }
+    }
+  ],
+  "status": "passed"
+}

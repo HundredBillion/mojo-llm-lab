@@ -1,0 +1,62 @@
+{
+  "euid": 0,
+  "steps": [
+    {
+      "cmd": "--query-gpu=enforced.power.limit,power.default_limit,clocks.max.sm --format=csv,noheader",
+      "rc": 0,
+      "out": "35.00 W, 35.00 W, 2100 MHz"
+    },
+    {
+      "cmd": "-i 0 -pl 25",
+      "rc": 0,
+      "out": "Changing power management limit is not supported for GPU: 00000000:01:00.0.\nTreating as warning and moving on.\nAll done."
+    },
+    {
+      "cmd": "--query-gpu=enforced.power.limit,power.default_limit,clocks.max.sm --format=csv,noheader",
+      "rc": 0,
+      "out": "35.00 W, 35.00 W, 2100 MHz"
+    },
+    {
+      "cmd": "--query-gpu=enforced.power.limit,power.default_limit,clocks.max.sm --format=csv,noheader",
+      "rc": 0,
+      "out": "35.00 W, 35.00 W, 2100 MHz"
+    },
+    {
+      "cmd": "--query-gpu=enforced.power.limit,power.default_limit,clocks.max.sm --format=csv,noheader",
+      "rc": 0,
+      "out": "35.00 W, 35.00 W, 2100 MHz"
+    },
+    {
+      "cmd": "-q -d POWER",
+      "rc": 0,
+      "out": "                    : N/A\n        Instantaneous Power Draw                       : N/A\n    Module Power Readings\n        Average Power Draw                             : N/A\n        Instantaneous Power Draw                       : N/A\n        Current Power Limit                            : N/A\n        Requested Power Limit                          : N/A\n        Default Power Limit                            : N/A\n        Min Power Limit                                : N/A\n        Max Power Limit                                : N/A\n    EDPp Multiplier                                    : N/A"
+    },
+    {
+      "cmd": "-i 0 -lgc 210,1200",
+      "rc": 0,
+      "out": "GPU clocks set to \"(gpuClkMin 210, gpuClkMax 1200)\" for GPU 00000000:01:00.0\n\nWarning: persistence mode is disabled on device 00000000:01:00.0. See the Known Issues section of the nvidia-smi(1) man page for more information. Run with [--help | -h] switch to get more information on how to enable persistence mode.\nAll done."
+    },
+    {
+      "cmd": "-q -d PERFORMANCE,CLOCK",
+      "rc": 0,
+      "out": "ration                                       : Not Found\n        Number of Samples                              : Not Found\n        Max                                            : Not Found\n        Min                                            : Not Found\n        Avg                                            : Not Found\n    Clock Policy\n        Auto Boost                                     : N/A\n        Auto Boost Default                             : N/A\n    DLA Clocks\n        Engine                                         : N/A\n        Max Engine                                     : N/A"
+    }
+  ],
+  "restore": [
+    {
+      "cmd": "-i 0 -rgc",
+      "rc": 0,
+      "out": "All done."
+    },
+    {
+      "cmd": "-i 0 -pl 35",
+      "rc": 0,
+      "out": "Changing power management limit is not supported for GPU: 00000000:01:00.0.\nTreating as warning and moving on.\nAll done."
+    }
+  ],
+  "final": {
+    "cmd": "--query-gpu=enforced.power.limit,power.default_limit,clocks.max.sm --format=csv,noheader",
+    "rc": 0,
+    "out": "35.00 W, 35.00 W, 2100 MHz"
+  }
+}

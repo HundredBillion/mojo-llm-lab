@@ -1,8 +1,14 @@
 # Mojo LLM Lab
 
+Latest: [longer whole-model decode confirmation](docs/long-resident-confirmation.md) passes its timing rule with 1.97–2.43% gains, but the original candidate fails full-logit validation. A source-built division correction now produces exact logits in both context assignments; fresh performance confirmation is pending. This is not yet a qualified end-to-end speedup.
+
+[Alternative-model follow-up](docs/alternative-models.md): Qwen3.5-2B shows memory headroom; chat-format tests pass, but whole-model Mojo timing remains inconclusive.
+
 Experiments in making local LLM inference faster with Mojo GPU kernels, reproducible comparisons and preserved numerical accuracy. The guiding target is **2× faster token generation and complete PDF parsing**, with preserved quality. Any reproducible speed improvement is a success; 2× is not a minimum threshold. Neither end-to-end target has been achieved.
 
 The first result is a fused RMSNorm, learned scale and IMROPE operation for one Q tensor. It runs about **1.92× faster than llama.cpp b12110 for this isolated operation** on an RTX A2000 Laptop GPU. There is no measured end-to-end LLM speedup or energy saving yet.
+
+The fused Q4_K gate/up candidate now has three matched operation runs measuring **1.22–1.26× faster** than the fused CUDA baseline on the A2000. **Whole-model replacement fails a generated-JSON quality check**, despite passing intermediate numerical tolerances. See [the reproducible evidence and rejected integration result](docs/a2000-kernel-proof.md). It is experimental and remains disabled by default.
 
 ## Recorded result
 
@@ -77,3 +83,8 @@ The first [whole-model kernel trace](docs/decode-profile.md) attributes 87.8% of
 [ROADMAP.md](ROADMAP.md) defines the evidence needed before claiming a whole-model gain. [CONTRIBUTING.md](CONTRIBUTING.md) describes reproducible changes and result submissions.
 
 This repository's code is licensed under [MIT](LICENSE). The benchmark uses separately fetched [llama.cpp/GGML source and libraries](https://github.com/ggml-org/llama.cpp), which retain their [MIT license](https://github.com/ggml-org/llama.cpp/blob/cd959bae99ff4bed22bef2604f45241c09bbb8c8/LICENSE). IMROPE semantics are grounded in its [CUDA implementation](https://github.com/ggml-org/llama.cpp/blob/d2e54583c7452353eb35d40431281f6ee984332f/ggml/src/ggml-cuda/rope.cu). Mojo/MAX and the NVIDIA CUDA toolkit remain subject to their respective upstream licenses; neither SDK nor CUDA binaries are vendored here. CUDA timing and graph behavior follow the [CUDA 12.8.1 graph API](https://docs.nvidia.com/cuda/archive/12.8.1/cuda-driver-api/group__CUDA__GRAPH.html) and [event API](https://docs.nvidia.com/cuda/archive/12.8.1/cuda-driver-api/group__CUDA__EVENT.html).
+
+
+The [resident Qwen3.5-2B comparison and actual-PDF smoke test](docs/resident-comparison.md) retain the latest controls and failures. The short candidate ratio (1.0534×) is smaller than the same-implementation control difference (1.0669×), so there is still no proved whole-model gain. The tested default the application PDF response failed strict decimal validation; the compact variant stopped at the thermal guard. These results do not change production defaults.
+
+The [wait-policy follow-up](docs/resident-wait-policy.md) fixes benchmark helper targeting and records approximately 67% lower CPU work in short matched controls. This efficiency change is separate from Mojo acceleration; a whole-model Mojo gain remains unproved.

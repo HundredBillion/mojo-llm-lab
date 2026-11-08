@@ -1,0 +1,7 @@
+{"ready":true,"fixture_tokens":49}
+{"trial":0,"arm":0,"tokens":16,"decode_ns":304813343,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":60748,"nr_throttled":61,"throttled_usec":243256}
+{"trial":1,"arm":1,"tokens":16,"decode_ns":275649722,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":55763,"nr_throttled":55,"throttled_usec":218995}
+{"trial":2,"arm":0,"tokens":16,"decode_ns":240525882,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":48519,"nr_throttled":48,"throttled_usec":191320}
+{"trial":3,"arm":1,"tokens":16,"decode_ns":244857348,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":48429,"nr_throttled":49,"throttled_usec":195800}
+{"trial":4,"arm":1,"tokens":16,"decode_ns":245772613,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":49476,"nr_throttled":49,"throttled_usec":195387}
+{"trial":5,"arm":0,"tokens":16,"decode_ns":239684404,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":47336,"nr_throttled":48,"throttled_usec":192010}

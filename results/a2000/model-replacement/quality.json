@@ -1,0 +1,25 @@
+{
+  "completion-cuda": {
+    "valid": true,
+    "business": "Oak Street Bakery",
+    "total": "127.5"
+  },
+  "completion-cuda-repeat": {
+    "valid": true,
+    "business": "Oak Street Bakery",
+    "total": "127.5"
+  },
+  "completion-mojo": {
+    "valid": false,
+    "reason": "Extra data: line 3 column 1 (char 54)"
+  },
+  "completion-nographs": {
+    "valid": false,
+    "reason": "Extra data: line 3 column 1 (char 54)"
+  },
+  "completion-feedback-retry": {
+    "valid": false,
+    "reason": "Extra data: line 3 column 1 (char 54)"
+  },
+  "interpretation": "Operation tolerance does not imply end-to-end output quality. Do not enable replacement in production."
+}

@@ -11,18 +11,18 @@
 #include <cstring>
 #include <cstdint>
 
-struct Fusion {
-    const void *x_bias, *gate, *gate_bias, *x_scale, *gate_scale;
-    int glu_op;
-    float glu_limit;
-    const void *shared_up, *shared_gate;
-    float *shared_dst;
-    uint32_t shared_stride_col_dst;
-};
-static_assert(sizeof(Fusion) == 80);
-static_assert(offsetof(Fusion,gate)==8 && offsetof(Fusion,glu_op)==40 && offsetof(Fusion,shared_dst)==64);
+#include "fusion_eligibility.h"
+static const Layout &layout() {
+    const char *name=std::getenv("MOJO_SHAPE");
+    if (!name || std::strcmp(name,"qwen3-4b")==0) return layout_4b;
+    if (std::strcmp(name,"qwen35-2b")==0) return layout_2b;
+    std::fprintf(stderr,"mojo_observer unsupported_shape\n"); std::abort();
+}
 static std::atomic<unsigned long> matches{0}, eligible_calls{0}, validated{0};
-static std::mutex validation_mutex;
+static std::mutex validation_mutex, replacement_mutex;
+static std::atomic<unsigned long> replaced{0}, captured_replacements{0};
+extern "C" unsigned long mojo_replacement_count() { return replaced.load(); }
+extern "C" unsigned long mojo_capture_count() { return captured_replacements.load(); }
 static const char *target = "_Z13mul_mat_vec_qIL9ggml_type12ELi1ELb1ELb0ELb0EEvPKvS2_PKi31ggml_cuda_mm_fusion_args_devicePfj5uint3jjjS7_jjjS7_jjjj";
 
 template<class T> static T symbol(const char *name) {
@@ -35,20 +35,6 @@ template<class T> static T symbol(const char *name) {
     if (!value) { std::fprintf(stderr, "mojo_observer missing=%s\n", name); std::abort(); }
     return value;
 }
-template<class T> static T argument(void **args, int i) {
-    T value;
-    std::memcpy(&value, args[i], sizeof(value));
-    return value;
-}
-static bool eligible(void **args) {
-    const auto f = argument<Fusion>(args, 3);
-    return argument<uint32_t>(args,5)==2560 && argument<uint32_t>(args,9)==9728 &&
-        argument<uint32_t>(args,7)==10 && argument<uint32_t>(args,8)==80 &&
-        !argument<const void *>(args,2) && argument<const void *>(args,0) &&
-        argument<const void *>(args,1) && argument<void *>(args,4) && f.gate &&
-        !f.x_bias && !f.gate_bias && !f.x_scale && !f.gate_scale &&
-        !f.shared_up && !f.shared_gate && !f.shared_dst && f.glu_op==2 && f.glu_limit==0;
-}
 template<class T> static T driver(const char *name) {
     static void *library = dlopen("libcuda.so.1", RTLD_NOW | RTLD_LOCAL);
     auto fn = reinterpret_cast<T>(library ? dlsym(library,name) : nullptr);
@@ -57,6 +43,63 @@ template<class T> static T driver(const char *name) {
 }
 static void checked(int code, const char *operation) {
     if (code) { std::fprintf(stderr,"mojo_validation error=%d operation=%s\n",code,operation); std::abort(); }
+}
+static CUcontext replacement_context=nullptr;
+static CUmodule replacement_module=nullptr;
+static CUfunction replacement_kernel=nullptr;
+static bool prepare_replacement() {
+    const char *path=std::getenv("MOJO_REPLACE_PTX");
+    if (!path) return false;
+    if (std::getenv("MOJO_VALIDATE_PTX")) std::abort();
+    static auto current=driver<decltype(&cuCtxGetCurrent)>("cuCtxGetCurrent");
+    CUcontext context=nullptr;
+    checked(current(&context),"current_context");
+    if (!context) return false;
+    std::lock_guard<std::mutex> lock(replacement_mutex);
+    if (replacement_kernel) return context==replacement_context;
+    CUdevice device;
+    int major,minor;
+    checked(driver<decltype(&cuCtxGetDevice)>("cuCtxGetDevice")(&device),"device");
+    auto attribute=driver<decltype(&cuDeviceGetAttribute)>("cuDeviceGetAttribute");
+    checked(attribute(&major,CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR,device),"major");
+    checked(attribute(&minor,CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR,device),"minor");
+    if (major!=8 || minor!=6) return false;
+    const char *entry=std::getenv("MOJO_REPLACE_ENTRY");
+    if (!entry) std::abort();
+    checked(driver<decltype(&cuModuleLoad)>("cuModuleLoad")(&replacement_module,path),"replacement_module");
+    checked(driver<decltype(&cuModuleGetFunction)>("cuModuleGetFunction")(&replacement_kernel,replacement_module,entry),"replacement_function");
+    int registers;
+    checked(driver<decltype(&cuFuncGetAttribute)>("cuFuncGetAttribute")(&registers,CU_FUNC_ATTRIBUTE_NUM_REGS,replacement_kernel),"replacement_ready");
+    replacement_context=context;
+    return true;
+}
+static bool replace(void **args,cudaStream_t stream) {
+    if (!std::getenv("MOJO_REPLACE_PTX")) return false;
+    static auto capturing=symbol<decltype(&cudaStreamIsCapturing)>("cudaStreamIsCapturing");
+    cudaStreamCaptureStatus capture;
+    checked(capturing(stream,&capture),"replacement_capture_status");
+    if (capture==cudaStreamCaptureStatusNone) {
+        if (!prepare_replacement()) return false;
+    }
+    std::lock_guard<std::mutex> lock(replacement_mutex);
+    CUcontext current=nullptr;
+    static auto context=driver<decltype(&cuCtxGetCurrent)>("cuCtxGetCurrent");
+    checked(context(&current),"replacement_context");
+    if (!replacement_kernel || current!=replacement_context) return false;
+    auto up=argument<const void *>(args,0),input=argument<const void *>(args,1);
+    auto gate=argument<Fusion>(args,3).gate;
+    auto output=argument<void *>(args,4);
+    void *parameters[]={&up,&gate,&input,&output};
+    static auto launch=driver<decltype(&cuLaunchKernel)>("cuLaunchKernel");
+    checked(launch(replacement_kernel,layout().rows,1,1,128,1,1,0,reinterpret_cast<CUstream>(stream),parameters,nullptr),"replacement_launch");
+    ++replaced;
+    if (capture==cudaStreamCaptureStatusActive) ++captured_replacements;
+    return true;
+}
+extern "C" cudaError_t cudaStreamBeginCapture(cudaStream_t stream,cudaStreamCaptureMode mode) {
+    static auto real=symbol<decltype(&cudaStreamBeginCapture)>("cudaStreamBeginCapture");
+    prepare_replacement();
+    return real(stream,mode);
 }
 static void validate(void **args, cudaStream_t stream) {
     const char *path = std::getenv("MOJO_VALIDATE_PTX");
@@ -83,7 +126,7 @@ static void validate(void **args, cudaStream_t stream) {
     if (!entry) std::abort();
     checked(driver<decltype(&cuModuleLoad)>("cuModuleLoad")(&module,path),"module_load");
     checked(driver<decltype(&cuModuleGetFunction)>("cuModuleGetFunction")(&kernel,module,entry),"function");
-    constexpr size_t rows=9728, bytes=(rows+2)*sizeof(float);
+    const size_t rows=layout().rows, bytes=(rows+2)*sizeof(float);
     void *allocation=nullptr;
     checked(symbol<decltype(&cudaMalloc)>("cudaMalloc")(&allocation,bytes),"allocate");
     checked(symbol<decltype(&cudaMemset)>("cudaMemset")(allocation,0xff,bytes),"sentinels");
@@ -110,17 +153,20 @@ static void validate(void **args, cudaStream_t stream) {
         }
         maximum=std::fmax(maximum,difference);
     }
+    if (std::getenv("MOJO_VALIDATE_FEEDBACK")) {
+        checked(copy(argument<void *>(args,4),output,rows*sizeof(float),cudaMemcpyDeviceToDevice),"feedback_copy");
+    }
     checked(symbol<decltype(&cudaFree)>("cudaFree")(allocation),"free");
     checked(driver<decltype(&cuModuleUnload)>("cuModuleUnload")(module),"module_unload");
     std::fprintf(stderr,"mojo_validation passed_call=%lu rows=%zu max_abs=%.9g\n",++validated,rows,maximum);
 }
 static bool observe(const void *func, dim3 grid, dim3 block, void **args, const char *api) {
-    if (grid.x != 9728 || grid.y != 1 || grid.z != 1 || block.x != 32 || block.y != 4 || block.z != 1) return false;
+    if (grid.x != layout().rows || grid.y != 1 || grid.z != 1 || block.x != 32 || block.y != 4 || block.z != 1) return false;
     static auto get_name = symbol<decltype(&cudaFuncGetName)>("cudaFuncGetName");
     const char *name = nullptr;
     if (get_name(&name, func) != cudaSuccess || !name || std::strcmp(name, target)) return false;
     auto count = ++matches;
-    const bool supported = eligible(args);
+    const bool supported = eligible(args,layout());
     if (supported) ++eligible_calls;
     if (count > 4) return supported;
     const auto fusion = argument<Fusion>(args, 3);
@@ -139,6 +185,7 @@ extern "C" cudaError_t cudaLaunchKernel(const void *func, dim3 grid, dim3 block,
                                        void **args, size_t bytes, cudaStream_t stream) {
     static auto real = symbol<decltype(&cudaLaunchKernel)>("cudaLaunchKernel");
     bool supported=observe(func,grid,block,args,"launch");
+    if (supported && bytes==0 && replace(args,stream)) return cudaSuccess;
     auto status=real(func,grid,block,args,bytes,stream);
     if (status==cudaSuccess && supported) validate(args,stream);
     return status;
@@ -146,11 +193,13 @@ extern "C" cudaError_t cudaLaunchKernel(const void *func, dim3 grid, dim3 block,
 extern "C" cudaError_t cudaLaunchKernelExC(const cudaLaunchConfig_t *config, const void *func, void **args) {
     static auto real = symbol<decltype(&cudaLaunchKernelExC)>("cudaLaunchKernelExC");
     bool supported=observe(func,config->gridDim,config->blockDim,args,"launch_ex");
+    if (supported && config->dynamicSmemBytes==0 && config->numAttrs==0 && replace(args,config->stream)) return cudaSuccess;
     auto status=real(config,func,args);
     if (status==cudaSuccess && supported) validate(args,config->stream);
     return status;
 }
 __attribute__((destructor)) static void report() {
-    std::fprintf(stderr,"mojo_validation eligible_calls=%lu validated_calls=%lu outputs=CUDA\n",eligible_calls.load(),validated.load());
-    std::fprintf(stderr,"mojo_observer target_launch_calls=%lu mode=observe_only\n",matches.load());
+    std::fprintf(stderr,"mojo_replacement calls=%lu captured_calls=%lu\n",replaced.load(),captured_replacements.load());
+    std::fprintf(stderr,"mojo_validation eligible_calls=%lu validated_calls=%lu outputs=%s\n",eligible_calls.load(),validated.load(),(std::getenv("MOJO_RESIDENT") && replaced.load()) ? "mixed" : (std::getenv("MOJO_VALIDATE_FEEDBACK") || std::getenv("MOJO_REPLACE_PTX")) ? "Mojo" : "CUDA");
+    std::fprintf(stderr,"mojo_observer target_launch_calls=%lu mode=host_launches\n",matches.load());
 }

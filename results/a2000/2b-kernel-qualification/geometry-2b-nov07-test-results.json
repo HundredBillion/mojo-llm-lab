@@ -1,0 +1,52 @@
+{
+  "started_utc": "2026-11-07T14:55:01.926963+00:00",
+  "purpose": "Compile fused gate/up Q4 candidate under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "geometry-2b-nov07-tests",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 17.35494142700918,
+      "peaks": {
+        "cpu_C": 64.0,
+        "gpu_C": 62,
+        "platform_C": 59.05
+      }
+    },
+    {
+      "stage": "geometry-2b-nov07-mojo-64",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 122.98994161002338,
+      "peaks": {
+        "cpu_C": 85.0,
+        "gpu_C": 70,
+        "platform_C": 64.05
+      }
+    },
+    {
+      "stage": "geometry-2b-nov07-native-64",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 5.275387819972821,
+      "peaks": {
+        "cpu_C": 69.0,
+        "gpu_C": 68,
+        "platform_C": 64.05
+      }
+    },
+    {
+      "stage": "geometry-2b-nov07-mojo-256",
+      "returncode": -15,
+      "guard_stopped": true,
+      "seconds_including_initialization": 114.93929701601155,
+      "peaks": {
+        "cpu_C": 92.0,
+        "gpu_C": 70,
+        "platform_C": 65.05
+      }
+    }
+  ],
+  "status": "stopped_or_failed",
+  "error": "Numerical stage failed: geometry-2b-nov07-mojo-256"
+}

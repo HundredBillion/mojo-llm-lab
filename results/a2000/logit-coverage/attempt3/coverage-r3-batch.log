@@ -1,0 +1,7 @@
+Starting local-coverage-r3-02-statement-long-greedy-arm1
+{"status": "passed", "error": null, "peaks": {"cpu_C": 80.0, "gpu_C": 74, "platform_C": 57.05}}
+Starting local-coverage-r3-03-prose-greedy-arm0
+{"status": "passed", "error": null, "peaks": {"cpu_C": 83.0, "gpu_C": 66, "platform_C": 56.05}}
+Starting local-coverage-r3-04-statement-short-sampled-arm1
+{"status": "failed_or_stopped", "error": "RuntimeError: Power/temperature preflight failed: {\"cpu_C\": 90.0, \"gpu_C\": 59, \"platform_C\": 54.05, \"ac\": true, \"sm_clock_MHz\": 210, \"memory_clock_MHz\": 5001, \"gpu_power_W\": 11.758, \"gpu_memory_used_bytes\": 288161792}", "peaks": {"cpu_C": 90.0, "gpu_C": 59, "platform_C": 54.05}}
+STOPPED local-coverage-r3-04-statement-short-sampled-arm1

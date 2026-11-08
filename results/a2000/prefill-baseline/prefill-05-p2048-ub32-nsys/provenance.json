@@ -1,0 +1,6 @@
+{
+  "nsys_report": {"file": "prefill.nsys-rep (kept local, not distributed)", "sha256": "12f3b8fae6b3e628c5631da93d418970768a2909d75140c6f33d1f6d43f77dab"},
+  "sqlite_export": {"file": "prefill.sqlite (kept local, not distributed)", "sha256": "53c52c5f2d4bcd9908e4f0a51a03ee21f777edb3c4267ce41088eec83001f755",
+                    "export": "nsys export --type sqlite under a 10% CPU quota, no GPU work; receipt export-receipt.json"},
+  "kernel_events": "kernel-events.jsonl.gz (names, timestamps, launch dimensions only); recompute with tools/summarize_cuda_profile.py"
+}

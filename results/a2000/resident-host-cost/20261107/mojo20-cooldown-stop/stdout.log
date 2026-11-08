@@ -1,0 +1,3 @@
+{"ready":true,"fixture_tokens":49}
+{"trial":0,"arm":0,"tokens":16,"decode_ns":269925563,"top_token":271,"replacement_calls":0,"captured_calls":0,"timed_replacement_calls":0,"timed_captured_calls":0,"cpu_usage_usec":53948,"nr_throttled":54,"throttled_usec":215143}
+{"trial":1,"arm":1,"tokens":16,"decode_ns":254881546,"top_token":271,"replacement_calls":49,"captured_calls":24,"timed_replacement_calls":48,"timed_captured_calls":24,"cpu_usage_usec":51309,"nr_throttled":51,"throttled_usec":202641}

@@ -1,0 +1,23 @@
+[
+  {
+    "case": "chat",
+    "valid": true,
+    "business": "Oak Street Bakery",
+    "total": "127.5",
+    "byte_identical_to_cuda": true
+  },
+  {
+    "case": "tax",
+    "valid": true,
+    "business": "Maple Repair",
+    "total": "259.2",
+    "byte_identical_to_cuda": true
+  },
+  {
+    "case": "balance",
+    "valid": true,
+    "business": "Harbor Design",
+    "total": "1204.08",
+    "byte_identical_to_cuda": true
+  }
+]

@@ -1,0 +1,4 @@
+ {"business_name": "Oak Street Bakery", "total": 127.5}
+
+Note: The total should be a number, not a string.
+

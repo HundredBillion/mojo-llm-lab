@@ -1,0 +1,86 @@
+{
+  "model": "Qwen3.5-2B-Q4_K_M",
+  "model_sha256_verified_before_runs": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "mode": "CUDA only; current Mojo kernel unsupported",
+  "quality": [
+    {
+      "case": "chat",
+      "quality": {
+        "valid": true,
+        "business": "Oak Street Bakery",
+        "total": "127.5"
+      },
+      "logged_total_inference_ms": 935.57,
+      "sampled_peak_device_memory_bytes": 1728839680
+    },
+    {
+      "case": "tax",
+      "quality": {
+        "valid": true,
+        "business": "Maple Repair",
+        "total": "259.2"
+      },
+      "logged_total_inference_ms": 1085.27,
+      "sampled_peak_device_memory_bytes": 1733033984
+    },
+    {
+      "case": "balance",
+      "quality": {
+        "valid": true,
+        "business": "Harbor Design",
+        "total": "1204.08"
+      },
+      "logged_total_inference_ms": 1049.97,
+      "sampled_peak_device_memory_bytes": 1733033984
+    }
+  ],
+  "short_decode_runs": [
+    {
+      "run": 0,
+      "decode_ns": 340168763,
+      "tokens_per_second": 47.03547691708542,
+      "peaks": {
+        "cpu_C": 63.0,
+        "gpu_C": 71,
+        "platform_C": 60.05
+      }
+    },
+    {
+      "run": 1,
+      "decode_ns": 336021754,
+      "tokens_per_second": 47.6159647687572,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 72,
+        "platform_C": 59.05
+      }
+    },
+    {
+      "run": 2,
+      "decode_ns": 329616916,
+      "tokens_per_second": 48.54119804943506,
+      "peaks": {
+        "cpu_C": 60.0,
+        "gpu_C": 71,
+        "platform_C": 59.05
+      }
+    },
+    {
+      "run": 3,
+      "decode_ns": 344914237,
+      "tokens_per_second": 46.388343198486176,
+      "peaks": {
+        "cpu_C": 74.0,
+        "gpu_C": 71,
+        "platform_C": 59.05
+      }
+    }
+  ],
+  "median_tokens_per_second": 47.325720842921314,
+  "limitations": [
+    "Four short synthetic decode measurements; no sustained throughput claim.",
+    "Different model and tokenizer from Qwen3-4B; cross-model tokens/sec is not task latency.",
+    "Three small synthetic extraction cases, not a complete PDF accuracy suite.",
+    "Logged inference time excludes model loading."
+  ]
+}

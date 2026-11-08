@@ -1,0 +1,5 @@
+Starting local-coverage-r4-04-statement-short-sampled-arm1
+{"status": "passed", "error": null, "peaks": {"cpu_C": 54.0, "gpu_C": 65, "platform_C": 52.05}}
+Starting local-coverage-r4-05-statement-long-sampled-arm0
+{"status": "passed", "error": null, "peaks": {"cpu_C": 82.0, "gpu_C": 72, "platform_C": 56.05}}
+Coverage batch completed

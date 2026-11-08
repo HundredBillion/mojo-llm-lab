@@ -1,0 +1,65 @@
+{
+  "plan": [
+    [
+      "statement-short",
+      "greedy",
+      0,
+      1
+    ],
+    [
+      "statement-medium",
+      "greedy",
+      0,
+      0
+    ],
+    [
+      "statement-long",
+      "greedy",
+      0,
+      1
+    ],
+    [
+      "prose",
+      "greedy",
+      0,
+      0
+    ],
+    [
+      "statement-short",
+      "sampled",
+      20261107,
+      1
+    ],
+    [
+      "statement-long",
+      "sampled",
+      20261107,
+      0
+    ]
+  ],
+  "runs": [
+    {
+      "label": "local-coverage-r2-00-statement-short-greedy-arm1",
+      "returncode": 0,
+      "max_sm_clock_MHz": 1200,
+      "started_unix": 1794098426.5907934,
+      "ended_unix": 1794098467.7889798
+    },
+    {
+      "label": "local-coverage-r2-01-statement-medium-greedy-arm0",
+      "returncode": 0,
+      "max_sm_clock_MHz": 1200,
+      "started_unix": 1794098467.8018522,
+      "ended_unix": 1794098526.563452
+    },
+    {
+      "label": "local-coverage-r2-02-statement-long-greedy-arm1",
+      "returncode": 1,
+      "max_sm_clock_MHz": 1200,
+      "started_unix": 1794098526.5765772,
+      "ended_unix": 1794098560.4016597
+    }
+  ],
+  "status": "stopped_after_failure",
+  "started_unix": 1794098426.5762901
+}

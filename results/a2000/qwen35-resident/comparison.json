@@ -1,0 +1,37 @@
+{
+  "status": "inconclusive",
+  "reason": "Candidate apparent gain is smaller than the matching CUDA/CUDA control apparent gain. CPU quota throttles every timed decode. No isolated Mojo whole-model, sampled-output, PDF or energy gain is established.",
+  "control": {
+    "mode": "control",
+    "median_tokens_per_second": {
+      "0": 65.3749839698124,
+      "1": 69.49381540157302
+    },
+    "arm1_over_arm0_median_rate": 1.063003173104601,
+    "cycle_latency_ratios": [
+      1.0669322394953478
+    ],
+    "median_reported_throttle_usec_over_wall_usec": 0.7977682009875069,
+    "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution."
+  },
+  "candidate": {
+    "mode": "mojo",
+    "median_tokens_per_second": {
+      "0": 62.97500005267606,
+      "1": 66.11319892909007
+    },
+    "arm1_over_arm0_median_rate": 1.0498324553201912,
+    "cycle_latency_ratios": [
+      1.053388250205631
+    ],
+    "median_reported_throttle_usec_over_wall_usec": 0.7975215099499424,
+    "scope": "Fixed-token decode only; cgroup throttle counter is not a causal critical-path attribution."
+  },
+  "limitations": [
+    "Only one ABBA cycle per completed short run.",
+    "Earlier 32-token control telemetry retains active receive samples only; cooldown readings were checked but not saved.",
+    "Later runs retain all sensor reads, including cold gates.",
+    "Warmup does not guarantee absence of timed graph recaptures after memory clear/prefill.",
+    "Sprite pause watchdog resumed it after 90 seconds; short runs lasted about 145 seconds."
+  ]
+}

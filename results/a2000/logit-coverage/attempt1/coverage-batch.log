@@ -1,0 +1,3 @@
+Starting local-coverage-00-statement-short-greedy-arm1
+{"status": "failed_or_stopped", "error": "RuntimeError: Temperature or AC guard", "peaks": {"cpu_C": 85.0, "gpu_C": 82, "platform_C": 56.05}}
+STOPPED local-coverage-00-statement-short-greedy-arm1

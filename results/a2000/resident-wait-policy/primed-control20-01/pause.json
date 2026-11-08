@@ -1,0 +1,11 @@
+{
+  "watchdog_seconds": 80,
+  "deadline_seconds": 75,
+  "started_unix": 1794060474.0212123,
+  "returncode": 0,
+  "pause_seconds": 23.30467891099397,
+  "still_stopped": [],
+  "paused_process_counts": {
+    "sprite": 1
+  }
+}

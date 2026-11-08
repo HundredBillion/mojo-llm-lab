@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "bytes": 417177600,
+  "ptx_sha256": "dda42c8e7a7cb9d6ce009f978f3ba915bc5d6f5725e043584e04e046ffaffedc",
+  "entry": "stream_read_roofline_stream_rea6A6A_4d6672728e44b5cf",
+  "scope": "Read-bandwidth roofline for a 248320x1680-byte buffer; not a matrix kernel or inference result.",
+  "kernels": {
+    "mojo_stream_read_grid640": {
+      "median_ms": 2.4330239295959473,
+      "min_ms": 2.430975914001465,
+      "read_GBps_median": 171.46465142629353,
+      "exact": true
+    },
+    "mojo_stream_read_grid1280": {
+      "median_ms": 2.4381439685821533,
+      "min_ms": 2.437056064605713,
+      "read_GBps_median": 171.10458011329004,
+      "exact": true
+    },
+    "mojo_stream_read_grid2560": {
+      "median_ms": 2.4494080543518066,
+      "min_ms": 2.447360038757324,
+      "read_GBps_median": 170.31772197319683,
+      "exact": true
+    },
+    "driver_device_copy": {
+      "median_ms": 5.0589759349823,
+      "read_plus_write_GBps_median": 164.92571040524612
+    }
+  },
+  "peaks": {
+    "cpu_C": 82.0,
+    "gpu_C": 62,
+    "platform_C": 54.05
+  },
+  "clocks_MHz": [
+    [
+      210,
+      405
+    ],
+    [
+      1207,
+      5501
+    ]
+  ]
+}

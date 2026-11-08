@@ -1,0 +1,31 @@
+0.00.600.013 I llama_completion: llama backend init
+0.00.600.021 I llama_completion: load the model and apply lora adapter, if any
+0.11.749.507 I cmn          init: llama threadpool init, n_threads = 2
+mojo_observer api=launch match=1 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+0.12.764.459 I 
+0.12.764.639 I system_info: n_threads = 2 (n_threads_batch = 2) / 16 | CUDA : ARCHS = 500,610,700,750,800,860,890,900,1200 | USE_GRAPHS = 1 | FA_QUANTS = q4_0-q4_0,q8_0-q8_0,f16-f16,bf16-bf16 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.12.764.642 I 
+0.12.765.452 I sampler seed: 4294967295
+0.12.765.472 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 40, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.12.765.486 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> greedy 
+0.12.765.487 I generate: n_ctx = 512, n_batch = 32, n_predict = 32, n_keep = 0
+0.12.765.487 I 
+mojo_observer api=launch match=2 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=3 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+mojo_observer api=launch match=4 width=2048 rows=6144 weight_stride=8 activation_stride=64 ids=0 gate=1 x_bias=0 gate_bias=0 x_scale=0 gate_scale=0 shared_up=0 shared_gate=0 shared_dst=0 glu=2
+0.13.814.700 I common_perf_print:    sampling time =     103.63 ms
+0.13.814.703 I common_perf_print:    samplers time =      49.95 ms /   118 tokens
+0.13.814.710 I common_perf_print:        load time =    5814.55 ms
+0.13.814.713 I common_perf_print: prompt eval time =     578.72 ms /    98 tokens (    5.91 ms per token,   169.34 tokens per second)
+0.13.814.715 I common_perf_print:        eval time =     360.91 ms /    19 runs   (   19.00 ms per token,    52.64 tokens per second)
+0.13.814.716 I common_perf_print:       total time =    1050.26 ms /   117 tokens
+0.13.814.718 I common_perf_print: unaccounted time =       7.00 ms /   0.7 %      (total - sampling - prompt eval - eval) / (total)
+0.13.814.719 I common_perf_print:    graphs reused =         19
+0.13.814.720 I common_perf_print:   graph reallocs =          0    /     0        (same size) / (changed size)
+mojo_replacement calls=53 captured_calls=25
+mojo_validation eligible_calls=53 validated_calls=0 outputs=Mojo
+mojo_observer target_launch_calls=53 mode=host_launches

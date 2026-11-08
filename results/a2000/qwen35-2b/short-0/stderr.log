@@ -1,0 +1,8 @@
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 3822 MiB):
+  Device 0: NVIDIA RTX A2000 Laptop GPU, compute capability 8.6, VMM: yes, VRAM: 3822 MiB
+load_backend: loaded CUDA backend from /app/libggml-cuda.so
+load_backend: loaded RPC backend from /app/libggml-rpc.so
+load_backend: loaded CPU backend from /app/libggml-cpu-icelake.so
+mojo_replacement calls=0 captured_calls=0
+mojo_validation eligible_calls=0 validated_calls=0 outputs=CUDA
+mojo_observer target_launch_calls=0 mode=host_launches

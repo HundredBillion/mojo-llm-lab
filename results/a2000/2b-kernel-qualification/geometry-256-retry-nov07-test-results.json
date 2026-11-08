@@ -1,0 +1,29 @@
+{
+  "started_utc": "2026-11-07T15:03:19.073617+00:00",
+  "purpose": "Compile fused gate/up Q4 candidate under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "geometry-256-retry-nov07-mojo",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 43.19991312798811,
+      "peaks": {
+        "cpu_C": 67.0,
+        "gpu_C": 65,
+        "platform_C": 62.05
+      }
+    },
+    {
+      "stage": "geometry-256-retry-nov07-native",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 4.690040881978348,
+      "peaks": {
+        "cpu_C": 67.0,
+        "gpu_C": 58,
+        "platform_C": 62.05
+      }
+    }
+  ],
+  "status": "passed"
+}

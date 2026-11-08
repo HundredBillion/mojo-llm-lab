@@ -1,0 +1,53 @@
+[
+  {
+    "build_commit": "cd959bae9",
+    "build_number": 12110,
+    "cpu_info": "11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz",
+    "gpu_info": "NVIDIA RTX A2000 Laptop GPU",
+    "backends": "CUDA",
+    "model_filename": "/model.gguf",
+    "model_type": "qwen35 2B Q4_K - Medium",
+    "model_size": 1269873920,
+    "model_n_params": 1881825088,
+    "n_batch": 32,
+    "n_ubatch": 32,
+    "n_threads": 2,
+    "cpu_mask": "0x0",
+    "cpu_strict": false,
+    "poll": 0,
+    "type_k": "q4_0",
+    "type_v": "q4_0",
+    "n_gpu_layers": 99,
+    "n_cpu_moe": 0,
+    "split_mode": "layer",
+    "main_gpu": 0,
+    "no_kv_offload": false,
+    "flash_attn": 1,
+    "devices": "auto",
+    "tensor_split": "0.00",
+    "tensor_buft_overrides": "none",
+    "load_mode": "auto",
+    "lazy_mode": "auto",
+    "embeddings": false,
+    "no_op_offload": 0,
+    "no_host": false,
+    "repack": true,
+    "fit_target": 0,
+    "fit_min_ctx": 0,
+    "n_prompt": 2048,
+    "n_gen": 0,
+    "n_depth": 0,
+    "test_time": "2026-11-08T01:13:47Z",
+    "avg_ns": 3655758969,
+    "stddev_ns": 0,
+    "avg_ts": 560.211988,
+    "stddev_ts": 0.000000,
+    "samples_ns": [ 3655758969 ],
+    "samples_ts": [ 560.212 ]
+  }
+]
+Collecting data...
+Generating '/tmp/nsys-ubuntu/nsys-report-2ce3.qdstrm'
+[1/1] [0%                          ] prefill.nsys-rep[1/1] [0%                          ] prefill.nsys-rep[1/1] [1%                          ] prefill.nsys-rep[1/1] [2%                          ] prefill.nsys-rep[1/1] [5%                          ] prefill.nsys-rep[1/1] [7%                          ] prefill.nsys-rep[1/1] [8%                          ] prefill.nsys-rep[1/1] [10%                         ] prefill.nsys-rep[1/1] [11%                         ] prefill.nsys-rep[1/1] [13%                         ] prefill.nsys-rep[1/1] [14%                         ] prefill.nsys-rep[1/1] [=16%                        ] prefill.nsys-rep[1/1] [=17%                        ] prefill.nsys-rep[1/1] [==19%                       ] prefill.nsys-rep[1/1] [==20%                       ] prefill.nsys-rep[1/1] [=======================93%  ] prefill.nsys-rep[1/1] [=======================96%  ] prefill.nsys-rep[1/1] [========================98% ] prefill.nsys-rep[1/1] [========================100%] prefill.nsys-rep[1/1] [========================100%] prefill.nsys-rep
+Generated:
+	/profile/prefill.nsys-rep

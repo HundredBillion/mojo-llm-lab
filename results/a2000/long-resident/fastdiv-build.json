@@ -1,0 +1,18 @@
+{
+  "started_utc": "2026-11-07T23:36:48.614983+00:00",
+  "purpose": "Compile fused gate/up Q4 candidate under CPU and thermal guards",
+  "stages": [
+    {
+      "stage": "fastdiv-nov07-mojo",
+      "returncode": 0,
+      "guard_stopped": false,
+      "seconds_including_initialization": 126.9538770779618,
+      "peaks": {
+        "cpu_C": 66.0,
+        "gpu_C": 56,
+        "platform_C": 52.05
+      }
+    }
+  ],
+  "status": "passed"
+}

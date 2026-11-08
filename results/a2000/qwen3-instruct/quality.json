@@ -1,0 +1,56 @@
+[
+  {
+    "case": "chat",
+    "expected_business": "Oak Street Bakery",
+    "expected_total": "127.50",
+    "checks": [
+      {
+        "valid": true,
+        "business": "Oak Street Bakery",
+        "total": "127.5"
+      },
+      {
+        "valid": true,
+        "business": "Oak Street Bakery",
+        "total": "127.5"
+      }
+    ],
+    "byte_identical": true
+  },
+  {
+    "case": "tax",
+    "expected_business": "Maple Repair",
+    "expected_total": "259.20",
+    "checks": [
+      {
+        "valid": true,
+        "business": "Maple Repair",
+        "total": "259.2"
+      },
+      {
+        "valid": true,
+        "business": "Maple Repair",
+        "total": "259.2"
+      }
+    ],
+    "byte_identical": true
+  },
+  {
+    "case": "balance",
+    "expected_business": "Harbor Design",
+    "expected_total": "1204.08",
+    "checks": [
+      {
+        "valid": true,
+        "business": "Harbor Design",
+        "total": "1204.08"
+      },
+      {
+        "valid": true,
+        "business": "Harbor Design",
+        "total": "1204.08"
+      }
+    ],
+    "byte_identical": true
+  }
+]

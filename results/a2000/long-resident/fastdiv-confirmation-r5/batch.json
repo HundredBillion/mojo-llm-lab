@@ -1,0 +1,163 @@
+{
+  "schedule": [
+    [
+      "control",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "1"
+    ],
+    [
+      "mojo",
+      "0"
+    ],
+    [
+      "control",
+      "1"
+    ]
+  ],
+  "stages": [
+    {
+      "label": "local-fastdiv-r5-confirmation-00-control-arm1",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 7.115198060986586,
+        "samples": 28,
+        "last": {
+          "cpu_C": 51.0,
+          "gpu_C": 54,
+          "platform_C": 52.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794097292.60258,
+      "ended_unix": 1794097324.3940454,
+      "fan_window_valid": true,
+      "max_sm_clock_MHz": 1200,
+      "clock_lock_valid": true
+    },
+    {
+      "label": "local-fastdiv-r5-confirmation-01-mojo-arm0",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 6.594748338975478,
+        "samples": 26,
+        "last": {
+          "cpu_C": 51.0,
+          "gpu_C": 57,
+          "platform_C": 55.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794097330.9897516,
+      "ended_unix": 1794097361.9369924,
+      "fan_window_valid": true,
+      "max_sm_clock_MHz": 1200,
+      "clock_lock_valid": true
+    },
+    {
+      "label": "local-fastdiv-r5-confirmation-02-mojo-arm1",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 5.560905686987098,
+        "samples": 22,
+        "last": {
+          "cpu_C": 50.0,
+          "gpu_C": 58,
+          "platform_C": 55.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794097367.5000246,
+      "ended_unix": 1794097399.7940311,
+      "fan_window_valid": true,
+      "max_sm_clock_MHz": 1200,
+      "clock_lock_valid": true
+    },
+    {
+      "label": "local-fastdiv-r5-confirmation-03-mojo-arm1",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 5.541766416979954,
+        "samples": 22,
+        "last": {
+          "cpu_C": 50.0,
+          "gpu_C": 58,
+          "platform_C": 56.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794097405.3367727,
+      "ended_unix": 1794097442.1475964,
+      "fan_window_valid": true,
+      "max_sm_clock_MHz": 1200,
+      "clock_lock_valid": true
+    },
+    {
+      "label": "local-fastdiv-r5-confirmation-04-mojo-arm0",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 5.2788655740441754,
+        "samples": 21,
+        "last": {
+          "cpu_C": 50.0,
+          "gpu_C": 58,
+          "platform_C": 56.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794097447.4275527,
+      "ended_unix": 1794097479.1178977,
+      "fan_window_valid": true,
+      "max_sm_clock_MHz": 1200,
+      "clock_lock_valid": true
+    },
+    {
+      "label": "local-fastdiv-r5-confirmation-05-control-arm1",
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 5.795091152016539,
+        "samples": 23,
+        "last": {
+          "cpu_C": 50.0,
+          "gpu_C": 58,
+          "platform_C": 56.05,
+          "ac": true
+        }
+      },
+      "returncode": 0,
+      "started_unix": 1794097484.914118,
+      "ended_unix": 1794097518.5823877,
+      "fan_window_valid": true,
+      "max_sm_clock_MHz": 1200,
+      "clock_lock_valid": true
+    }
+  ],
+  "status": "passed",
+  "cooldown": {
+    "cpu_below_C": 70,
+    "gpu_below_C": 68,
+    "stable_seconds": 5,
+    "timeout_seconds": 180,
+    "stop_on_unsafe_sample": true
+  },
+  "gpu_clock_lock_MHz": [
+    210,
+    1200
+  ],
+  "max_sm_clock_tolerance_MHz": 1215
+}

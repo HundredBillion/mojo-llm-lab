@@ -1,0 +1,115 @@
+{
+  "plan": [
+    [
+      512,
+      32,
+      32,
+      3,
+      false
+    ],
+    [
+      2048,
+      32,
+      32,
+      3,
+      false
+    ],
+    [
+      6144,
+      32,
+      32,
+      3,
+      false
+    ],
+    [
+      2048,
+      128,
+      128,
+      3,
+      false
+    ],
+    [
+      2048,
+      512,
+      512,
+      3,
+      false
+    ],
+    [
+      2048,
+      32,
+      32,
+      1,
+      true
+    ]
+  ],
+  "runs": [
+    {
+      "label": "local-prefill-00-p512-ub32",
+      "returncode": 0,
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 25.025284508999903
+      },
+      "fan_window_valid": true,
+      "started_unix": 1794100153.8447082,
+      "ended_unix": 1794100174.2361672
+    },
+    {
+      "label": "local-prefill-01-p2048-ub32",
+      "returncode": 0,
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 26.45035288995132
+      },
+      "fan_window_valid": true,
+      "started_unix": 1794100200.6874292,
+      "ended_unix": 1794100225.0869808
+    },
+    {
+      "label": "local-prefill-02-p6144-ub32",
+      "returncode": 0,
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 26.452933783992194
+      },
+      "fan_window_valid": true,
+      "started_unix": 1794100251.5405717,
+      "ended_unix": 1794100290.3454812
+    },
+    {
+      "label": "local-prefill-03-p2048-ub128",
+      "returncode": 0,
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 26.446585534024052
+      },
+      "fan_window_valid": true,
+      "started_unix": 1794100316.7928648,
+      "ended_unix": 1794100332.3535182
+    },
+    {
+      "label": "local-prefill-04-p2048-ub512",
+      "returncode": 0,
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 26.446524948987644
+      },
+      "fan_window_valid": true,
+      "started_unix": 1794100358.800875,
+      "ended_unix": 1794100379.0460205
+    },
+    {
+      "label": "local-prefill-05-p2048-ub32-nsys",
+      "returncode": 0,
+      "cooldown": {
+        "ok": true,
+        "waited_seconds": 26.451738536998164
+      },
+      "fan_window_valid": true,
+      "started_unix": 1794100405.4985564,
+      "ended_unix": 1794100473.2670357
+    }
+  ],
+  "status": "passed"
+}

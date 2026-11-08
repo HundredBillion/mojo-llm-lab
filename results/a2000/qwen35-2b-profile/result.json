@@ -1,0 +1,14 @@
+{
+  "purpose": "Kernel attribution only; profiler overhead and CPU quota invalidate performance claims",
+  "status": "passed",
+  "cuda_wait_verified": {
+    "device": 0,
+    "policy": "blocking",
+    "flags": 4
+  },
+  "peaks": {
+    "cpu_C": 54.0,
+    "gpu_C": 54,
+    "platform_C": 46.05
+  }
+}

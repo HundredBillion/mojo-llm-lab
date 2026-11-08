@@ -16,3 +16,7 @@ Implementation sequence:
 5. Publish aggregate evidence without model tensors, binaries, or private paths.
 
 Acceptance here does not establish generated-text/logit equivalence, end-to-end speed, PDF accuracy, or reduced energy. Those are subsequent gates for production adoption. Routine design/implementation approval is covered by the user's standing workflow preference.
+
+## Follow-on experiment: replacement and PR evidence
+
+The user requested continued work through reproducible A2000 speed evidence and a PR. Add validation feedback, a process-local opt-in replacement with module preparation before CUDA graph capture, greedy synthetic completion checks, and a verifier for retained kernel measurements. Preserve unsupported-call fallback and retain all failures. The quality check gates any whole-model performance claim; a passing isolated tolerance is insufficient. No production configuration or model weights are published.
