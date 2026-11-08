@@ -1,0 +1,30 @@
+Failed to initialize Crashpad.  Crash reporting will not be available.  Cause: while locating crashpad handler: unable to locate crashpad handler executable
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:19:21: warning: 'bitcast' is deprecated, use 'unsafe_bitcast' instead
+    var words = data.bitcast[UInt64]()
+                ~~~~^~~~~~~~
+                     unsafe_bitcast
+<unknown>:0: note: 'bitcast' declared here
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:22:21: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+        acc ^= words[index] ^ words[index + stride] ^ words[index + 2 * stride] ^ words[index + 3 * stride]
+               ~~~~~^~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:22:36: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+        acc ^= words[index] ^ words[index + stride] ^ words[index + 2 * stride] ^ words[index + 3 * stride]
+                              ~~~~~^~~~~~~~~~~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:22:60: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+        acc ^= words[index] ^ words[index + stride] ^ words[index + 2 * stride] ^ words[index + 3 * stride]
+                                                      ~~~~~^~~~~~~~~~~~~~~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:22:88: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+        acc ^= words[index] ^ words[index + stride] ^ words[index + 2 * stride] ^ words[index + 3 * stride]
+                                                                                  ~~~~~^~~~~~~~~~~~~~~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:25:21: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+        acc ^= words[index]
+               ~~~~~^~~~~~~
+<unknown>:0: note: '__getitem__' declared here
+/path/to/mojo-llm-lab/kernels/stream_read_roofline.mojo:27:11: warning: positional `__getitem__` is deprecated, use `unsafe_offset=` instead
+    output[Int(block_idx.x) * 128 + tid] = acc
+    ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<unknown>:0: note: '__getitem__' declared here
