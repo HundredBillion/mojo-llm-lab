@@ -62,3 +62,11 @@ Each run uses the existing absolute guards: AC power; abort at CPU ≥ 90 °C, G
 ## Scope
 
 A pass extends numerical agreement to longer contexts, the application-style extraction prompts and free-running greedy and sampled generation, for this candidate, model, prompts and laptop. It does not establish universal equivalence, prompt-processing speed (prefill is not replaced by the candidate), complete PDF latency or extraction quality.
+
+## Amendment (attempt 2)
+
+Committed after attempt 1 and before attempt 2. [Attempt 1](../../results/a2000/logit-coverage/attempt1/) stopped on the GPU 82 °C guard during the first CUDA trial of run 1. The long prompt prefill loads the GPU more heavily than decode-only fixtures.
+
+Attempt 2 reruns the complete six-run schedule from the start (new output names, `local-coverage-r2-*`) inside a bounded root session. That session sets the fans to level 7 with a 30 s hardware watchdog, locks the GPU graphics clock to 210–1200 MHz and enables persistence mode temporarily. Everything is restored on every exit path, as in the [r5 confirmation](11-07-2026-fast-division-confirmation-r5.md). Before each run, the batch requires an active window with at least 300 s remaining and valid fan readings. After each run, it requires a recorded maximum SM clock of at most 1215 MHz.
+
+Clock frequency does not change kernel selection or the instruction stream, so the numerical pass rule is unchanged. If the 1200 s window ends before all six runs, the remaining runs continue in a new, separately recorded window. Completed runs are not repeated.

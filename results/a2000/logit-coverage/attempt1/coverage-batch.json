@@ -1,0 +1,50 @@
+{
+  "plan": [
+    [
+      "statement-short",
+      "greedy",
+      0,
+      1
+    ],
+    [
+      "statement-medium",
+      "greedy",
+      0,
+      0
+    ],
+    [
+      "statement-long",
+      "greedy",
+      0,
+      1
+    ],
+    [
+      "prose",
+      "greedy",
+      0,
+      0
+    ],
+    [
+      "statement-short",
+      "sampled",
+      20261107,
+      1
+    ],
+    [
+      "statement-long",
+      "sampled",
+      20261107,
+      0
+    ]
+  ],
+  "runs": [
+    {
+      "label": "local-coverage-00-statement-short-greedy-arm1",
+      "returncode": 1,
+      "started_unix": 1794098077.7436063,
+      "ended_unix": 1794098099.7775002
+    }
+  ],
+  "status": "stopped_after_failure",
+  "started_unix": 1794098077.7297454
+}
