@@ -35,8 +35,16 @@ class GuardTests(unittest.TestCase):
         self.assertEqual(command.call_args_list[-1].args[0], ['docker', 'rm', '-f', 'test-container'])
 
     def test_missing_container_is_not_recreated_or_removed(self):
-        with patch.object(run_benchmark.S, 'run', return_value=subprocess.CompletedProcess([], 1)) as command:
+        missing = subprocess.CompletedProcess([], 1, '', 'Error response from daemon: No such object: missing')
+        with patch.object(run_benchmark.S, 'run', return_value=missing) as command:
             run_benchmark.remove_owned('missing', 'our-token')
+        self.assertEqual(command.call_count, 1)
+
+    def test_inspect_failure_is_not_treated_as_missing(self):
+        failed = subprocess.CompletedProcess([], 1, '', 'Cannot connect to the Docker daemon')
+        with patch.object(run_benchmark.S, 'run', return_value=failed) as command:
+            with self.assertRaisesRegex(RuntimeError, 'may still be running'):
+                run_benchmark.remove_owned('unknown', 'our-token')
         self.assertEqual(command.call_count, 1)
 
 

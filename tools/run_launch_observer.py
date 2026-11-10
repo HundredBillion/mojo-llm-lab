@@ -45,6 +45,8 @@ def validate_model_ptx(text, shape):
     is_2b=entry.startswith('q4_k_q8_1_gate_order_2b_')
     if is_2b != (shape=='qwen35-2b'):
         raise ValueError('PTX specialization does not match requested model shape')
+    if re.match(r'q4_k_q8_1_gate_order_2b_(64|256)',entry):
+        raise ValueError('The observer launches 128 threads per row; the 64- and 256-thread kernels are benchmark-only')
     return entry
 
 

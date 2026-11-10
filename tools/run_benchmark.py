@@ -76,7 +76,9 @@ def cold_gate(sensors):
 def remove_owned(name, token):
     inspect = S.run(['docker', 'inspect', name], capture_output=True, text=True, timeout=10)
     if inspect.returncode:
-        return
+        if 'no such' in (inspect.stderr or '').lower():
+            return
+        raise RuntimeError('Could not inspect container; it may still be running: ' + (inspect.stderr or '').strip())
     resource = json.loads(inspect.stdout)[0]
     if (resource['Config'].get('Labels') or {}).get('io.mojo-imrope.benchmark') != token:
         raise RuntimeError('Container ownership changed; refusing removal')

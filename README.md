@@ -66,6 +66,17 @@ The runner selects GPU index 0 by default; use `--gpu` to select another support
 
 Do not treat a successful CPU test run as GPU qualification. Rebuilding on another compiler, GPU or driver requires the correctness and control runs again.
 
+## Use this on your own A2000
+
+Nothing here depends on a particular application, checkout location or laptop model. The tools need only this repository, the pinned downloads, and, for whole-model runs, a GGUF model file you supply.
+
+- **GPU:** the kernels are compiled for `sm_86`, and the whole-model observer declines to replace anything on a GPU that does not report compute capability 8.6. The recorded results come from one RTX A2000 Laptop GPU with 4 GB of VRAM.
+- **Host:** Linux x86-64, Docker, an NVIDIA driver with the Container Toolkit and CDI configured, and Python 3.12 or newer. A machine with a battery must be on AC power.
+- **Thermal guards:** runs need a cold start below CPU 70°C and GPU 68°C and stop at CPU 90°C or GPU 82°C. The CPU reading comes from the `coretemp`, `k10temp` or `zenpower` sensor; without one the tools refuse to run. A further 75°C platform check uses ThinkPad `SEN*` thermal zones and is inactive on machines that do not have them.
+- **Kernel benchmarks:** follow [Reproduce the GPU experiment](#reproduce-the-gpu-experiment). Inputs are synthetic, so no model is needed.
+- **Whole-model runs:** follow [the resident comparison](docs/resident-comparison.md#reproduce-and-next-investigation). Replacement supports two Q4_K_M layouts: Qwen3-4B and Qwen3.5-2B. `tools/run_launch_observer.py` takes `--shape qwen3-4b` or `--shape qwen35-2b`; the resident runner is fixed to Qwen3.5-2B. Another model needs its layout added to `integration/fusion_eligibility.h` and a kernel built for it. The observer launches 128 threads per row, so the 64- and 256-thread kernels are benchmark-only.
+- **Recorded evidence:** everything under `results/a2000/` was measured on one laptop. The `helpers/` scripts there are records of that machine's fan and clock sessions; they are not needed and should not be run elsewhere.
+
 ## Quantized matrix-vector investigation
 
 The latest [fused gate/up candidate](docs/q4-reduction-order.md) measured **1.22× faster than the fused llama.cpp CUDA operation** in two guarded runs with distinct rows, varied FP16 weight factors and varied activation scales. It passed the unchanged numerical tolerance; outputs are not bit-identical. A regression comparison on the earlier full-row fixture measured 1.23×.

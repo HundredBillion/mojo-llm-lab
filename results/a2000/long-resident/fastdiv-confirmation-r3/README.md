@@ -1,6 +1,6 @@
 # Fast-division candidate confirmation, attempt r3 (2026-11-07): INCOMPLETE, GPU thermal guard
 
-Protocol: [base](../../../../docs/TSPs/11-07-2026-fast-division-confirmation.md) plus the [r3 cool-down amendment](../../../../docs/TSPs/11-07-2026-fast-division-confirmation-r3.md), committed in `524d394` before measurement.
+Protocol: [base](../../../../docs/TSPs/11-07-2026-fast-division-confirmation.md) plus the [r3 cool-down amendment](../../../../docs/TSPs/11-07-2026-fast-division-confirmation-r3.md), committed in `deb4aa2` before measurement.
 
 | Stage | Assignment | Cool-down wait | Status | Ratio | Peaks CPU/GPU/platform °C |
 | --- | --- | ---: | --- | ---: | --- |

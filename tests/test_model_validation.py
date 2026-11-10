@@ -78,6 +78,8 @@ class ValidationEvidenceTests(unittest.TestCase):
         self.assertEqual(validate_model_ptx(ptx,'qwen35-2b'),'q4_k_q8_1_gate_order_2b_probe')
         with self.assertRaises(ValueError): validate_model_ptx(ptx,'qwen3-4b')
         with self.assertRaises(ValueError): validate_model_ptx(ptx.replace('_2b_probe','_probe'),'qwen35-2b')
+        for threads in ('64','256'):
+            with self.assertRaises(ValueError): validate_model_ptx(ptx.replace('_2b_probe','_2b_'+threads+'_probe'),'qwen35-2b')
 
     def test_2b_validation_requires_correct_row_count(self):
         text=self.log().replace('rows=9728','rows=6144')
