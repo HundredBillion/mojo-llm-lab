@@ -4,7 +4,7 @@ The existing resident comparison cannot distinguish a small candidate gain from 
 
 Chosen approach: add timed-section replacement/capture deltas and an explicit experimental CPU quota (1000 or 2000 microseconds per 5000 microseconds). Preserve the default 1000 quota, fixed workload, model, synchronization, cooldowns and all safety limits. First validate instrumentation at the current allowance; then compare CUDA controls at both allowances if a cool window is available. Only compare CUDA/Mojo at matching allowances. Retain failures and do not pool old/new worker binaries.
 
-Alternatives: another Mojo kernel rewrite cannot resolve host confounding; removing CPU limits could raise heat without a controlled explanation. Both are deferred. CPU quota changes are confined to disposable containers and never become host or the application defaults from this experiment.
+Alternatives: another Mojo kernel rewrite cannot resolve host confounding; removing CPU limits could raise heat without a controlled explanation. Both are deferred. CPU quota changes are confined to disposable containers and never become host or application defaults from this experiment.
 
 Acceptance: bounded quota choices and metadata; deltas strictly validated against cumulative counters; CUDA cannot claim replacements; timed capture distinguished from prefill; existing tests plus invalid-delta cases pass; compile with warnings as errors; preserve raw telemetry and guard stops. A speed claim requires repeatable matched controls and correctness, not merely a faster single sample.
 
@@ -22,4 +22,4 @@ Two priming tokens are now selectable (default0, choices0/1/2). One left24 captu
 
 ## Verified CUDA wait policy
 
-The existing preloaded helper ignores resident-decode unless LLAMA_CUDA_WAIT_TARGET names its absolute executable path. Add the explicit target and a selectable auto/blocking policy, with blocking as the resident harness default. Require exactly one matching constructor readback for device0 before marking a run passed. Include the existing helper source and a pinned, CPU-limited build recipe so reproduction does not depend on private machine files. Do not change host/the application defaults. Retain all untargeted measurements as historical, not verified-blocking evidence; compare matched policy controls separately from Mojo.
+The existing preloaded helper ignores resident-decode unless LLAMA_CUDA_WAIT_TARGET names its absolute executable path. Add the explicit target and a selectable auto/blocking policy, with blocking as the resident harness default. Require exactly one matching constructor readback for device0 before marking a run passed. Include the existing helper source and a pinned, CPU-limited build recipe so reproduction does not depend on private machine files. Do not change host/application defaults. Retain all untargeted measurements as historical, not verified-blocking evidence; compare matched policy controls separately from Mojo.

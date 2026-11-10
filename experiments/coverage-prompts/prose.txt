@@ -1,0 +1,34 @@
+<|im_start|>system
+You are a concise assistant. Answer in plain English.<|im_end|>
+<|im_start|>user
+Summarize the decisions and open risks from these synthetic project meeting notes in five bullet points.
+
+1. Jordan raised the migration plan: the team agreed to close it because results were mixed.
+2. Taylor raised the thermal limits: the team agreed to close it because results were mixed.
+3. Jordan raised the migration plan: the team agreed to close it because the estimate changed.
+4. Jordan raised the budget review: the team agreed to assign an owner because results were mixed.
+5. Jordan raised the documentation backlog: the team agreed to collect more data because two risks remain open.
+6. Riley raised the hiring: the team agreed to close it because two risks remain open.
+7. Taylor raised the incident follow-up: the team agreed to close it because the estimate changed.
+8. Jordan raised the thermal limits: the team agreed to collect more data because two risks remain open.
+9. Taylor raised the budget review: the team agreed to assign an owner because results were mixed.
+10. Riley raised the documentation backlog: the team agreed to close it because two risks remain open.
+11. Sam raised the thermal limits: the team agreed to escalate it because two risks remain open.
+12. Riley raised the test coverage: the team agreed to revisit it next week because two risks remain open.
+13. Taylor raised the release schedule: the team agreed to revisit it next week because the deadline moved.
+14. Riley raised the release schedule: the team agreed to collect more data because nobody objected.
+15. Taylor raised the thermal limits: the team agreed to escalate it because nobody objected.
+16. Morgan raised the budget review: the team agreed to close it because the deadline moved.
+17. Avery raised the budget review: the team agreed to escalate it because two risks remain open.
+18. Avery raised the release schedule: the team agreed to revisit it next week because the estimate changed.
+19. Jordan raised the test coverage: the team agreed to revisit it next week because the estimate changed.
+20. Sam raised the thermal limits: the team agreed to revisit it next week because the deadline moved.
+21. Avery raised the release schedule: the team agreed to revisit it next week because results were mixed.
+22. Morgan raised the budget review: the team agreed to close it because results were mixed.
+23. Morgan raised the incident follow-up: the team agreed to close it because two risks remain open.
+24. Taylor raised the vendor contract: the team agreed to collect more data because nobody objected.<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+

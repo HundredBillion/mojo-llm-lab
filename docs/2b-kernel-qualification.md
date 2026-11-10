@@ -27,7 +27,7 @@ All 82 CPU tests passed. The 64-thread Mojo and native harness builds completed;
 
 After cleanup, there was no GPU compute process or owned benchmark/build container; CPU had fallen to 75°C and GPU to 62°C. The post-stop process snapshot cannot establish which process caused the spike. No sustained safety or causal attribution is claimed. Logs and stage receipts retain the failed build.
 
-The follow-up below resumes after cold gates and retains the original failure. Do not enable either experimental geometry in the application or the resident integration based on these results.
+The follow-up below resumes after cold gates and retains the original failure. Do not enable either experimental geometry in any application or the resident integration based on these results.
 
 ## Follow-up: 64 threads pass; 256 timing remains pending
 
@@ -37,7 +37,7 @@ The 256-thread rebuild completed under the same CPU and thermal limits, peaking 
 
 The subsequent 256-thread benchmark completed its control (ratio 0.99943×, correctness and canaries passed), then stopped at the candidate preflight when CPU reached 94°C with GPU 62°C. Sprite was paused with its independent resume watchdog. No candidate timing was collected, and the failure is retained. A later three-minute observation without GPU work peaked at CPU 74°C/GPU 65°C; this does not explain the earlier spike.
 
-Read-only inspection found the installed the application fan service filters specifically for the managed the application model container; these benchmark containers do not match. Fan readback was automatic, approximately 2486/2341 RPM. This is a cooling-policy coverage gap, not proof that it caused either spike. A temporary maximum-normal-fan experiment is prepared but still requires administrator authentication; no persistent host setting has been changed.
+Read-only inspection found the host's installed fan service filters specifically for its own managed model container; these benchmark containers do not match. Fan readback was automatic, approximately 2486/2341 RPM. This is a cooling-policy coverage gap, not proof that it caused either spike. A temporary maximum-normal-fan experiment is prepared but still requires administrator authentication; no persistent host setting has been changed.
 
 A GGUF header inspection also identifies Q6_K token embeddings of dimensions [2048, 248320], plus Q6_K feed-forward down projections and Q5_K attention projections. Type enums were checked against the pinned GGML header. These are potential optimization targets, not timing attribution. The next whole-model diagnostic should profile the actual 2B model; the older 4B profile cannot establish this model's bottlenecks. The Q4_K replacement alone does not cover those operations.
 
@@ -49,4 +49,4 @@ After authentication, the three-minute normal-maximum-fan window enabled a compl
 
 The 256-thread kernel uses 29 registers versus the 128-thread kernel's previously observed 34, but its theoretical resident-block capacity is six rather than twelve. Lower register count did not translate into a speed improvement. One run does not prove a general regression, but it supplies no reason to replace the qualified 128-thread candidate. The changed cooling conditions prevent treating cross-run timing differences as a fan-only effect.
 
-The fan helper restored automatic control, original watchdog 0 and the the application fan service. The same window also produced the [current 2B model profile](qwen35-2b-profile.md), which now guides whole-model testing and further kernel selection. All earlier thermal failures remain retained.
+The fan helper restored automatic control, original watchdog 0 and the host fan service. The same window also produced the [current 2B model profile](qwen35-2b-profile.md), which now guides whole-model testing and further kernel selection. All earlier thermal failures remain retained.

@@ -73,10 +73,10 @@ class WaitPolicyTests(unittest.TestCase):
 class CleanupTests(unittest.TestCase):
     def test_client_and_logger_are_reaped_when_removal_raises(self):
         from unittest.mock import Mock,patch
-        from run_pdf_smoke import cleanup
+        from run_benchmark import cleanup
         client=Mock();client.poll.return_value=None
         logger=Mock();logger.poll.return_value=None
-        with patch('run_pdf_smoke.remove_owned',side_effect=RuntimeError('daemon unavailable')):
+        with patch('run_benchmark.remove_owned',side_effect=RuntimeError('daemon unavailable')):
             errors=cleanup('owned','token',[client,logger])
         self.assertEqual(errors,['daemon unavailable'])
         client.terminate.assert_called_once();client.wait.assert_called_once()

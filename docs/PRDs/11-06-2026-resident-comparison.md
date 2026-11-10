@@ -4,7 +4,7 @@ Load the pinned Qwen3.5-2B model once and give two independent llama contexts id
 
 Separate graph caches are essential: changing the replacement environment cannot change an already captured graph. Only one context executes at a time, and environment changes happen after synchronization. Replacement/capture counters provide warmup evidence, not graph replay counts. The model and contexts stay loaded during controller-directed cooldowns.
 
-This teacher-forced decode test excludes token sampling and document processing. It cannot establish PDF latency or arbitrary output equivalence. A subsequent synthetic PDF check must exercise the application's actual text extraction/parser seam without mutating live user documents. Image-only extraction remains a separate capability.
+This teacher-forced decode test excludes token sampling and document processing. It cannot establish PDF latency or arbitrary output equivalence. A subsequent synthetic PDF check must exercise a real application's text extraction/parser seam without mutating live user documents. Image-only extraction remains a separate capability.
 
 Alternatives considered: more process-level trials retain startup confounding; fixed GPU clocks require system changes and do not isolate host scheduling. The resident harness reduces one source of variance without changing hardware policy. It still needs a same-implementation control and honest treatment of residual variation.
 

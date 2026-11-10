@@ -6,7 +6,7 @@ Protocol: [`TSPs/11-07-2026-prefill-baseline.md`](TSPs/11-07-2026-prefill-baseli
 
 The qualified fast-division candidate replaces only the single-token Q4_K gate/up matrix-vector launch. In all six [coverage runs](../results/a2000/logit-coverage/), each candidate trial recorded only 55–104 replacements while prefilling 566–6772 tokens in 32-token batches. Replacement during prefill would have produced thousands: about 212 batches × 24 layers for 6772 tokens. **The confirmed decode gain (1.6–2.6 % at a 1200 MHz clock cap) therefore does not transfer to prompt processing.** Prompt processing has no Mojo speedup.
 
-## CUDA prefill throughput at the application settings
+## CUDA prefill throughput at the reference server settings
 
 Pinned llama-bench b12110 used full offload, Q4_0 K/V, flash attention, 2 threads, polling off, a 20 % CPU quota and verified blocking waits. Runs used default GPU clocks (max SM 1747–1762 MHz) and fans at level 7. `-n 0`: prefill only, 3 repetitions after llama-bench's warmup.
 
@@ -18,9 +18,9 @@ Pinned llama-bench b12110 used full offload, Q4_0 K/V, flash attention, 2 thread
 | 2048 | 128 / 128 | 2425.9, 2636.3, 2860.7 | **2640.9** | 74 / 72 |
 | 2048 | 512 / 512 | 3276.9, 3296.7, 3248.3 | **3274.0** | 81 / 71 |
 
-At the the application setting (batch/ubatch 32), prefill runs at about 1.1–1.17 k tokens/s, roughly flat from 512 to 6144 tokens. A 6.8k-token the application prompt therefore needs roughly 6 s of prefill before generation starts.
+At the reference setting (batch/ubatch 32), prefill runs at about 1.1–1.17 k tokens/s, roughly flat from 512 to 6144 tokens. A 6.8k-token prompt therefore needs roughly 6 s of prefill before generation starts.
 
-**Batch size is the largest prefill lever observed, and it is not a Mojo change.** At 2048 tokens, ubatch 128 measured 2.27× and ubatch 512 2.82× the ubatch-32 throughput in llama-bench, with lower GPU peaks. Part of this is a llama-bench artifact. llama-bench computes the full 248,320-row vocabulary projection after **every** batch, which is 13.9 % of prefill GPU time at ubatch 32 (below). llama-server computes it only for the final prompt token, so the the application server's gain from a larger ubatch is probably smaller. It must be measured in the server, together with VRAM headroom (4 GB, two-context or vision use), quality and complete PDF latency, before any the application setting changes. the application settings were not changed.
+**Batch size is the largest prefill lever observed, and it is not a Mojo change.** At 2048 tokens, ubatch 128 measured 2.27× and ubatch 512 2.82× the ubatch-32 throughput in llama-bench, with lower GPU peaks. Part of this is a llama-bench artifact. llama-bench computes the full 248,320-row vocabulary projection after **every** batch, which is 13.9 % of prefill GPU time at ubatch 32 (below). llama-server computes it only for the final prompt token, so a real server's gain from a larger ubatch is probably smaller. It must be measured in the server, together with VRAM headroom (4 GB, two-context or vision use), quality and complete PDF latency, before any server setting changes. No server settings were changed.
 
 ## Where prefill GPU time goes (ubatch 32, 2048 tokens)
 

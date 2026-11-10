@@ -14,7 +14,7 @@ Peak sampled temperatures were CPU 75°C/GPU 73°C/platform 64.05°C. Fixed-pref
 
 ## Candidate blocked before launch
 
-The subsequent Mojo preflight sampled CPU 93°C, GPU 64°C, platform 64.05°C with AC connected. The unchanged CPU 90°C guard rejected the run before any model container started. No candidate timing exists. A later process snapshot cannot establish the cause of that brief CPU spike. No higher-quota trial was attempted, and no host or the application defaults changed.
+The subsequent Mojo preflight sampled CPU 93°C, GPU 64°C, platform 64.05°C with AC connected. The unchanged CPU 90°C guard rejected the run before any model container started. No candidate timing exists. A later process snapshot cannot establish the cause of that brief CPU spike. No higher-quota trial was attempted, and no host or application defaults changed.
 
 [Raw control and preflight failure](../results/a2000/resident-host-cost/) are retained. All owned inference containers were removed; unrelated containers and the original Sprite session remain running.
 

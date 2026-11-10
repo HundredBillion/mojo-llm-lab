@@ -8,7 +8,7 @@ The preloaded wait helper only selects `llama-server` by basename unless `LLAMA_
 
 The resident controller now supplies `/observer/resident-decode`, requests an explicit `auto` or `blocking` policy, and requires a matching device 0 startup readback before marking a run passed. Blocking is the harness default. The shared receipt validator rejects missing, duplicate, wrong-device and wrong-policy evidence while preserving unrelated flag bits. This proves constructor-time driver readback; it is not continuous monitoring of runtime policy.
 
-A sibling inspection found the same omission in `run_launch_observer.py`. When a wait library is explicitly provided, that tool now targets `/app/llama-completion` or `/app/llama-bench` and requires a blocking receipt. The server PDF harness already uses the recognized basename. Neither host-wide nor the application defaults changed.
+A sibling inspection found the same omission in `run_launch_observer.py`. When a wait library is explicitly provided, that tool now targets `/app/llama-completion` or `/app/llama-bench` and requires a blocking receipt. Neither host-wide nor application defaults changed.
 
 The helper source is included in `integration/cuda_wait.c` with a pinned, CPU-limited build in `tools/build_wait_policy.py`. It does nothing to untargeted processes. The newly built artifact passed a separate resident CUDA control with a verified blocking receipt; it has a different library hash and is not pooled into the installed-helper timing comparison. The two legacy CLI entrypoints were inspected, not newly exercised live in this follow-up.
 

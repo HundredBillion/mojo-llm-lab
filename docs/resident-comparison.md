@@ -1,6 +1,6 @@
-# Resident Qwen3.5-2B comparison and PDF smoke test
+# Resident Qwen3.5-2B comparison
 
-**A whole-model Mojo speedup remains unproved.** The completed short resident comparison showed a 1.0534× CUDA/Mojo latency ratio, but its matching CUDA/CUDA control showed a larger 1.0669× apparent difference. The new measurements expose significant CPU-quota throttling and a separate PDF correctness failure.
+**A whole-model Mojo speedup remains unproved.** The completed short resident comparison showed a 1.0534× CUDA/Mojo latency ratio, but its matching CUDA/CUDA control showed a larger 1.0669× apparent difference. The new measurements expose significant CPU-quota throttling.
 
 ## What changed
 
@@ -49,10 +49,9 @@ python3 tools/summarize_resident.py \
 
 Compilation and inference must use the documented AC/temperature guards. Default resident settings are 16 tokens, one ABBA cycle and per-trial cooldowns. The explicit continuous option exists to reproduce the rejected protocol; it retains all absolute guards. Run CPU regression tests with `python3 -m unittest discover -s tests -q`.
 
+The next useful work is to isolate CPU sampling/schema and graph-recapture costs and measure warmup/affinity effects. Raising CPU limits without a controlled thermal comparison would not be justified by these results.
 
-The next useful work is to isolate CPU sampling/schema and graph-recapture costs, measure warmup/affinity effects, and qualify exact-decimal/date output contracts on representative documents. Raising CPU limits or adopting a format without a controlled thermal and quality comparison would not be justified by these results.
 
-
-Verification completed: 70 CPU regression tests passed under the thermal guard, including invalid evidence and cleanup-after-daemon-failure cases. The observer and resident C++ worker compiled successfully in the pinned CPU-limited container. The existing operation-evidence verifier still finds all 24 paired rounds favoring the 4B Mojo kernel. Focused code and evidence reviews found no remaining blocking issue; no full PDF capability or whole-model gain is inferred from these checks.
+Verification completed: 70 CPU regression tests passed under the thermal guard, including invalid evidence and cleanup-after-daemon-failure cases. The observer and resident C++ worker compiled successfully in the pinned CPU-limited container. The existing operation-evidence verifier still finds all 24 paired rounds favoring the 4B Mojo kernel. Focused code and evidence reviews found no remaining blocking issue; no whole-model gain is inferred from these checks.
 
 Follow-up: [timed capture instrumentation and host CPU allowance investigation](resident-host-cost.md). A new CUDA control completed; the candidate was rejected at preflight, so it adds no Mojo speed result.

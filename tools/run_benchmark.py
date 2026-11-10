@@ -83,6 +83,27 @@ def remove_owned(name, token):
     S.run(['docker', 'rm', '-f', name], check=True, capture_output=True, timeout=15)
 
 
+def cleanup(name, token, processes):
+    """Remove the owned container and reap helper processes; return errors instead of raising."""
+    errors = []
+    try:
+        remove_owned(name, token)
+    except Exception as error:
+        errors.append(str(error))
+    for process in processes:
+        if process and process.poll() is None:
+            try:
+                process.terminate()
+                try:
+                    process.wait(timeout=10)
+                except S.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=5)
+            except Exception as error:
+                errors.append(str(error))
+    return errors
+
+
 def run_case(args, sensors, versions, ptx, entry, label, case, control, *,
              benchmark_dir=None, fixture_dir=None, executable="bench", input_path=None):
     benchmark_dir = benchmark_dir or ROOT / "build/benchmark"

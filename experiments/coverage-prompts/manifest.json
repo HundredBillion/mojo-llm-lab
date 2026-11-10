@@ -1,0 +1,22 @@
+{
+  "statement-short": {
+    "file": "statement-short.txt",
+    "bytes": 791,
+    "sha256": "e021c727c4c23e08c15412b6b43426059dd96b694c8e2933fd97a2a30d391546"
+  },
+  "statement-medium": {
+    "file": "statement-medium.txt",
+    "bytes": 4223,
+    "sha256": "b7b385af4b19cb1965ba322b679f0931e27cab659da4638b6932a43ccf54ae1c"
+  },
+  "statement-long": {
+    "file": "statement-long.txt",
+    "bytes": 13946,
+    "sha256": "e9779b4c74c41eb3b0fbc8430683d23541c0d714db48a083aae0ff4451d2f6cc"
+  },
+  "prose": {
+    "file": "prose.txt",
+    "bytes": 2661,
+    "sha256": "bf5aced068ea4ae0f7caa507824ba489f5de66479efe20e282199fe6d5abcc1d"
+  }
+}

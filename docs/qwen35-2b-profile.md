@@ -29,7 +29,7 @@ The next whole-model test should use the qualified 128-thread candidate, longer 
 
 The authenticated helper held normal maximum fan level 7 for three minutes with a 30-second hardware watchdog. Both fans reached roughly 5700/5100 RPM before GPU work. The profiler required both readings between 4500 and 10000 RPM throughout capture, rejecting the transient 65535 startup sentinel as invalid. CPU and GPU both peaked at 54°C; platform peak was 46.05°C. Sprite was paused for about 40 seconds with an independent resume watchdog and resumed successfully; Chromium was absent.
 
-The helper restored automatic fan mode, watchdog 0 and the existing the application fan service, with no restoration errors. This successful short window is not a controlled fan-only A/B experiment: starting temperatures and background conditions differed from earlier runs. It does not prove the cause of prior CPU spikes or sustained safety. No permanent cooling policy, Turbo setting or GPU clock was changed.
+The helper restored automatic fan mode, watchdog 0 and the existing host fan service, with no restoration errors. This successful short window is not a controlled fan-only A/B experiment: starting temperatures and background conditions differed from earlier runs. It does not prove the cause of prior CPU spikes or sustained safety. No permanent cooling policy, Turbo setting or GPU clock was changed.
 
 The first CPU-only SQLite export failed because Docker rejects a quota below 1000 µs. The retry used 1000 µs per 10000 µs, preserving a 10% allowance, and completed without GPU work. Both receipts are retained.
 

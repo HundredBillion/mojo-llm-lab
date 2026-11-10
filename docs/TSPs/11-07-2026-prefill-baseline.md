@@ -8,18 +8,18 @@ The plan asks for prompt processing to be measured separately from decode. The q
 
 ## Measurements
 
-Each run is one guarded process of pinned `llama-bench` (b12110), with these settings matching the the application server: full offload, Q4_0 K/V, flash attention, 2 threads, polling off, 20 % CPU quota (1000/5000 µs) and verified blocking CUDA waits. No Mojo PTX or observer is loaded. `-n 0` measures prompt processing only. llama-bench performs its own warmup.
+Each run is one guarded process of pinned `llama-bench` (b12110), with these settings matching the reference server configuration: full offload, Q4_0 K/V, flash attention, 2 threads, polling off, 20 % CPU quota (1000/5000 µs) and verified blocking CUDA waits. No Mojo PTX or observer is loaded. `-n 0` measures prompt processing only. llama-bench performs its own warmup.
 
 | Run | Prompt tokens | batch / ubatch | Repetitions | Purpose |
 | --- | ---: | --- | ---: | --- |
-| 1 | 512 | 32 / 32 | 3 | the application-setting throughput |
-| 2 | 2048 | 32 / 32 | 3 | the application-setting throughput |
-| 3 | 6144 | 32 / 32 | 3 | the application-setting throughput, long context |
+| 1 | 512 | 32 / 32 | 3 | reference-setting throughput |
+| 2 | 2048 | 32 / 32 | 3 | reference-setting throughput |
+| 3 | 6144 | 32 / 32 | 3 | reference-setting throughput, long context |
 | 4 | 2048 | 128 / 128 | 3 | batch-size sensitivity |
 | 5 | 2048 | 512 / 512 | 3 | batch-size sensitivity |
 | 6 | 2048 | 32 / 32 | 1 | Nsight Systems kernel attribution (throughput discarded) |
 
-Results are descriptive: mean and per-repetition tokens/second. There is no pass/fail decision. Runs 4–5 only measure the setting. the application settings are not changed, and VRAM, quality and latency effects of a larger ubatch in the real server are not established.
+Results are descriptive: mean and per-repetition tokens/second. There is no pass/fail decision. Runs 4–5 only measure the setting. Server settings are not changed, and VRAM, quality and latency effects of a larger ubatch in the real server are not established.
 
 ## Conditions and safety
 
@@ -27,4 +27,4 @@ Default GPU clocks are used so that throughput is not capped. The batch runs ins
 
 ## Outputs
 
-`results/a2000/prefill-baseline/` contains each run's summary, sensors and logs; the Nsight report hash and a kernel aggregation by `tools/summarize_cuda_profile.py`; and a report of the prefill operation shares at the application settings, compared with the decode shares in `docs/qwen35-2b-profile.md`.
+`results/a2000/prefill-baseline/` contains each run's summary, sensors and logs; the Nsight report hash and a kernel aggregation by `tools/summarize_cuda_profile.py`; and a report of the prefill operation shares at the reference server settings, compared with the decode shares in `docs/qwen35-2b-profile.md`.

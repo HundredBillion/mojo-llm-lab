@@ -16,7 +16,7 @@ import uuid
 
 from run_benchmark import cold_gate, safe, digest
 from run_launch_observer import ModelSensors, validate_model_ptx
-from run_pdf_smoke import cleanup
+from run_benchmark import cleanup
 from cuda_wait_policy import verify_wait_policy
 
 ROOT = Path(__file__).resolve().parents[1]

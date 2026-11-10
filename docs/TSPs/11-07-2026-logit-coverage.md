@@ -22,14 +22,16 @@ For each run, the worker:
 
 ## Prompts
 
-`tools/generate_coverage_prompts.py` deterministically writes the prompt files and a SHA-256 manifest to `experiments/coverage-prompts/`. All content is synthetic; no user document is read or modified. Prompts use the Qwen chat format with thinking disabled (empty think block), approximating the the application server's `enable_thinking=false` template.
+`tools/generate_coverage_prompts.py` deterministically writes the prompt files and a SHA-256 manifest to `experiments/coverage-prompts/`. All content is synthetic; no user document is read or modified. Prompts use the Qwen chat format with thinking disabled (empty think block), approximating a server that uses the `enable_thinking=false` template.
 
 | Prompt | Content | Approx. tokens (exact counts recorded by the worker) |
 | --- | --- | ---: |
-| `statement-short` | full the application bank-transaction extraction system prompt (~9.5 KB) + the existing one-transaction synthetic statement | ~2.5k |
+| `statement-short` | a bank-transaction extraction system prompt (~9.5 KB in the recorded runs) + the existing one-transaction synthetic statement | ~2.5k |
 | `statement-medium` | same system prompt, 2 pages, 40 synthetic transactions | ~3.5k |
 | `statement-long` | same system prompt, 6 pages, 150 synthetic transactions | ~6–7k |
 | `prose` | non-financial: summarize synthetic project meeting notes | ~0.7k |
+
+The `statement-*` prompts in the recorded runs embedded a private application's system prompt, which is no longer published. The generator now uses a short generic one, so regenerated prompts are shorter than the token counts above; see the [results README](../../results/a2000/logit-coverage/README.md).
 
 ## Schedule
 
@@ -61,7 +63,7 @@ Each run uses the existing absolute guards: AC power; abort at CPU ≥ 90 °C, G
 
 ## Scope
 
-A pass extends numerical agreement to longer contexts, the application-style extraction prompts and free-running greedy and sampled generation, for this candidate, model, prompts and laptop. It does not establish universal equivalence, prompt-processing speed (prefill is not replaced by the candidate), complete PDF latency or extraction quality.
+A pass extends numerical agreement to longer contexts, extraction-style prompts and free-running greedy and sampled generation, for this candidate, model, prompts and laptop. It does not establish universal equivalence, prompt-processing speed (prefill is not replaced by the candidate), complete PDF latency or extraction quality.
 
 ## Amendment (attempt 2)
 
