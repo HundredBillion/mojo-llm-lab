@@ -1,6 +1,6 @@
 # Fast-division candidate confirmation, attempt r5 (2026-11-07): PASSED at a 1200 MHz GPU clock cap
 
-Protocol: [base](../../../../docs/TSPs/11-07-2026-fast-division-confirmation.md), [r3 cool-down](../../../../docs/TSPs/11-07-2026-fast-division-confirmation-r3.md) and [r5 clock lock](../../../../docs/TSPs/11-07-2026-fast-division-confirmation-r5.md), committed in `61e6587` before measurement. Candidate PTX `8e130a5a0a4e4355acbd0988bd31f627b09fdfcda31eedd7ce13fb05e52e9e3a`.
+Protocol: [base](../../../../docs/TSPs/11-07-2026-fast-division-confirmation.md), [r3 cool-down](../../../../docs/TSPs/11-07-2026-fast-division-confirmation-r3.md) and [r5 clock lock](../../../../docs/TSPs/11-07-2026-fast-division-confirmation-r5.md), committed in `de0a7f5` before measurement. Candidate PTX `8e130a5a0a4e4355acbd0988bd31f627b09fdfcda31eedd7ce13fb05e52e9e3a`.
 
 | Stage | Assignment | Cool-down | Ratio (>1 favors Mojo) | Max SM clock | Peaks CPU/GPU/platform °C |
 | --- | --- | ---: | ---: | ---: | --- |

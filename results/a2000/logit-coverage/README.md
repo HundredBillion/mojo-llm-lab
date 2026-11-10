@@ -1,6 +1,6 @@
 # Numerical and generated-output coverage of the fast-division candidate (2026-11-07): ALL SIX RUNS PASSED
 
-Protocol: [`docs/TSPs/11-07-2026-logit-coverage.md`](../../../docs/TSPs/11-07-2026-logit-coverage.md), committed in `feafd2a` before any measurement, with amendments committed before attempts 2–4. Candidate PTX `8e130a5a…`. Worker `resident-coverage` SHA-256 `2280b9ee652090819b967d18244313e1a4f37972b8ef4b4cf73c92f92f1335ca`. Prompts and their SHA-256 manifest are in [`experiments/coverage-prompts/`](../../../experiments/coverage-prompts/).
+Protocol: [`docs/TSPs/11-07-2026-logit-coverage.md`](../../../docs/TSPs/11-07-2026-logit-coverage.md), committed in `dffc827` before any measurement, with amendments committed before attempts 2–4. Candidate PTX `8e130a5a…`. Worker `resident-coverage` SHA-256 `2280b9ee652090819b967d18244313e1a4f37972b8ef4b4cf73c92f92f1335ca`. Prompts and their SHA-256 manifest are in [`experiments/coverage-prompts/`](../../../experiments/coverage-prompts/).
 
 | Run | Prompt | Tokens | Policy | Candidate ctx | Attempt | Result |
 | --- | --- | ---: | --- | ---: | --- | --- |

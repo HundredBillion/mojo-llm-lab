@@ -21,7 +21,7 @@ The longer repeated synthetic fixture preserves the earlier fixture's first 42 t
 | Confirmation, context 1 | 1.021288 |
 | Confirmation, context 0 | 1.019656 |
 
-Exploratory control ratios are 1.001735 and 1.003297; confirmation controls are 1.001042 and 1.007018. The [preregistered rule](TSPs/11-07-2026-long-resident-confirmation.md), committed in `0e9cef2` before confirmation measurements, requires every candidate ratio above one and the smallest candidate log-ratio minus the largest absolute control log-ratio to exceed 0.005. The observed margin is **0.0124718593**. This diagnostic is not a confidence interval and cannot rule out all correlated or systematic error.
+Exploratory control ratios are 1.001735 and 1.003297; confirmation controls are 1.001042 and 1.007018. The [preregistered rule](TSPs/11-07-2026-long-resident-confirmation.md), committed in `d2728c4` before confirmation measurements, requires every candidate ratio above one and the smallest candidate log-ratio minus the largest absolute control log-ratio to exceed 0.005. The observed margin is **0.0124718593**. This diagnostic is not a confidence interval and cannot rule out all correlated or systematic error.
 
 Recompute from the [raw evidence](../results/a2000/long-resident/):
 

@@ -1,6 +1,6 @@
 # Source-built fast-division candidate: confirmation attempt r2 (2026-11-07), INCOMPLETE
 
-Protocol: [`docs/TSPs/11-07-2026-fast-division-confirmation.md`](../../../../docs/TSPs/11-07-2026-fast-division-confirmation.md) (committed in `f56847c` before measurements).
+Protocol: [`docs/TSPs/11-07-2026-fast-division-confirmation.md`](../../../../docs/TSPs/11-07-2026-fast-division-confirmation.md) (committed in `c317064` before measurements).
 Candidate PTX SHA-256 `8e130a5a0a4e4355acbd0988bd31f627b09fdfcda31eedd7ce13fb05e52e9e3a`; worker `7446a8a4…`, observer `ef729b86…`, wait helper `b617385b…`, model `aaf42c8b…` (all re-hashed before the run).
 
 This is the first performance batch for the corrected candidate. The prepared private batch (`fastdiv_confirmation_batch.py`) had never run; the `-r2` copies in `helpers/` differ only in status/stop-marker/output names, so the earlier session's stop marker and receipts were left untouched. Run directories were produced as `results/local-fastdiv-r2-confirmation-NN-…` and renamed here to the verifier's `confirmation-NN-…` layout; pause receipts were copied from the private state directory.

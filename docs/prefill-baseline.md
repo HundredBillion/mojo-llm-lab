@@ -1,6 +1,6 @@
 # Prompt processing (prefill), measured separately
 
-Protocol: [`TSPs/11-07-2026-prefill-baseline.md`](TSPs/11-07-2026-prefill-baseline.md), committed in `3bf9b32` before measurement. Evidence: [`results/a2000/prefill-baseline/`](../results/a2000/prefill-baseline/).
+Protocol: [`TSPs/11-07-2026-prefill-baseline.md`](TSPs/11-07-2026-prefill-baseline.md), committed in `d9dab6b` before measurement. Evidence: [`results/a2000/prefill-baseline/`](../results/a2000/prefill-baseline/).
 
 ## The Mojo candidate does not affect prefill
 

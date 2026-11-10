@@ -1,6 +1,6 @@
 # Q6_K vocabulary projection is already at the memory roofline
 
-Protocol: [`TSPs/11-07-2026-q6k-vocab-roofline.md`](TSPs/11-07-2026-q6k-vocab-roofline.md), committed in `24277b7` before measurement. Evidence: [`results/a2000/q6k-vocab-roofline/`](../results/a2000/q6k-vocab-roofline/).
+Protocol: [`TSPs/11-07-2026-q6k-vocab-roofline.md`](TSPs/11-07-2026-q6k-vocab-roofline.md), committed in `ef9a19c` before measurement. Evidence: [`results/a2000/q6k-vocab-roofline/`](../results/a2000/q6k-vocab-roofline/).
 
 The vocabulary projection, Q6_K `mul_mat_vec_q` over 248,320 rows, is the largest single decode kernel at 24 % of decode GPU time. It must read the whole 417,177,600-byte weight matrix for every generated token.
 
